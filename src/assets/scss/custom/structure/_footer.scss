@@ -1,0 +1,31 @@
+//
+// _footer.scss
+//
+
+.footer {
+    bottom: 0;
+    padding: 20px calc(#{$grid-gutter-width} * 0.75);
+    position: relative;
+    right: 0;
+    width: 100%;
+    color: var(--#{$prefix}footer-color);
+    height: $footer-height;
+    background-color: var(--#{$prefix}footer-bg);
+}
+
+// Enlarge menu
+.vertical-collpsed {
+    .footer {
+        left: $sidebar-collapsed-width;
+
+        @media (max-width: 991.98px) {
+            left: 0;
+        }
+    }
+}
+
+body[data-layout="horizontal"] {
+    .footer {
+        left: 0 !important;
+    }
+}
