@@ -1,0 +1,148 @@
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+mat-tab-label {
+    color: #084480 !important;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif !important;
+}
+
+.renouvellement {
+    color: rgb(255, 136, 0);
+}
+
+.titleFormat {
+    color: #FFFFFF;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif !important;
+    font-size: 1.4em;
+}
+
+.c-text-item {
+    text-transform: capitalize;
+    font-size: 13px;
+}
+.c-text-itemEmail{
+    font-size: 13px;
+}
+
+.c-montant {
+    float: right;
+    font-size: 13px;
+}
+
+.c-date {
+    font-size: 13px;
+}
+
+// th.mat-header-cell:first-of-type,
+// td.mat-cell:first-of-type,
+// td.mat-footer-cell:first-of-type {
+//     padding-left: 4px;
+// }
+// td {
+//     font-size: 12px;
+// }
+.isShow {
+    display: inline;
+}
+
+.isNotShow {
+    display: none;
+}
+
+.c-spinner {
+    display: flex;
+    gap: 5px;
+}
+
+.particulieres {
+    color: #084480;
+}
+
+.contentColor {
+    color: #000000 !important;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+    font-size: 14px !important;
+}
+
+.sizePage {
+    width: 100%;
+}
+
+.tableAction {
+    text-align: center;
+    .btn-default {
+        border-radius: 5px !important;
+        border: 1px solid #000000;
+        width: 30px;
+
+    }
+}
+
+.select {
+    min-width: 150px;
+    min-height: 40px;
+    margin: 15px;
+}
+
+.event-form-dialog {
+    min-height: 30rem;
+}
+
+
+.posiTable {
+    height: 160px !important;
+    background-image: url('../../../assets/images/4.jpg') !important;
+    background-size: cover;
+}
+
+.iconAction1 {
+    fill: aliceblue;
+    color: white;
+}
+
+.c-iconRecord {
+    color: #df3b3b !important;
+}
+
+@media screen and (max-width: 840px) {
+    .titleFormat {
+        font-size: 1.3em;
+    }
+}
+
+@media screen and (max-width: 816px) {
+    .titleFormat {
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 794px) {
+    .titleFormat {
+        font-size: 1.1em;
+    }
+}
+
+@media screen and (max-width: 686px) {
+    .w-full {
+        width: auto !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .w-full {
+        width: auto !important;
+    }
+}
+
+.c-paginator {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.txt-tronque {
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-top: 15px;
+    cursor: pointer;
+}

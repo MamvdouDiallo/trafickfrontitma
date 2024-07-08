@@ -27,11 +27,12 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { NgApexchartsModule } from "ng-apexcharts";
 
 // component
-import { ProjectgridComponent } from "./projectgrid/projectgrid.component";
 import { ProjectlistComponent } from "./projectlist/projectlist.component";
 import { OverviewComponent } from "./overview/overview.component";
 import { CreateComponent } from "./create/create.component";
 import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { UpdateComponent } from './update/update.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -42,10 +43,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
   declarations: [
-    ProjectgridComponent,
     ProjectlistComponent,
     OverviewComponent,
     CreateComponent,
+    UpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +64,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgMultiSelectDropDownModule.forRoot(),
     AngularMaterialModule,
     DropzoneModule,
+    ModalModule.forRoot()
+
   ],
   providers: [
     {

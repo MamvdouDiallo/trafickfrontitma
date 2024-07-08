@@ -225,83 +225,83 @@ export const MENU: MenuItem[] = [
     icon: "bx-briefcase-alt-2",
     subItems: [
       {
-        id: 41,
-        label: "MENUITEMS.PROJECTS.LIST.GRID",
-        link: "/projects/grid",
-        parentId: 40,
-      },
-      {
         id: 42,
         label: "MENUITEMS.PROJECTS.LIST.PROJECTLIST",
         link: "/projects/list",
         parentId: 40,
       },
-      {
-        id: 43,
-        label: "MENUITEMS.PROJECTS.LIST.OVERVIEW",
-        link: "/projects/overview",
-        parentId: 40,
-      },
+      // {
+      //   id: 43,
+      //   label: "MENUITEMS.PROJECTS.LIST.OVERVIEW",
+      //   link: "/projects/overview",
+      //   parentId: 40,
+      // },
       {
         id: 44,
         label: "MENUITEMS.PROJECTS.LIST.CREATE",
         link: "/projects/create",
         parentId: 40,
       },
+      {
+        id: 45,
+        label: "UPDATE",
+        link: "/projects/update",
+        parentId: 40,
+      },
+    ],
+  },
+
+  {
+    id: 45,
+    label: "TACHES",
+    icon: "bx-task",
+    subItems: [
+      {
+        id: 46,
+        label: "Liste des taches",
+        link: "/tasks/list",
+        parentId: 45,
+      },
+      {
+        id: 47,
+        label: "MENUITEMS.TASKS.LIST.KANBAN",
+        link: "/tasks/kanban",
+        parentId: 45,
+      },
+      {
+        id: 48,
+        label: "Créer",
+        link: "/tasks/create",
+        parentId: 45,
+      },
     ],
   },
 
   // {
-  //   id: 45,
-  //   label: "MENUITEMS.TASKS.TEXT",
-  //   icon: "bx-task",
+  //   id: 49,
+  //   label: "Utilisateurs",
+  //   icon: "bxs-user-detail",
   //   subItems: [
   //     {
-  //       id: 46,
-  //       label: "MENUITEMS.TASKS.LIST.TASKLIST",
-  //       link: "/tasks/list",
-  //       parentId: 45,
+  //       id: 50,
+  //       label: "MENUITEMS.CONTACTS.LIST.USERGRID",
+  //       link: "/contacts/grid",
+  //       parentId: 49,
   //     },
   //     {
-  //       id: 47,
-  //       label: "MENUITEMS.TASKS.LIST.KANBAN",
-  //       link: "/tasks/kanban",
-  //       parentId: 45,
+  //       id: 51,
+  //       label: "MENUITEMS.CONTACTS.LIST.USERLIST",
+  //       link: "/contacts/list",
+  //       parentId: 49,
   //     },
   //     {
-  //       id: 48,
-  //       label: "MENUITEMS.TASKS.LIST.CREATETASK",
-  //       link: "/tasks/create",
-  //       parentId: 45,
+  //       id: 52,
+  //       label: "MENUITEMS.CONTACTS.LIST.PROFILE",
+  //       link: "/contacts/profile",
+  //       parentId: 49,
   //     },
   //   ],
   // },
-
-  {
-    id: 49,
-    label: "Utilisateurs",
-    icon: "bxs-user-detail",
-    subItems: [
-      {
-        id: 50,
-        label: "MENUITEMS.CONTACTS.LIST.USERGRID",
-        link: "/contacts/grid",
-        parentId: 49,
-      },
-      {
-        id: 51,
-        label: "MENUITEMS.CONTACTS.LIST.USERLIST",
-        link: "/contacts/list",
-        parentId: 49,
-      },
-      {
-        id: 52,
-        label: "MENUITEMS.CONTACTS.LIST.PROFILE",
-        link: "/contacts/profile",
-        parentId: 49,
-      },
-    ],
-  },
 
   // {
   //   id: 53,
@@ -545,27 +545,44 @@ export const MENU: MenuItem[] = [
     label: "MAITRES D'OUVRAGES",
     icon: "bxs-user-detail",
     subItems: [
-      {
-        id: 92,
-        label: "MO GRID",
-        link: "/maitrouvrages/grid",
-        parentId: 91,
-      },
+      // {
+      //   id: 92,
+      //   label: "MO GRID",
+      //   link: "/maitrouvrages/grid",
+      //   parentId: 91,
+      // },
       {
         id: 93,
         label: "MO LIST",
         link: "/maitrouvrages/list",
         parentId: 91,
       },
+      // {
+      //   id: 94,
+      //   label: "MO PROFILE",
+      //   link: "/maitrouvrages/profile",
+      //   parentId: 91,
+      // },
+    ],
+  },
+  {
+    id: 92,
+    label: "Parties affectées",
+    icon: "bxs-user-detail",
+    subItems: [
+
       {
-        id: 94,
-        label: "MO PROFILE",
-        link: "/maitrouvrages/profile",
-        parentId: 91,
+        id: 95,
+        label: "LIST",
+        link: "/pap/list",
+        parentId: 92,
+      },
+      {
+        id: 96,
+        label: "add",
+        link: "/pap/add",
+        parentId: 92,
       },
     ],
   },
 ];
-
-
-

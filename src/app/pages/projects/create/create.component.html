@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <form action="" [formGroup]="projectForm" (ngSubmit)="addProduit()">
+  <form action="" [formGroup]="projectForm" (ngSubmit)="save()">
     <div class="row">
       <div class="col-lg-8">
         <div class="card">
@@ -14,7 +14,6 @@
                     'is-valid': f.libelle.valid || f.libelle.touched,
                     'is-invalid':f.libelle.invalid && f.libelle.touched
                   }">
-
               </div>
               @if(f.libelle.invalid && (f.libelle.dirty || f.libelle.touched)){
               <div class="text-red-600 position-absolute left-1 top-16">
@@ -32,7 +31,7 @@
               }
             </div>
             <div class="mb-3">
-              <label class="form-label">Image</label>
+              <label class="form-label">Logo</label>
               <div class="text-center">
                 <div class="position-relative d-inline-block">
                   <div class="position-absolute bottom-0 end-0">
@@ -50,10 +49,19 @@
                   </div>
                   <div class="avatar-lg">
                     <div class="avatar-title bg-light rounded-circle">
-                      <img src="" id="projectlogo-img" class="avatar-md h-auto rounded-circle" />
+                      <img [src]="toff" class="avatar-md h-auto rounded-circle" />
                     </div>
                   </div>
                 </div>
+                 <!-- Bouton pour supprimer l'image -->
+                 @if (uploadedImage) {
+                  <div>
+                    <button type="button" class="btn btn-danger btn-sm mt-1" id="delete-image-btn"
+                      (click)="deleteImage()">
+                      <i class="bx bx-trash me-1"></i>
+                    </button>
+                  </div>
+                  }
               </div>
             </div>
             <div class="relative">
@@ -81,40 +89,81 @@
 
             <div class="mb-3 position-relative">
 
-                <label for="task-assign-input" class="form-label">Assigné à</label>
-                <div *ngIf="assignList && assignList.length > 0" class="d-flex flex-wrap mb-2">
-                  <ng-container *ngFor="let data of assignList; let i = index">
-                    <div class="d-flex align-items-center me-3">
-                      <img [src]="data.avatar" alt="" class="rounded-circle avatar-xs me-2">
-                      <span>{{ data.name }}</span>
-                    </div>
-                  </ng-container>
-                </div>
-                <div class="select-element" id="select-element" dropdown>
-                  <button class="btn btn-light w-100 d-flex justify-content-between" dropdownToggle type="button"
-                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                    <span>Assigné à <b id="total-assignee" class="mx-1">{{assignList?.length}}</b> Members</span>
-                    <i class="mdi mdi-chevron-down"></i>
-                  </button>
-                  <div class="dropdown-menu w-100" *dropdownMenu>
-                    <ngx-simplebar style="max-height: 172px">
-                      <ul class="list-unstyled mb-0 assignto-list">
-                        <ng-container *ngFor="let data of assignMember; let i = index">
-                          <li>
-                            <a class="dropdown-item d-flex align-items-center"
-                              [ngClass]="{'active': data.checked === '1'}" href="javascript:void(0);"
-                              (click)="slectMember(i)">
-                              <div class="avatar-xs flex-shrink-0 me-2">
-                                <img [src]="data.avatar" alt="" class="img-fluid rounded-circle" />
-                              </div>
-                              <div class="flex-grow-1">{{ data.name }}</div>
-                            </a>
-                          </li>
-                        </ng-container>
-                      </ul>
-                    </ngx-simplebar>
+              <label for="task-assign-input" class="form-label">Assigné à</label>
+              <div *ngIf="assignList && assignList.length > 0" class="d-flex flex-wrap mb-2">
+                <ng-container *ngFor="let data of assignList; let i = index">
+                  <div class="d-flex align-items-center me-3">
+                    @if (data.image) {
+                    <img [src]="getImageFromBase64(data.image.type,data.image.image)" alt=""
+                      class="rounded-circle avatar-xs me-2">
+                    }
+                    <span>{{ data.lastname }}</span>
                   </div>
+                </ng-container>
+              </div>
+              <div class="select-element" id="select-element" dropdown>
+                <button class="btn btn-light w-100 d-flex justify-content-between" dropdownToggle type="button"
+                  data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                  <span>Assigné à <b id="total-assignee" class="mx-1">{{assignList?.length}}</b> Members</span>
+                  <i class="mdi mdi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu w-100" *dropdownMenu>
+                  <ngx-simplebar style="max-height: 172px">
+                    <ul class="list-unstyled mb-0 assignto-list">
+                      <ng-container *ngFor="let data of listMo; let i = index">
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center"
+                            [ngClass]="{'active': data.checked === '1'}" href="javascript:void(0);"
+                            (click)="slectMember(i)">
+                            <div class="avatar-xs flex-shrink-0 me-2">
+                              @if (data.image) {
+                              <img [src]="getImageFromBase64(data.image.type,data.image.image)" alt=""
+                                class="img-fluid rounded-circle" />
+                              }
+
+                            </div>
+                            <div class="flex-grow-1">{{ data.lastname }}</div>
+                          </a>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </ngx-simplebar>
                 </div>
+              </div>
+            </div>
+            <div class="inner-repeater mb-4">
+              <form [formGroup]="form">
+                <div class="inner mb-0 row" formArrayName="members">
+                  <label class="col-form-label col-lg-2">Normes : </label>
+                  @for(data of members.controls;track $index){
+                  <div class="inner col-lg-10 ms-md-auto" [formGroupName]="$index">
+                    <div class="mb-3 row align-items-center">
+                      <div class="col-md-4">
+                        <input type="text" formControlName="titre" class="inner form-control" placeholder="Titre..." />
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mt-4 mt-md-0">
+                          <textarea type="text" formControlName="description" class="inner form-control"
+                            placeholder="Valeur..."></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="mt-2 mt-md-0 d-grid">
+                          <input type="button" class="btn btn-primary inner" value="Delete"
+                            (click)="deleteMember($index)" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </form>
+              <div class="row justify-content-end">
+                <div class="col-lg-10">
+                  <input data-repeater-create type="button" class="btn btn-success inner" value="Ajouter une norme"
+                    (click)="addMember()" [disabled]="form.invalid" />
+                </div>
+              </div>
             </div>
             <div>
               <label class="form-label">Fichiers attachés</label>
@@ -152,6 +201,7 @@
                 </li>
               </ul>
             </div>
+
 
           </div>
           <!-- end card body -->
@@ -235,7 +285,7 @@
             <h5 class="card-title mb-3">Date de la Fin</h5>
             <input class="form-control flatpickr-input" formControlName="datefin" type="text" mwlFlatpickr [ngClass]="{
               'is-valid': f.datefin.valid || f.datefin.touched,
-              'is-invalid':f.datefin.invalid && f.datefin.touched
+              'is-invalid':f.datefin.invalid && f.datefin.touched || projectForm.errors?.dateInvalid
             }">
           </div>
 
@@ -247,6 +297,9 @@
 
           </div>
           }
+          <div *ngIf="projectForm.errors?.dateInvalid && (f.datedebut.touched || f.datefin.touched)" class="text-red-600 position-absolute left-1 top-17">
+            La date de fin ne peut pas être inférieure à la date de début.
+          </div>
         </div>
 
         <!-- end card body -->
@@ -257,7 +310,8 @@
 
     <div class="col-lg-8">
       <div class="text-end mb-4">
-        <button type="submit" class="btn bg-[#245363] text-white hover:bg-[#93C5AF]">Créer le projet</button>
+        <button type="submit" id="addContact-btn" class="btn bg-[#245363] text-white hover:bg-[#93C5AF]"> {{ buttonText
+          }}</button>
       </div>
     </div>
     <!-- end row -->

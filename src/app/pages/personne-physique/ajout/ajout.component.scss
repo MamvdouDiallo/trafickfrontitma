@@ -1,0 +1,145 @@
+.title{
+    font-size: 1rem;
+}
+.circle-loader{
+    margin: auto !important;
+    padding: 20px;
+}
+.c-row {
+    overflow-x: hidden;
+    background-color: rgb(245, 245, 245);
+    width: 100%;
+    margin-top: 7px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+    min-height: 100% !important;
+    height: 100% !important;
+}
+
+.c-container {
+    height: 34px;
+    line-height: 30px;
+    border-radius: 5px !important;
+    font-size: 19px;
+    margin-top: 2px;
+    width: 100%;
+    color: #1976d2 !important;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+
+.c-row {
+    // border: 1px solid rgba(44, 47, 59, 0.7) !important;
+    background-color: rgb(245, 245, 245);
+    width: 100%;
+    margin-top: 7px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+
+.accordion {
+    margin-bottom: 0px;
+}
+
+mat-expansion-panel {
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%) !important;
+    margin: 10px 10px 0 10px;
+    padding: 7px 0;
+}
+
+.container2 {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    color: #104274 !important;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+    padding-left: 40px !important;
+}
+
+.toggler-item {
+    position: absolute;
+    right: 10px;
+    font-size: 25px;
+    top: 3px;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.toggle {
+    --uiToggleSize: var(--toggleSize, 20px);
+    --uiToggleIndent: var(--toggleIndent, .4em);
+    --uiToggleBorderWidth: var(--toggleBorderWidth, 2px);
+    --uiToggleColor: var(--toggleColor, #0008);
+    --uiToggleDisabledColor: var(--toggleDisabledColor, #868e96);
+    --uiToggleBgColor: var(--toggleBgColor, #fff);
+    --uiToggleArrowWidth: var(--toggleArrowWidth, 2px);
+    --uiToggleArrowColor: var(--toggleArrowColor, #fff);
+    display: inline-block;
+    position: relative;
+    margin-top: 15px;
+}
+
+.toggle__label {
+    display: inline-flex;
+    cursor: pointer;
+    min-height: var(--uiToggleSize);
+    padding-left: calc(var(--uiToggleSize) + var(--uiToggleIndent));
+}
+
+.toggle__text {
+    margin-left: 8px;
+    margin-top: -6px;
+}
+
+.mat-accordion .mat-expansion-panel:last-of-type {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.mat-accordion .mat-expansion-panel {
+    border-radius: 0 !important;
+}
+
+.mat-expansion-panel-spacing {
+    margin: 0 !important;
+}
+.cSize{
+    font-size: 14px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+.titleRecap{
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+.butSearch{
+    margin-left: auto;
+}
+.rec{
+    padding-left: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.butSearchs{
+    display: block;
+    background:#f0f4f499 !important;
+    margin-right: 10px !important;
+}
+.c_colorIcom{
+    color: #43a14c;
+}
+.mat-accordion .mat-expansion-panel {
+    margin-bottom: 10px !important;
+}
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+.c_border {
+    border: 1px solid #cbd5e1;
+    padding: 15px;
+}
+.overme {
+    width: 120px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}

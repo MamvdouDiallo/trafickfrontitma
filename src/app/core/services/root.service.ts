@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { number } from "echarts";
 import { Observable } from "rxjs";
+import { Image } from "src/app/shared/models/image.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -30,7 +32,7 @@ export class RootService {
   }
 
   getById<T>(id: number, next: string) {
-    return this.http.get<T>(this.url + `/${next}/${id})`);
+    return this.http.get<T>(this.url + `/${next}/${id}`);
   }
 
   delete<T>(id: number, next: string): Observable<T> {
@@ -38,5 +40,18 @@ export class RootService {
       this.url + `/${next}` + `/${id}`,
       this.httpOptions
     );
+  }
+  uploadImage(file: File, filename: string): Observable<Image> {
+    const imageFormData = new FormData();
+    imageFormData.append("image", file, filename);
+    const url = `${this.url + "/image/upload"}`;
+    return this.http.post<Image>(url, imageFormData);
+  }
+
+  updateImage(file: File, filename: string, id: number): Observable<Image> {
+    const imageFormData = new FormData();
+    imageFormData.append("image", file, filename);
+    const url = this.url +"/image/update/"+`${id}`;
+    return this.http.put<Image>(url, imageFormData);
   }
 }

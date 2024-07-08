@@ -1,0 +1,226 @@
+<mat-toolbar class="mat-accent m-0 backToolbar">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
+        <span class="c_title dialog-title">{{dialogTitle}}</span>
+        <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="flex flex-col flex-auto min-w-10-0 p-2 md:p-4">
+    <mat-accordion>
+        <div class="flex flex-col w-full p-8">
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header class="w-full">
+                    <div class="w-full flex rec">
+                        <div class="titleReca">Informations personnelles</div>
+                    </div>
+                </mat-expansion-panel-header>
+                <hr class="w-full border-t my-6">
+                <div class="flex flex-auto w-full cSize">
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Prénom: </span>
+                            <span class="tiReca">{{currentItem?.prenom}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Nom: </span>
+                            <span class="tiReca">{{currentItem?.nom}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Date de naissance: </span>
+                            <span class="tiReca">{{currentItem?.dateNaissance | date:'dd-MM-yyyy'}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Lieu de naissance: </span>
+                            <span class="tiReca">{{currentItem?.lieuNaissance}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Ville de naissance: </span>
+                            <span class="tiReca">{{currentItem?.villeNaissance}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Pays de naissance: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.paysNaissance?.nom}}
+                                    </span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-full">
+
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Nationalité: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.nationalite?.nom}}
+                                    </span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Situation matrimoniale: </span>
+                            <span class="ltiReca">
+                                        {{currentItem?.situationMatrimoniale?.libelle}}
+                                    </span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Capacité juridique : </span>
+                            <span class="tiReca">
+                                        {{currentItem?.capaciteJuridique?.libelle}}
+                                    </span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Etes-vous non-voyant? : </span>
+                            <span class="tiReca">{{currentItem?.nonVoyant === true ? 'oui' : 'non'}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Etes-vous illétré? : </span>
+                            <span class="tiReca">{{currentItem?.illettre === true ? 'oui' : 'non'}} </span>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header class="w-full">
+                    <div class="w-full flex rec">
+                        <div class="titleReca">Identification</div>
+                    </div>
+                </mat-expansion-panel-header>
+                <hr class="w-full border-t my-6">
+                <div class="flex flex-auto w-full mt-2 cSize">
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Nature de la piéce: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.naturePiece?.libelle}}
+                            </span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Numéro de la piéce: </span>
+                            <span class="tiReca">{{currentItem?.numeroPiece}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Date délivrance piéce: </span>
+                            <span class="tiReca">{{currentItem?.dateDelivrancePiece | date:'dd-MM-yyyy'}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Date validité de la piéce: </span>
+                            <span class="tiReca">{{currentItem?.dateValiditePiece | date:'dd-MM-yyyy'}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Pays délivrance piéce: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.paysDelivrancePiece?.nom}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Lieu délivrance piéce: </span>
+                            <span class="tiReca">{{currentItem?.lieuDelivrancePiece}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Prénom du pére: </span>
+                            <span class="tiReca">{{currentItem?.prenomPere}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Prénom de la mère: </span>
+                            <span class="tiReca">{{currentItem?.prenomMere}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Nom de la mére: </span>
+                            <span class="tiReca">{{currentItem?.nomMere}}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header class="w-full">
+                    <div class="w-full flex rec">
+                        <div class="titleReca">Personne à contacter en cas d'urgence</div>
+                    </div>
+                </mat-expansion-panel-header>
+                <hr class="w-full border-t my-6">
+                <div class="flex flex-auto w-full mt-2 cSize">
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Prénom: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.prenomPersonneContact}}
+                            </span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Nom: </span>
+                            <span class="tiReca">{{currentItem?.nomPersonneContact}}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Téléphone: </span>
+                            <span class="tiReca">{{currentItem?.phoneNumberPersonneContact}}</span>
+                        </div>
+                        <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                            <span class="tReca">Email: </span>
+                            <span class="tiReca">{{currentItem?.emailPersonneContact}}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header class="w-full">
+                    <div class="w-full flex rec">
+                        <div class="titleReca">Coordonnées</div>
+                    </div>
+                </mat-expansion-panel-header>
+                <hr class="w-full border-t my-6">
+                <div class="flex flex-auto w-full mt-2 cSize">
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 recapCss">
+                            <span class="tReca">Pays de résidence: </span>
+                            <span class="tiReca">
+                                        {{currentItem?.paysResidence?.nom}}
+                                    </span>
+                        </div>
+                        <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                            <span class="tReca">Ville: </span>
+                            <span class="tiReca">{{currentItem?.ville}}</span>
+                        </div>
+
+
+                        <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                            <span class="tReca">Numéro téléphone: </span>
+                            <span class="tiReca">{{currentItem?.phoneNumber}}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                            <span class="tReca">Adresse de résidence: </span>
+                            <span class="tiReca">{{currentItem?.adresse}}</span>
+                        </div>
+
+                        <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                            <span class="tReca">Adresse d'entreprise: </span>
+                            <span class="tiReca">{{currentItem?.adresseEntreprise}}</span>
+                        </div>
+
+                        <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                            <span class="tReca">Email: </span>
+                            <span class="tiReca">{{currentItem?.email}}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div>
+
+    </mat-accordion>
+</div>
+<div class="flex flex-col items-center pb-6 px-6 sm:pb-10 sm:px-10">
+
+    <div class="flex flex-auto w-full">
+        <div class="flex flex-col w-full">
+            <!-- <attribut-complementaire title="Attribut complémentaire"
+                                     (ajoutAttributComplementaire)="ajoutAttributComplementaire()"
+                                     [infosClient]="currentItem"
+                                     (updateAttributComplementaire)="updateAttributComplementaire($event)"
+                                     [attributComplementaire]="attributComplementaires"
+                                     [natureAttribut]="'PERSONNE_PHYSIQUE'"></attribut-complementaire> -->
+        </div>
+    </div>
+</div>

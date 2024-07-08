@@ -51,6 +51,7 @@ import { tasklistEffects } from './store/Tasks/tasks.effect';
 import { OrdersEffects } from './store/Crypto/crypto.effects';
 import { CustomerEffects } from './store/customer/customer.effects';
 import { MailEffects } from './store/Email/email.effects';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 if (environment.defaultauth === 'firebase') {
   initFirebaseBackend(environment.firebaseConfig);
@@ -118,7 +119,8 @@ export function createTranslateLoader(http: HttpClient): any {
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
+    provideAnimationsAsync(),
+  //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
   ],
 })
 export class AppModule { }

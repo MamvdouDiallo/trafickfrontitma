@@ -1,0 +1,178 @@
+<div class="inset-0 flex flex-col min-w-0 sizePage">
+
+    <div
+        class="posiTable flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b dark dark:border-b c-image"
+        [ngStyle]="{ 'background-image' : image}">
+
+        <h4 class="titleFormat">
+            <button type="button" mat-icon-button class="mb-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+                <mat-icon class="c_icons" svgIcon="heroicons_outline:chevron-double-right"></mat-icon>
+            </button>
+            <ng-container>
+                <span>{{ entete }}</span>
+            </ng-container>
+        </h4>
+
+        <div style="margin-left: 20px" *ngIf="Provision">
+            <mat-radio-group class="example-radio-group" [(ngModel)]="type">
+                <mat-radio-button [color]="'primary'" value="dotation">
+                    <span style="font-weight: bold">Dotation</span>
+                </mat-radio-button>
+
+                <mat-radio-button [color]="'primary'" value="reprise">
+                    <span style="font-weight: bold">Reprise</span>
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="posiElement flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">
+            <div class="flex filter custom_field dateBalance" *ngIf="DateCredit || periodeFilter">
+
+                <mat-form-field *ngIf="isGlobal" class="reseau fuse-mat-dense mr-2" appearance="outline">
+                    <mat-checkbox style="color: black;font-style: oblique" class="reseau-box" [(ngModel)]="isNotAgence" ><span style="color: black">Réseau</span><input style="display: none" matInput></mat-checkbox>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="grandLivre" class="fuse-mat-dense mr-2 c-dateCompteGeneral" appearance="outline">
+                    <mat-label class="enteteccColor">Compte Début</mat-label>
+                    <input (blur)="isTyping($event)" class="inputSearch" matInput autocomplete="off" [(ngModel)]="debutCompte"
+                           name="debutCompte">
+                    <button matSuffix mat-icon-button aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="grandLivre" class="fuse-mat-dense mr-2 c-dateCompteGeneral" appearance="outline">
+                    <mat-label class="enteteccColor">Compte Fin</mat-label>
+                    <input class="inputSearch" matInput autocomplete="off" [(ngModel)]="finCompte"
+                           name="finCompte">
+                    <button matSuffix mat-icon-button aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- fin partie grand livre agence et et compte general -->
+
+                <mat-form-field class="fuse-mat-dense my-custom-form-field mr-2 c-date" appearance="outline">
+                    <mat-label class="enteteccColor">Date Début
+                    </mat-label>
+                    <input (blur)="isTyping($event)" class="enteteccColor" [matTooltip]="'Date Début'" [(ngModel)]="dateStart" (dateChange)="InitialDateFin()"
+                           [autocomplete]="'off'" type="text" (click)="dateDebut.open()" matInput
+                           [matDatepicker]="dateDebut"/>
+                    <mat-datepicker-toggle matSuffix [for]="dateDebut">
+                        <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #dateDebut></mat-datepicker>
+                    <mat-error class="mesError">Ce champ est requis</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="fuse-mat-dense my-custom-form-field mr-2 c-date" appearance="outline">
+                    <mat-label class="enteteccColor">Date Fin
+                    </mat-label>
+                    <input class="enteteccColor" [matTooltip]="'Date Fin'" [(ngModel)]="dateEnd" [min]="minDateDebut" [autocomplete]="'off'"
+                           matInput type="text" (click)="dateFin.open()" [autocomplete]="'off'" matInput
+                           [matDatepicker]="dateFin" bsDatepicker/>
+                    <mat-datepicker-toggle matSuffix [for]="dateFin">
+                        <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #dateFin></mat-datepicker>
+                    <mat-error class="mesError">Ce champ est requis</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div style="display: flex;align-self: baseline" *ngIf="DateCredit">
+                <button  (click)="filterData()" matTooltip="Recherche" type="button" mat-icon-button class="mb-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+                <mat-icon class="c_icons c_cursor" [svgIcon]="'search'"></mat-icon>
+                </button>
+            </div>
+            <div class="filter custom_field" *ngIf="DateComptable">
+                <mat-form-field class="fuse-mat-dense my-custom-form-field mr-2" appearance="outline">
+                    <mat-label class="enteteccColor lab">Date</mat-label>
+                    <input class="enteteccColor" [(ngModel)]="dateComptabl" [max]="dateStart" [autocomplete]="'off'"
+                           matInput type="text" [autocomplete]="'off'" matInput [matDatepicker]="dateComptable" bsDatepicker/>
+                    <mat-datepicker-toggle matSuffix [for]="dateComptable">
+                        <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #dateComptable></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="agence" class="fuse-mat-dense my-custom-form-field mr-2" appearance="outline">
+                    <mat-label disabled value="" selected class="enteteccColor">Agence</mat-label>
+                    <mat-select [(ngModel)]="agenceId">
+                        <mat-option class="enteteccColor" *ngFor="let item of agences" [value]="item.id">
+                            <span class="enteteccColor">{{item?.libelle}}</span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">storage</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div style="margin-left: 0px" *ngIf="typeCredit" class="typeC">
+                <mat-radio-group class="reseau example-radio-group mr-2" [(ngModel)]="typeCred" (change)="isTypecredit()">
+                    <mat-radio-button color="primary" value="tous" style="font-style: oblique">
+                        <span style="font-weight: bold;color: #0e206e">Tous</span>
+                    </mat-radio-button>
+
+                    <mat-radio-button color="primary" value="actif" style="font-style: oblique" >
+                        <span style="font-weight: bold;color: #0e206e">Actif</span>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div *ngIf="DateComptable">
+                <button  (click)="filterDataComptable()" matTooltip="Recherche" type="button" mat-icon-button class="mb-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+                    <mat-icon class="c_icons iconAction1 icon-color c_cursor" [svgIcon]="'search'"></mat-icon>
+                </button>
+            </div>
+
+            <mat-form-field *ngIf="hasSearch" class="fuse-mat-dense" appearance="outline">
+                <mat-icon matPrefix [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                <input class="inputSearch" matInput autocomplete="off" placeholder="Rechercher" [(ngModel)]="rechercher"
+                       name="rechercher">
+                <button *ngIf="rechercher" matSuffix mat-icon-button aria-label="Clear" (click)="rechercher=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <button (click)="doSearch()" *ngIf="hasSearch" matTooltip="Recherche globale" type="button" mat-icon-button class="mb-4 ml-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+            <mat-icon class="c_icons c_cursor" [svgIcon]="'search'"></mat-icon>
+            </button>
+            <button *ngIf="isSearch" type="button" class="ml-4 submit-buttonAdd" mat-icon-button>
+                <mat-progress-spinner *ngIf="isSearch" class="circle-loader-down" color="#000000"
+                                      [mode]="'indeterminate'" [strokeWidth]="4" [value]="2" [diameter]="20">
+                </mat-progress-spinner>
+            </button>
+            <button (click)="doSearchCritere()" *ngIf="hasSearchCritere" matTooltip="Recherche par critère" type="button" mat-icon-button
+                    class="mb-4 ml-2 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button
+                    mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+            <mat-icon class="c_icons c_cursor" [svgIcon]="'filter_list'"></mat-icon>
+            </button>
+
+            <div *ngIf="hasExport" class="c_cursor ml-2 mb-4" matTooltip="Exporter au format PDF" (click)="doExport('pdf')">
+                <img src="assets/images/pdf-icon.png" alt="default image" class="c_icon">
+            </div>
+            <div *ngIf="hasExport" class="c_cursor ml-2 mb-4" matTooltip="Exporter au format EXCEL"
+                 (click)="doExport('excel')">
+                <img src="assets/images/xlsx-icon.png" alt="default image" class="c_icon">
+            </div>
+            <div *ngIf="hasExportGL" class="c_cursor ml-2 mb-4" matTooltip="Exporter au format PDF"
+                 (click)="doExportGL('pdf')">
+                <img src="assets/images/pdf-icon.png" alt="default image" class="c_icon">
+            </div>
+            <button *ngIf="importExtourne && informations.url==='liste-transaction-historise'" class="mb-4 ml-2 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button
+                    mat-mdc-icon-button mat-unthemed mat-mdc-button-base" matTooltip="Extourne par fichier" (click)="fileInput.click()">
+                <input #fileInput (change)="onFileChange($event)" accept=".xlsx, .XLSX" hidden type="file"/>
+                <mat-icon svgIcon="mat_outline:file_download" class="c_icons"></mat-icon>
+            </button>
+            <mat-progress-spinner *ngIf="exporter" class="circle-loader-down" color="#1e293b" [mode]="'indeterminate'"
+                                  [strokeWidth]="4" [value]="2" [diameter]="20">
+            </mat-progress-spinner>
+            <button (click)="doAddItems()" matTooltip="Ajouter un nouveau élément" *ngIf="hasAjout" type="button" mat-icon-button class="mb-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+            <mat-icon class="c_icons iconAction1 icon-color c_cursor" [svgIcon]="'heroicons_outline:plus-circle'" style="color: white;"></mat-icon>
+            </button>
+            <div *ngIf="hasUploadTemplate" class="c_cursor ml-4" matTooltip="Téléchager le template" (click)="dldbtn.click()">
+                <button type="button" mat-icon-button class="mb-4 mat-mdc-tooltip-trigger c_btnAccountF mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base"> <a #dldbtn hidden href="{{templateDeclaration}}" download></a>
+                    <mat-icon svgIcon="mat_outline:file_upload" class="c_icons"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

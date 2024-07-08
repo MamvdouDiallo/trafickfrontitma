@@ -7,33 +7,35 @@ import {
   ViewChild,
 } from "@angular/core";
 import { Observable } from "rxjs";
+import { BsModalService, ModalDirective } from "ngx-bootstrap/modal";
 import {
-  BsModalService,
-  BsModalRef,
-  ModalDirective,
-} from "ngx-bootstrap/modal";
-import {
-  UntypedFormBuilder,
+  FormBuilder,
+  FormGroup,
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import {
-  adduserlist,
-  deleteuserlist,
-  fetchuserlistData,
-  updateuserlist,
-} from "src/app/store/UserList/userlist.action";
+import { deleteuserlist } from "src/app/store/UserList/userlist.action";
 import { selectData } from "src/app/store/UserList/userlist-selector";
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { validatePhoneNumberSn } from "src/app/shared/pipes/numberSn";
+import { MoService } from "src/app/core/services/mo.service";
+import { Image } from "src/app/shared/models/image.model";
+import { Mo, ResponseData } from "src/app/shared/models/Projet.model";
+import { ToastrService } from "ngx-toastr";
+import { el } from "@fullcalendar/core/internal-common";
+import { Project } from "../../projects/project.model";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { UtilsService } from "src/app/shared/utils/utils.service";
+import { User } from "src/app/store/Authentication/auth.models";
+import { LocalService } from "src/app/core/services/local.service";
 
 @Component({
   selector: "app-molist",
   templateUrl: "./molist.component.html",
   styleUrl: "./molist.component.css",
 })
-export class MolistComponent {
+export class MolistComponent implements OnInit {
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -45,6 +47,8 @@ export class MolistComponent {
   contacts: any;
   files: File[] = [];
   endItem: any;
+
+  listMo: Mo[] = [];
 
   @ViewChild("newContactModal", { static: false })
   newContactModal?: ModalDirective;
@@ -59,24 +63,39 @@ export class MolistComponent {
 
   @ViewChild("dp", { static: true }) datePicker: any;
 
+  dropdownData: any[] = [];
+  settings: IDropdownSettings = {};
+  form!: FormGroup;
+  selectedItems: any[] = [];
+
+  user:User
   constructor(
-    private modalService: BsModalService,
-    private formBuilder: UntypedFormBuilder,
-    public store: Store
+    private formBuilder: FormBuilder,
+    private moservice: MoService,
+    public store: Store,
+    public toastr: ToastrService,
+  //  private utilsService: UtilsService,
+    private localService: LocalService
   ) {}
 
+  myImage: string;
+  getImageFromBase64(imageType: string, imageName: number[]): string {
+    const base64Representation = "data:" + imageType + ";base64," + imageName;
+    return base64Representation;
+  }
+
+  //getImageFromBase64=this.utilsService.getImageFromBase64(imageType: string, imageName: number[]);
   ngOnInit() {
+    this.user=this.localService.getDataJson("user");
+    console.log("user local data: ", this.user);
+
+
     this.breadCrumbItems = [
       { label: "Maitres d'ouvrages" },
       { label: "Listes", active: true },
     ];
     setTimeout(() => {
-      this.store.dispatch(fetchuserlistData());
-      this.store.select(selectData).subscribe((data) => {
-        this.contactsList = data;
-        this.returnedArray = data;
-        this.contactsList = this.returnedArray.slice(0, 10);
-      });
+      this.fetchMo();
       document.getElementById("elmLoader")?.classList.add("d-none");
     }, 1200);
 
@@ -108,7 +127,7 @@ export class MolistComponent {
           validatePhoneNumberSn(),
         ],
       ],
-      address: [
+      locality: [
         "",
         [
           Validators.required,
@@ -116,8 +135,8 @@ export class MolistComponent {
           Validators.maxLength(70),
         ],
       ],
-      dateofbirth: ["", [Validators.required]],
-      placeofbirth: [
+      date_of_birth: ["", [Validators.required]],
+      place_of_birth: [
         "",
         [
           Validators.required,
@@ -125,57 +144,114 @@ export class MolistComponent {
           Validators.maxLength(70),
         ],
       ],
-      image: ["", [Validators.required]],
-      project_id: ["", []],
+      // image: ["", []],
+      project_ids: [[], this.formBuilder.array([])],
     });
+    this.loadProject();
+    this.settings = {
+      idField: "id",
+      textField: "libelle",
+      selectAllText: "Select All Data",
+      unSelectAllText: "UnSelect All Data",
+      allowSearchFilter: true,
+      noDataAvailablePlaceholderText: "Nothing to show data",
+    };
+  }
+
+  onDataSelect(item: any) {
+    console.log("onData Select", this.createMoForm.get("project_ids").value);
+  }
+
+  onUnSelectAll() {
+    console.log("onData Select", this.createMoForm.get("project_ids").value);
+  }
+
+  onDataDeSelect(item: any) {
+    console.log("onData Select", this.createMoForm.get("project_ids").value);
+  }
+
+  onSelectAll(items: any) {
+    console.log("onData Select", this.createMoForm.get("project_ids").value);
+  }
+
+  onDeSelectAll(items: any) {
+    console.log("onData Select", this.createMoForm.get("project_ids").value);
+  }
+
+  deleteImage() {
+    // Logique pour supprimer l'image sélectionnée
+    // Par exemple, réinitialisation de l'image à une image par défaut
+    document
+      .getElementById("member-img")
+      .setAttribute("src", "assets/images/users/user-dummy-img.jpg");
+    // Réinitialisation de l'input de type fichier pour effacer la sélection
+    const inputElement = document.getElementById(
+      "member-image-input"
+    ) as HTMLInputElement;
+    inputElement.value = "";
+    this.uploadedImage = null;
+  }
+
+  selectedProjects: any[] = [];
+
+  private updateSelectedProjects() {
+    const selectedProjectsDetails = this.selectedProjects.map((project) => ({
+      id: +project.id, // Convertit l'ID en nombre si nécessaire
+      libelle: project.libelle, // Assure que le libellé est inclus
+    }));
+    this.createMoForm.patchValue({ project_ids: selectedProjectsDetails });
   }
 
   get f() {
     return this.createMoForm.controls;
   }
   // File Upload
+  uploadedImage!: File;
   imageURL: string | undefined;
-  fileChange(event: any) {
-    let fileList: any = event.target as HTMLInputElement;
-    let file: File = fileList.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageURL = reader.result as string;
-      this.f.image.setValue(this.imageURL);
-      document.querySelectorAll("#member-img").forEach((element: any) => {
-        element.src = this.imageURL;
-      });
-      this.createMoForm.controls["profile"].setValue(this.imageURL);
-    };
-    reader.readAsDataURL(file);
+  saveUser() {
+    var updateBtn = document.getElementById(
+      "addContact-btn"
+    ) as HTMLAreaElement;
+
+    if (updateBtn.innerHTML == "Créer") {
+      if (this.uploadedImage) {
+        return this.moservice
+          .uploadImage(this.uploadedImage, this.uploadedImage.name)
+          .subscribe((ima: Image) => {
+            this.handleCreateMoForm(ima);
+          });
+      } else {
+        return this.handleCreateMoForm();
+      }
+    } else {
+      return this.updateUser();
+    }
   }
 
-  // Save User
-  saveUser() {
-    console.log("====================================");
-    console.log(this.createMoForm.value);
-    console.log("====================================");
-
-    // if (this.createMoForm.valid) {
-    //   if (this.createMoForm.get("id")?.value) {
-    //     const updatedData = this.createMoForm.value;
-    //     this.store.dispatch(updateuserlist({ updatedData }));
-    //   } else {
-    //     this.createMoForm.controls["id"].setValue(
-    //       (this.contactsList.length + 1).toString()
-    //     );
-    //     const newData = this.createMoForm.value;
-    //     this.store.dispatch(adduserlist({ newData }));
-    //   }
-    // }
-    // this.newContactModal?.hide();
-    // document.querySelectorAll("#member-img").forEach((element: any) => {
-    //   element.src = "assets/images/users/user-dummy-img.jpg";
-    // });
-
-    // setTimeout(() => {
-    //   this.createMoForm.reset();
-    // }, 1000);
+  handleCreateMoForm(image?: Image) {
+    const projectRequest = this.createMoForm.value;
+    if (image) {
+      projectRequest.image = image;
+    }
+    if (this.createMoForm.get("project_ids").value) {
+      projectRequest.project_ids = this.createMoForm
+        .get("project_ids")
+        .value.map((project: any) => +project.id);
+    }
+    this.moservice
+      .add<ResponseData<Mo>>("users/createMo", projectRequest)
+      .subscribe(
+        (data: ResponseData<Mo>) => {
+          console.log(data.data);
+          this.toastr.success(data.message);
+          this.listMo.unshift(data.data);
+          this.createMoForm.reset();
+          this.newContactModal.hide();
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   // fiter job
@@ -189,6 +265,22 @@ export class MolistComponent {
     }
   }
 
+  filteredMo: Mo[] = [];
+  filterTable(event: any) {
+    const searchValue = event.target.value.toLowerCase();
+    if (searchValue) {
+      this.filteredMo = this.listMo.filter(
+        (project) =>
+          project.email.toLowerCase().includes(searchValue) ||
+          project.contact.toLowerCase().includes(searchValue) ||
+          project.locality.toLowerCase().includes(searchValue) ||
+          project.lastname.toLowerCase().includes(searchValue)
+      );
+    } else {
+      this.filteredMo = this.listMo;
+    }
+  }
+
   // Edit User
   editUser(id: any) {
     this.submitted = false;
@@ -199,7 +291,38 @@ export class MolistComponent {
       "addContact-btn"
     ) as HTMLAreaElement;
     updateBtn.innerHTML = "Update";
-    this.createMoForm.patchValue(this.contactsList[id]);
+    this.createMoForm.patchValue(this.listMo[id]);
+    if (this.listMo[id].image) {
+      document.querySelectorAll("#member-img").forEach((element: any) => {
+        element.src = this.getImageFromBase64(
+          this.listMo[id].image.type,
+          this.listMo[id].image.image
+        );
+      });
+      const image: any = this.getImageFromBase64(
+        this.listMo[id].image.type,
+        this.listMo[id].image.image
+      );
+      const file = this.base64ToFile(image, this.listMo[id].image.name);
+      this.uploadedImage = file;
+    }
+
+    this.selectedProjects = this.listMo[id].projects;
+
+    console.log(this.selectedProjects);
+    this.updateSelectedProjects();
+  }
+
+  base64ToFile(base64String: string, fileName: string): File {
+    const arr = base64String.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], fileName, { type: mime });
   }
 
   // pagechanged
@@ -218,5 +341,127 @@ export class MolistComponent {
   confirmDelete(id: any) {
     this.store.dispatch(deleteuserlist({ id: this.deleteId }));
     this.removeItemModal?.hide();
+  }
+
+  fetchMo() {
+    return this.moservice
+      .all<ResponseData<Mo[]>>("users/by_role?roleName=Maitre d'ouvrage")
+      .subscribe((users: ResponseData<Mo[]>) => {
+        this.listMo = users.data;
+        this.filteredMo = this.listMo;
+      });
+  }
+
+  fileChange(event: any) {
+    let fileList: any = event.target as HTMLInputElement;
+    let file: File = fileList.files[0];
+    this.uploadedImage = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageURL = reader.result as string;
+      document.querySelectorAll("#member-img").forEach((element: any) => {
+        element.src = this.imageURL;
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // updateUser() {
+
+  //   const projectRequest = this.createMoForm.value;
+  //   if (this.uploadedImage) {
+  //     return this.moservice
+  //       .updateImage(
+  //         this.uploadedImage,
+  //         this.uploadedImage.name,
+  //         this.createMoForm.get("id").value
+  //       )
+  //       .subscribe(
+  //         (ima: Image) => {
+  //           projectRequest.image = ima;
+  //           this.updateUserDetails(projectRequest);
+  //         },
+  //         (err) => {
+  //           console.log(err);
+  //         }
+  //       );
+  //   } else {
+  //     this.updateUserDetails(projectRequest);
+  //   }
+  // }
+  updateUser() {
+    const projectRequest = this.createMoForm.value;
+
+    // Récupérer et transformer project_ids en un tableau d'ID
+    const projectIdsControl = this.createMoForm.get("project_ids");
+    if (projectIdsControl && Array.isArray(projectIdsControl.value)) {
+      const projectIdsArray = projectIdsControl.value.map(
+        (project: { id: any }) => project.id
+      );
+      projectRequest.project_ids = projectIdsArray; // Mettez à jour projectRequest avec le tableau d'ID
+    }
+
+    if (this.uploadedImage) {
+      return this.moservice
+        .updateImage(
+          this.uploadedImage,
+          this.uploadedImage.name,
+          this.createMoForm.get("id").value
+        )
+        .subscribe(
+          (ima: Image) => {
+            projectRequest.image = ima;
+            this.updateUserDetails(projectRequest);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      this.updateUserDetails(projectRequest);
+    }
+  }
+
+  updateUserDetails(projectRequest) {
+    this.moservice
+      .update<ResponseData<Mo>, Mo>("users/updateMo", projectRequest)
+      .subscribe(
+        (data: ResponseData<Mo>) => {
+          console.log(data.data);
+          this.toastr.success(data.message);
+          const index = this.listMo.findIndex((mo) => mo.id === data.data.id);
+          if (index !== -1) {
+            this.listMo[index] = data.data;
+          }
+          this.createMoForm.reset();
+          this.newContactModal.hide();
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  deleteUser(userId: number) {
+    this.moservice.delete<ResponseData<Mo>>(userId, "users/deleteMo").subscribe(
+      (data: ResponseData<any>) => {
+        console.log(data.message);
+        this.toastr.success(data.message);
+        this.filteredMo = this.filteredMo.filter((mo) => mo.id !== userId);
+        this.removeItemModal?.hide();
+      },
+      (err) => {
+        console.log(err);
+        this.toastr.error("Error deleting user");
+      }
+    );
+  }
+  projectlist: any;
+  loadProject() {
+    return this.moservice
+      .all<ResponseData<Project[]>>("projects/all")
+      .subscribe((data: ResponseData<Project[]>) => {
+        this.projectlist = data.data;
+      });
   }
 }

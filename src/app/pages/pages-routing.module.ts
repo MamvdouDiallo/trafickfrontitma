@@ -5,6 +5,9 @@ import { CalendarComponent } from "./calendar/calendar.component";
 import { ChatComponent } from "./chat/chat.component";
 import { DefaultComponent } from "./dashboards/default/default.component";
 import { FilemanagerComponent } from "./filemanager/filemanager.component";
+import { PersonnePhysiqueComponent } from "./personne-physique/personne-physique.component";
+import { AjoutPersonnePhysiqueComponent } from "./personne-physique/ajout/ajout.component";
+import { TesterComponent } from "./tester/tester.component";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'dashboard' },
@@ -103,6 +106,14 @@ const routes: Routes = [
         (m) => m.MaitrouvragesModule
       ),
   },
+  {
+    path: "pap",
+    loadChildren: () =>
+      import("./pap/pap-routing.module").then((m) => m.PapRoutingModule),
+  },
+  { path: "tester", component: TesterComponent },
+
+  
 ];
 
 @NgModule({

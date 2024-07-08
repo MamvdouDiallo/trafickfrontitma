@@ -43,6 +43,14 @@ import { ChatComponent } from "./chat/chat.component";
 
 import { FilemanagerComponent } from "./filemanager/filemanager.component";
 import { MaitrouvragesModule } from "./maitrouvrages/maitrouvrages.module";
+import { AngularMaterialModule } from "../shared/angular-materiel-module/angular-materiel-module";
+import { TableauComponent } from "../shared/tableau/tableau.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatDialogModule } from "@angular/material/dialog";
+import { AjoutPersonnePhysiqueComponent } from "./personne-physique/ajout/ajout.component";
+import { TesterComponent } from './tester/tester.component';
+
 
 @NgModule({
   declarations: [CalendarComponent, ChatComponent, FilemanagerComponent],
@@ -82,6 +90,10 @@ import { MaitrouvragesModule } from "./maitrouvrages/maitrouvrages.module";
     LightboxModule,
     PickerModule,
     MaitrouvragesModule,
+    AngularMaterialModule,
+    MatFormFieldModule,
+    MatInputModule
+
   ],
 })
 export class PagesModule {}

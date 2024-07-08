@@ -66,7 +66,6 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.initialAppState = initialState;
     if (this.authService.currentUser()) {
       this.user = this.authService.currentUser();
       this.myImage = this.getImageFromBase64(

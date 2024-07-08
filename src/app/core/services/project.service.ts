@@ -7,17 +7,36 @@ import { Image } from "src/app/shared/models/image.model";
   providedIn: "root",
 })
 export class ProjectService extends RootService {
-  uploadImage(file: File, filename: string): Observable<Image> {
-    const imageFormData = new FormData();
-    imageFormData.append("image", file, filename);
-    const url = `${this.url + "/image/upload"}`;
-    return this.http.post<Image>(url, imageFormData);
-  }
-
-  uploadFile(file: File, filename: string, idProd: number): Observable<File> {
+  uploadFile(file: File, filename: string, idProd: number): Observable<any> {
     const imageFormData = new FormData();
     imageFormData.append("file", file, filename);
     const url = `${this.url + "/file/uplaodFilesProd/" + `${idProd}`}`;
-    return this.http.post<File>(url, imageFormData);
+    return this.http.post<any>(url, imageFormData);
   }
+
+  saveNormeProjet(normeProjet: any, projectId: number) {
+    const url = `${this.url}/normes/saveNorme/${projectId}`;
+    return this.http.post<any>(url, normeProjet);
+  }
+  saveNormeProjet1(normeProjet: any[], projectId: number) {
+    const url = `${this.url}/normes/update/${projectId}`;
+    return this.http.post<any>(url, normeProjet);
+  }
+
+  updateNormeProjet(normeProjet: any, projectId: number) {
+    const url = `${this.url}/normes/updateNorme/${projectId}`;
+    return this.http.put<any>(url, normeProjet);
+  }
+
+  uploadFiles(files: File[], filenames: string[], idProd: number): Observable<any[]> {
+    const imageFormData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      imageFormData.append('files', files[i], filenames[i]);
+    }
+
+    const url = `${this.url}/file/update/${idProd}`;
+    return this.http.post<any[]>(url, imageFormData);
+  }
+
 }

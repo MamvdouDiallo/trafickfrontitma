@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
           console.log(user.token);
           this.submitted = false;
           this.toastr.success(`Bienvenue ${user.user.firstname}`);
-          this.router.navigate(["/"]);
+          this.router.navigate(["/dashboards/jobs"]);
         },
         (error) => {
           this.submitted = false;

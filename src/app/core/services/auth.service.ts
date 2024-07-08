@@ -6,6 +6,7 @@ import { from, map } from "rxjs";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { T } from "@fullcalendar/core/internal-common";
+import { LocalService } from "./local.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {
@@ -13,6 +14,7 @@ export class AuthenticationService {
   url: string = environment.apiUrl;
 
   private http = inject(HttpClient);
+  private localService = inject(LocalService);
   constructor() {}
 
   /**
@@ -56,6 +58,8 @@ export class AuthenticationService {
           if (user && user.token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem("currentUser", JSON.stringify(user));
+            this.localService.saveItem("token", +user.token);
+            this.localService.saveDataJson("user", user.user);
             //  this.currentUserSubject.next(user);
           }
           return user;

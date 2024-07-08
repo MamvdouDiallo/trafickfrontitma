@@ -1,0 +1,626 @@
+<mat-toolbar class="mat-accent m-0 backToolbar">
+  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
+    <span class="c_title dialog-title">{{ dialogTitle }}</span>
+    <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="flex flex-col flex-auto min-w-10-0 p-2 md:p-4">
+  <form [formGroup]="initForm" class="event-form w-100-p">
+    <mat-stepper #stepper>
+      <mat-step label="Informations personnelles">
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Prénom
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="prenom" formControlName="prenom" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Nom
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="nom" formControlName="nom" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline" fxFlex="50">
+            <mat-label class="enteteccColor">Date de naissance</mat-label>
+            <input readonly class="enteteccColor" [max]="minBirthDay" [autocomplete]="'off'" matInput type="text"
+              (click)="picker.open()" [autocomplete]="'off'" matInput [matDatepicker]="picker"
+              formControlName="dateNaissance" bsDatepicker />
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Lieu de naissance
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="lieuNaissance" formControlName="lieuNaissance" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex gap-2">
+          <mat-form-field appearance="outline" class="fuse-mat-dense w-1/2 mt-2" fxFlex="100">
+            <mat-label disabled value="" selected class="enteteccColor">Sexe</mat-label>
+            <mat-select formControlName="sexe" class="enteteccColor">
+              <mat-option class="enteteccColor" *ngFor="let sexe of sexe" [value]="sexe?.id">
+                {{ sexe?.name }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="fuse-mat-dense w-1/2 mt-2" fxFlex="100">
+            <mat-label disabled value="" selected class="enteteccColor">Pays de naissance</mat-label>
+            <mat-select formControlName="paysNaissance" class="enteteccColor">
+              <mat-option class="enteteccColor" *ngFor="let country of countries" [value]="country?.id">
+                {{ country?.libelleNationalite }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex gap-2">
+          <mat-form-field appearance="outline" class="fuse-mat-dense w-1/2 mt-2" fxFlex="100">
+            <mat-label disabled value="" selected class="enteteccColor">Nationalité</mat-label>
+            <mat-select formControlName="nationalite" class="enteteccColor">
+              <mat-option class="enteteccColor" *ngFor="let country of countries" [value]="country?.id">
+                {{ country?.libelleNationalite }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="fuse-mat-dense w-1/2 mt-2" fxFlex="100">
+            <mat-label disabled value="" selected class="enteteccColor">Situation matrimoniale</mat-label>
+            <mat-select formControlName="situationMatrimoniale" class="enteteccColor">
+              <mat-option (click)="getRegimeBySituation(situationMatrimoniale)" class="enteteccColor"
+                *ngFor="let situationMatrimoniale of situationsMatrimoniales" [value]="situationMatrimoniale?.id">
+                {{ situationMatrimoniale?.libelle }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="flex gap-2 fuse-mat-dense mt-2 mb-4 c_border">
+          <mat-slide-toggle class="mt-8 sm:mt-0" formControlName="nonVoyant">
+            Etes vous non-voyant ?
+          </mat-slide-toggle>
+          <mat-slide-toggle class="mt-8 sm:mt-0 sm:ml-auto" formControlName="illettre">
+            Etes vous illettré ?
+          </mat-slide-toggle>
+        </div>
+        <mat-form-field class="fuse-mat-dense w-full mt-2" appearance="outline">
+          <mat-label class="enteteccColor">Description des biens affectés</mat-label>
+          <textarea class="typeTitle" matInput name="descriptionBiens" formControlName="descriptionDesBiensAffectes"></textarea>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-center gap-4">
+          <button mat-raised-button matDialogClose class="submit-buttonRed" matStepperPrevious type="button">
+            <span class="textForm">Annuler</span>
+          </button>&nbsp;
+          <button mat-raised-button class="submit-button" aria-label="VALIDER" matStepperNext type="button">
+            <span class="textForm">Suivant</span>
+          </button>&nbsp;
+        </div>
+      </mat-step>
+      <mat-step label="Identification">
+        <mat-form-field appearance="outline" class="fuse-mat-dense w-full mt-2" fxFlex="100">
+          <mat-label disabled value="" selected class="enteteccColor">Nature de la pièce</mat-label>
+          <mat-select (selectionChange)="checkCNI()" formControlName="naturePiece" class="enteteccColor">
+            <mat-option class="enteteccColor" *ngFor="let naturePiece of naturePieces" [value]="naturePiece?.id">
+              {{ naturePiece?.libelle }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Numéro de pièce
+            </mat-label>
+            <input (blur)="checkCNI()" matInput type="text" name="numeroPiece" formControlName="numeroPiece" />
+            <mat-error *ngIf="initForm.get('numeroPiece')?.touched && initForm.get('numeroPiece')?.errors?.required">ce
+              champs est requis</mat-error>
+          </mat-form-field>
+          <!--                    <div style="justify-content: end;" class="field-error w-full field" *ngIf="errorCNI">-->
+          <!--                        {{errorCNI}}-->
+          <!--                    </div>-->
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline" fxFlex="50">
+            <mat-label class="enteteccColor">Date de délivrance de la pièce</mat-label>
+            <input (dateChange)="checkDateDexpiration($event)" readonly class="enteteccColor" [max]="newDate"
+              [autocomplete]="'off'" matInput type="text" (click)="picker1.open()" [autocomplete]="'off'" matInput
+              [matDatepicker]="picker1" formControlName="dateDelivrancePiece" bsDatepicker />
+            <mat-datepicker-toggle matSuffix [for]="picker1">
+              <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="field-error w-full field text-right" *ngIf="errorCNI">
+          {{ errorCNI }}
+        </div>
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline" fxFlex="50">
+            <mat-label class="enteteccColor">Date validité de la pièce</mat-label>
+            <input class="enteteccColor" matInput type="text" [min]="dateDelivrance" (click)="picker2.open()"
+              [autocomplete]="'off'" matInput [matDatepicker]="picker2" formControlName="dateValiditePiece"
+              bsDatepicker />
+            <mat-datepicker-toggle matSuffix [for]="picker2">
+              <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error>Le champs est oligatoire</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="fuse-mat-dense w-1/2 mt-2" fxFlex="100">
+            <mat-label disabled value="" selected class="enteteccColor">Catégorie de la pap
+            </mat-label>
+            <mat-select formControlName="paysDelivrancePiece" class="enteteccColor">
+              <mat-option class="enteteccColor" *ngFor="let country of categories" [value]="country?.id">
+                {{ country?.libelle }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Lieu délivrance de la pièce
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="lieuDelivrancePiece"
+              formControlName="lieuDelivrancePiece" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Prénom du père
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="prenomPere" formControlName="prenomPere" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Prénom de la mère
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="prenomMere" formControlName="prenomMere" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Nom de la mère
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="nomMere" formControlName="nomMere" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="fuse-mat-dense mt-2 mb-4 c_border rounded">
+          <h6 class="text-lg font-bold dark:text-white text-center">Personne à contacter en cas d'urgence</h6>
+          <div class="flex gap-2">
+            <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+              <mat-label class="enteteccColor">
+                Prénom
+
+              </mat-label>
+              <input class="typeTitle" matInput type="text" name="prenomPersonneContact"
+                formControlName="prenomPersonneContact" />
+              <mat-error>Le champs est obligatoire</mat-error>
+            </mat-form-field>
+            <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+              <mat-label class="enteteccColor">
+                Nom
+
+              </mat-label>
+              <input class="typeTitle" matInput type="text" name="nomPersonneContact"
+                formControlName="nomPersonneContact" />
+              <mat-error>Le champs est obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex gap-2">
+
+            <mat-form-field class="fuse-mat-dense telephone w-1/2 mt-2" fxFlex="50" appearance="outline">
+              <!--                            <mat-label class="enteteccColor">Téléphone</mat-label>-->
+              <ngx-mat-intl-tel-input [preferredCountries]="['sn', 'fr']" [enablePlaceholder]="true"
+                [enableSearch]="true" name="Téléphone" describedBy="Téléphone"
+                formControlName="phoneNumberPersonneContact"></ngx-mat-intl-tel-input>
+              <mat-error>Le champs est obligatoire</mat-error>
+            </mat-form-field>
+            <div class="error text-red-700" *ngIf="phoneValue.touched && phoneValue.invalid">
+              Le numéro est invalide
+            </div>
+
+            <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+              <mat-label class="enteteccColor">
+                Email
+              </mat-label>
+              <input matInput type="email" name="emailPersonneContact" formControlName="emailPersonneContact" />
+              <mat-error *ngIf="initForm.get('emailPersonneContact')?.errors?.pattern">L'email est
+                invalide
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="field-error"
+            *ngIf="initForm.get('phoneNumberPersonneContact').value && isFocus===false && hasPhoneError">
+            Ce champs est invalide
+          </div>
+        </div>
+        <div class="flex justify-center gap-4">
+          <button mat-raised-button class="submit-buttonRed" matStepperPrevious type="button">
+            <span class="textForm">Retour</span>
+          </button>&nbsp;
+          <button mat-raised-button class="submit-button" aria-label="VALIDER" matStepperNext type="button">
+            <span class="textForm">Suivant</span>
+          </button>&nbsp;
+        </div>
+      </mat-step>
+      <mat-step label="Coordonnées">
+        <mat-form-field appearance="outline" class="fuse-mat-dense w-full mt-2" fxFlex="100">
+          <mat-label disabled value="" selected class="enteteccColor">Pays de résidence</mat-label>
+          <mat-select name="paysResidence" formControlName="paysResidence" class="enteteccColor">
+            <mat-option class="enteteccColor" *ngFor="let country of countries" [value]="country?.id">
+              {{ country?.libelleNationalite }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+          <mat-error>Le champs est oligatoire</mat-error>
+        </mat-form-field>
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Ville
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="ville" formControlName="ville" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">Email</mat-label>
+            <input matInput type="email" name="email" formControlName="email" />
+            <mat-error *ngIf="initForm.get('email')?.errors?.required">Le champs est obligatoire</mat-error>
+            <mat-error *ngIf="initForm.get('email')?.errors?.pattern">L'email est invalide</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2" appearance="outline">
+            <mat-label class="enteteccColor">
+              Adresse d'entreprise
+            </mat-label>
+            <input class="typeTitle" matInput type="text" name="adresseEntreprise"
+              formControlName="adresseEntreprise" />
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+          <mat-form-field class="fuse-mat-dense w-1/2 mt-2 telephone" fxFlex="50" appearance="outline">
+            <!--                        <mat-label class="enteteccColor">Téléphone</mat-label>-->
+            <ngx-mat-intl-tel-input [preferredCountries]="['sn', 'fr']" [enablePlaceholder]="true" [enableSearch]="true"
+              name="Téléphone" describedBy="Téléphone" formControlName="phoneNumber"></ngx-mat-intl-tel-input>
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+          <mat-form-field *ngIf="!isValidOnWhatsApp" class="fuse-mat-dense w-1/2 mt-2 telephone" fxFlex="50"
+            appearance="outline">
+            <!--                        <mat-label class="enteteccColor">Téléphone WhatsApp</mat-label>-->
+            <ngx-mat-intl-tel-input [preferredCountries]="['sn', 'fr']" [enablePlaceholder]="true" [enableSearch]="true"
+              name="Téléphone WhatsApp" describedBy="Téléphone WhatsApp"
+              formControlName="whatsappPhoneNumber"></ngx-mat-intl-tel-input>
+            <mat-error>Le champs est obligatoire</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="field-error" *ngIf="initForm.get('phoneNumber').value && isFocus===false && hasPhoneError">
+          Ce champs est invalide
+        </div>
+        <div class="w-1/2 rec mb-3">
+          <div class="titleRecap">Ce numéro est-il disponible sur whatsApp ?</div>
+          <mat-radio-group aria-label="Select an option" class="grid grid-cols-2 gap-4" color="primary"
+            (change)="checkValidOnWhatsApp($event)" [value]="(action=== 'new')? null : (isValidOnWhatsApp)?'1':'0' ">
+            <mat-radio-button value="1">Oui</mat-radio-button>
+            <mat-radio-button value="0">Non</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <button mat-raised-button class="submit-buttonRed" matStepperPrevious type="button">
+            <span class="textForm">Retour</span>
+          </button>&nbsp;
+          <button matStepperNext mat-raised-button class="submit-button">
+            <span class="textForm">Suivant</span>
+          </button>
+        </div>
+      </mat-step>
+
+
+
+
+      <mat-step label="Récapitulatif">
+        <mat-accordion>
+          <div class="flex flex-col w-full p-8">
+            <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header class="w-full">
+                <div class="w-full flex rec">
+                  <div class="titleRecap">Informations personnelles</div>
+                  <button matTooltip="Modifier cette partie" class="butSearchs" mat-icon-button>
+                    <mat-icon (click)="goToStep(0)" class="collapseButton icon-size-4 c_colorIcom" [svgIcon]="'edit'">
+                    </mat-icon>
+                  </button>
+                </div>
+              </mat-expansion-panel-header>
+              <hr class="w-full border-t my-6">
+              <div class="flex flex-auto w-full cSize">
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Prénom: </span>
+                    <span title="{{initForm?.get('prenom')?.value}}" class="overme leading-none font-bold">{{
+                      initForm?.get('prenom')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Nom: </span>
+                    <span title="{{initForm?.get('nom')?.value}}" class="overme leading-none font-bold">{{
+                      initForm?.get('nom')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Date de naissance: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('dateNaissance')?.value |
+                      date:'dd-MM-yyyy'
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Lieu de naissance: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('lieuNaissance')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Ville de naissance: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('villeNaissance')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Pays de naissance: </span>
+                    <span class="leading-none font-bold">
+                      {{ getPaysNaissance(initForm?.get('paysNaissance')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Description des biens affectés? : </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('descriptionDesBiensAffectes')?.value}} </span>
+                  </div>
+                </div>
+
+                <div class="flex flex-col w-full">
+
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Nationalité: </span>
+                    <span class="leading-none font-bold">
+                      {{ getNationalite(initForm?.get('nationalite')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Situation matrimoniale: </span>
+                    <span class="leading-none font-bold">
+                      {{ getsituationMatrimoniale(initForm?.get('situationMatrimoniale')?.value)
+                      }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Capacité juridique : </span>
+                    <span class="leading-none font-bold">
+                      {{ getcapaciteJuridique(initForm?.get('capaciteJuridique')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Etes-vous non-voyant? : </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('nonVoyant')?.value === true
+                      ? 'oui' : 'non'
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Etes-vous illétré? : </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('illettre')?.value === true
+                      ? 'oui' : 'non'
+                      }} </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Sexe: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('sexe')?.value === 'M' ?
+                      'Homme' : 'Femme' }}</span>
+                  </div>
+
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header class="w-full">
+                <div class="w-full flex rec">
+                  <div class="titleRecap">Identification</div>
+                  <button matTooltip="Modifier cette partie" class="butSearchs" mat-icon-button>
+                    <mat-icon (click)="goToStep(1)" class="icon-size-4 collapseButton c_colorIcom" [svgIcon]="'edit'">
+                    </mat-icon>
+                  </button>
+                </div>
+              </mat-expansion-panel-header>
+              <hr class="w-full border-t my-6">
+              <div class="flex flex-auto w-full mt-2 cSize">
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Nature de la piéce: </span>
+                    <span class="leading-none font-bold">
+                      {{ getNaturePiece(initForm?.get('naturePiece')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Numéro de la piéce: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('numeroPiece')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Date délivrance piéce: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('dateDelivrancePiece')?.value
+                      | date:'dd-MM-yyyy'
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Date validité de la piéce: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('dateValiditePiece')?.value
+                      | date:'dd-MM-yyyy'
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Pays délivrance piéce: </span>
+                    <span class="leading-none font-bold">
+                      {{ getPaysNaissance(initForm?.get('paysDelivrancePiece')?.value) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Lieu délivrance piéce: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('lieuDelivrancePiece')?.value }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Prénom du pére: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('prenomPere')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Prénom de la mére: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('prenomMere')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Nom de la mére: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('nomMere')?.value
+                      }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header class="w-full">
+                <div class="w-full flex rec">
+                  <div class="titleRecap">Personne à contacter en cas d'urgence</div>
+                  <button matTooltip="Modifier cette partie" class="butSearchs" mat-icon-button>
+                    <mat-icon (click)="goToStep(1)" class="icon-size-4 collapseButton c_colorIcom" [svgIcon]="'edit'">
+                    </mat-icon>
+                  </button>
+                </div>
+              </mat-expansion-panel-header>
+              <hr class="w-full border-t my-6">
+              <div class="flex flex-auto w-full mt-2 cSize">
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Prénom: </span>
+                    <span class="leading-none font-bold">
+                      {{ getNaturePiece(initForm?.get('prenomPersonneContact')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Nom: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('nomPersonneContact')?.value }}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Téléphone: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('phoneNumberPersonneContact')?.value }}</span>
+                  </div>
+                  <div class="flex items-center mt-2 grid grid-cols-2 recapCss">
+                    <span class="">Email: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('emailPersonneContact')?.value }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header class="w-full">
+                <div class="w-full flex rec">
+                  <div class="titleRecap">Coordonnées</div>
+                  <button class="butSearchs" mat-icon-button>
+                    <mat-icon (click)="goToStep(2)" class="icon-size-4 collapseButton c_colorIcom" [svgIcon]="'edit'">
+                    </mat-icon>
+                  </button>
+                </div>
+              </mat-expansion-panel-header>
+              <hr class="w-full border-t my-6">
+              <div class="flex flex-auto w-full mt-2 cSize">
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 recapCss">
+                    <span class="">Pays de résidence: </span>
+                    <span class="leading-none font-bold">
+                      {{ getPaysNaissance(initForm?.get('paysResidence')?.value) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                    <span class="">Ville: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('ville')?.value }}</span>
+                  </div>
+                  <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                    <span class="">Numéro téléphone: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('phoneNumber')?.value
+                      }}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+                  <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                    <span class="">Adresse de résidence: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('adresse')?.value
+                      }}</span>
+                  </div>
+                  <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                    <span class="">Adresse d'entreprise: </span>
+                    <span class="leading-none font-bold">{{
+                      initForm?.get('adresseEntreprise')?.value }}</span>
+                  </div>
+
+                  <div class="flex items-center grid grid-cols-2 mt-2 recapCss">
+                    <span class="">Email: </span>
+                    <span class="leading-none font-bold">{{ initForm?.get('email')?.value }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+        </mat-accordion>
+        <div class="">
+          <mat-progress-spinner *ngIf="loader" class="circle-loader" color="#000000" [mode]="'indeterminate'"
+            [strokeWidth]="4" [value]="2" [diameter]="30">
+          </mat-progress-spinner>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <button mat-raised-button class="submit-buttonRed" matStepperPrevious type="button">
+            <span class="textForm">Retour</span>
+          </button>&nbsp;
+          <button [disabled]="loader" mat-raised-button class="submit-button" (click)="checkRecap(action)">
+            <span class="textForm">{{ labelButton }}</span>
+          </button>
+        </div>
+
+
+      </mat-step>
+    </mat-stepper>
+  </form>
+</div>

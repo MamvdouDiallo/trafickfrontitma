@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { FlatpickrModule } from "angularx-flatpickr";
 import { MaitrouvragesRoutingModule } from "./maitrouvrages-routing.module";
 import { MoprofileComponent } from "./moprofile/moprofile.component";
-import { MogridComponent } from "./mogrid/mogrid.component";
 import { MolistComponent } from "./molist/molist.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
@@ -15,9 +14,10 @@ import { TooltipModule } from "ngx-bootstrap/tooltip";
 import { UIModule } from "src/app/shared/ui/ui.module";
 import { WidgetModule } from "src/app/shared/widget/widget.module";
 import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 @NgModule({
-  declarations: [MoprofileComponent, MogridComponent, MolistComponent],
+  declarations: [MoprofileComponent, MolistComponent],
   imports: [
     CommonModule,
     MaitrouvragesRoutingModule,
@@ -34,6 +34,7 @@ import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/an
     BsDropdownModule,
     ModalModule,
     AngularMaterialModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class MaitrouvragesModule {}
