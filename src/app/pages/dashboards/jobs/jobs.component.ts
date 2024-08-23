@@ -124,9 +124,35 @@ export class JobsComponent implements OnInit {
 
   getUserConnected() {
     this.userConnected = this.localService.getDataJson("user");
-    this.imageUserConnected = this.utilService.getImageFromBase64(
-      this.userConnected.image.type,
-      this.userConnected.image.image
-    );
+
+    if (this.userConnected.image) {
+      this.imageUserConnected = this.utilService.getImageFromBase64(
+        this.userConnected.image.type,
+        this.userConnected.image.image
+      );
+    } else {
+      this.imageUserConnected = "assets/images/user.png";
+    }
   }
+
+  public emailSentPieChart = {
+    series: [44, 55, 13, 43],
+    chart: {
+      type: "pie",
+      height: 350,
+    },
+    labels: ["A", "B", "C", "D"],
+    legend: {
+      position: "bottom",
+    },
+    colors: ["#FF4560", "#00E396", "#008FFB", "#775DD0"],
+    dataLabels: {
+      enabled: true,
+    },
+    plotOptions: {
+      pie: {
+        expandOnClick: true,
+      },
+    },
+  };
 }

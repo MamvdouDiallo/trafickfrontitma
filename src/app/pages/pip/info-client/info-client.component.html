@@ -1,0 +1,219 @@
+<div class="w-full heighContentRight" id="heighContentRightId">
+    <div class="w-full mb-10">
+        <fuse-card class="flex flex-col w-full p-4">
+            <mat-tab-group dynamicHeight class="w-full">
+                <mat-tab label="Détail">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                            <div class="flex justify-between">
+                                <div class="leading-tight uppercase c_title_header">Détails</div>
+                                <div class="">
+                                    <button (click)="updateClient(infosPap)"
+                                        class="c_btnAccount_attribut c_btnAccountF"
+                                        [disabled]="infosPap?.statut ==='DEMISSION'" matTooltip="Modifier client"
+                                        mat-icon-button>
+                                        <!-- <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'edit'"></mat-icon> -->
+                                        <i class="bx bx-edit"></i>
+                                    </button>
+                                    <button
+                                        class="ml-2 c_btnAccount_attribut c_btnAccountF"
+                                        [disabled]="infosPap?.statut ==='DEMISSION'"
+                                        matTooltip="Lettre de consentement" mat-icon-button>
+                                        <!-- <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'email'"></mat-icon> -->
+                                        <i class="bx bx-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="mr-3">Libelle: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Statut: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.statut}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Localisation: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.localisation}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Courriel Principal: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.courielPrincipal
+                                        }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Adresse: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.adresse}}</span>
+                                    </div>
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="">Normes: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.normes}}</span>
+                                    </div>
+                                    <!-- <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro d'identification: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.numeroIdentification}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro téléphone: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.numeroTelephone}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Localité de résidence: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.localiteResidence}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Département: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.departement}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Commune: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.commune}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Statut: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.statutPap}}</span>
+
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Statut vulnérable: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.statutVulnerable }}</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- <div class="leading-tight mt-8 uppercase c_title_header">Agent de crédit</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Prénom & Nom : </span>
+                                        <span class="leading-none font-bold">{{infosPap?.agentCredit?.prenom}}
+                                            {{infosPap?.agentCredit?.nom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Téléphone : </span>
+                                        <span class="leading-none font-bold">+{{infosPap?.agentCredit?.phoneCode}}
+                                            {{infosPap?.agentCredit?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Email : </span>
+                                        <span class="leading-none font-bold">{{infosPap?.agentCredit?.email}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro : </span>
+                                        <span class="leading-none font-bold">{{infosPap?.agentCredit?.numero}}</span>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <attribut-complementaire title="Attribut complémentaire"
+                                (ajoutAttributComplementaire)="ajoutAttributComplementaire(infosPap,_attributComplementaire)"
+                                [infosPap]="infosPap"
+                                (updateAttributComplementaire)="updateAttributComplementaire($event,infosPap)"
+                                [attributComplementaire]="_attributComplementaire"
+                                [natureAttribut]="'CLIENT'"></attribut-complementaire>
+
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Responsable Principal">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                            <div class="flex justify-between">
+                                <div class="leading-tight uppercase c_title_header">Responsable Principal</div>
+                                <button (click)="updateItems(infosPap?.personnePhysique)"
+                                    class="c_btnAccount_attribut c_btnAccountF" matTooltip="Modifier personne physique"
+                                    mat-icon-button>
+
+
+                                    <i class="bx bx-edit"></i>
+                                </button>
+                            </div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 items-center">
+                                        <span class="">Nom: </span>
+                                        <span class="leading-none font-bold">{{infosPap?.nomContactPrincipal}}
+                                          </span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Prénom: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.prenomContactPrincipal
+                                           }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Email: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.emailContactPrincipal}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Sexe: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.sexeContactPrincipal}}</span>
+                                    </div>
+
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 items-center">
+                                        <span class="">Téléphone: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.telephoneContactPrincipal}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                           
+                            <!-- <div class="leading-tight mt-8 uppercase c_title_header">Coordonnées</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Code Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.personnePhysique?.phoneCode}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.personnePhysique?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Adresse : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.personnePhysique?.adresse}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Email : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosPap?.personnePhysique?.email}}</span>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+        </fuse-card>
+    </div>
+</div>

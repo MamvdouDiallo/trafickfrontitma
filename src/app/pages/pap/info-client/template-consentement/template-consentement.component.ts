@@ -43,8 +43,8 @@ export class TemplateConsentementComponent {
         this.fields = _data.client;
         this.templateSrc = _data.templateClient;
         this.dialogTitle = 'Lettre de consentement';
-        this.logoInstitution = this.coreService.decriptDataToLocalStorage('CD-@--9');
-        this.logoInstitution = this.logoInstitution['logo'];
+        this.logoInstitution = 'assets/images/logo_itma_png.png';
+        //this.logoInstitution = this.logoInstitution['logo'];
     }
 
     captureScreen(autoPrint = false) {

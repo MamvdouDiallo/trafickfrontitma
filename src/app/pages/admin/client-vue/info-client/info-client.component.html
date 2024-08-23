@@ -1,0 +1,493 @@
+<div class="w-full heighContentRight" id="heighContentRightId">
+    <div class="w-full mb-10">
+        <fuse-card class="flex flex-col w-full p-4">
+            <mat-tab-group dynamicHeight class="w-full">
+                <mat-tab label="Détail">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                            <div class="flex justify-between">
+                                <div class="leading-tight uppercase c_title_header">Client</div>
+                                <div class="">
+                                    <button (click)="updateClient(infosClient)" class="c_btnAccount_attribut c_btnAccountF" [disabled]="infosClient?.statut ==='DEMISSION'" matTooltip="Modifier client" mat-icon-button>
+                                        <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'edit'"></mat-icon>
+                                    </button>
+                                    <button (click)="templateConsentementClient(infosClient)" class="ml-2 c_btnAccount_attribut c_btnAccountF" [disabled]="infosClient?.statut ==='DEMISSION'" matTooltip="Lettre de consentement" mat-icon-button>
+                                        <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'email'"></mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="mr-3">Intitulé: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.intitule}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Email: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.email}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Matricule: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.matricule}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Catégorie: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.categorie?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Type de client: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.typeClient?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4" *ngIf="infosClient?.statut === 'DEMISSION'">
+                                        <span class="">Agence transférée: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.agenceTransfert?.libelle}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="">Ville: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.ville}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Adresse: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.adresse}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Secteur: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.activiteClient?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Activité: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.sousActiviteClient?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="mr-3">Statut: </span>
+                                        <span *ngIf="infosClient?.statut === 'SAISI'"
+                                            class="status-accent c_statut">{{infosClient?.statut}}</span>
+                                        <span *ngIf="infosClient?.statut === 'VALIDE'"
+                                            class="badge-success c_statut">{{infosClient?.statut}}</span>
+                                        <span *ngIf="infosClient?.statut === 'DEMISSION'"
+                                            class="status-error c_statut">{{infosClient?.statut}}</span>
+                                    </div> <div class="grid grid-cols-2 mt-4" *ngIf="infosClient?.statut === 'DEMISSION'">
+                                    <span class="">Motif transfert: </span>
+                                    <span
+                                        class="leading-none font-bold">{{infosClient?.motifDemission }}</span>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="leading-tight mt-8 uppercase c_title_header">Gestionnaire</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Prénom & Nom : </span>
+                                        <span class="leading-none font-bold">{{infosClient?.gestionnaire?.prenom}}
+                                            {{infosClient?.gestionnaire?.nom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Téléphone : </span>
+                                        <span class="leading-none font-bold">+{{infosClient?.gestionnaire?.phoneCode}}
+                                            {{infosClient?.gestionnaire?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Email : </span>
+                                        <span class="leading-none font-bold">{{infosClient?.gestionnaire?.email}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.gestionnaire?.numero}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="leading-tight mt-8 uppercase c_title_header">Agent de crédit</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Prénom & Nom : </span>
+                                        <span class="leading-none font-bold">{{infosClient?.agentCredit?.prenom}}
+                                            {{infosClient?.agentCredit?.nom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Téléphone : </span>
+                                        <span class="leading-none font-bold">+{{infosClient?.agentCredit?.phoneCode}}
+                                            {{infosClient?.agentCredit?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Email : </span>
+                                        <span class="leading-none font-bold">{{infosClient?.agentCredit?.email}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro : </span>
+                                        <span class="leading-none font-bold">{{infosClient?.agentCredit?.numero}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <attribut-complementaire title="Attribut complémentaire" (ajoutAttributComplementaire)="ajoutAttributComplementaire(infosClient,_attributComplementaire)" [infosClient]="infosClient" (updateAttributComplementaire)="updateAttributComplementaire($event,infosClient)" [attributComplementaire]="_attributComplementaire" [natureAttribut]="'CLIENT'"></attribut-complementaire>
+
+
+<!--                            <div class="flex justify-between">-->
+<!--                                <div class="leading-tight mt-8 uppercase c_title_header">Attribut complémentaire</div>-->
+
+<!--                                <button (click)="ajoutAttributComplementaire(infosClient,_attributComplementaire)"-->
+<!--                                    class="c_btnAccount" matTooltip="Ajout attribut complémentaire" mat-icon-button>-->
+<!--                                    <mat-icon class="text-black-500 icon-size-5 cursor-pointer"-->
+<!--                                        [svgIcon]="'heroicons_solid:plus-circle'">-->
+<!--                                    </mat-icon>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                            <hr class="w-full border-t">-->
+<!--                            <div class="grid grid-cols-2 w-full" *ngFor="let item of _attributComplementaire">-->
+<!--                                <div class="mt-4" *ngIf="_attributComplementaire">-->
+<!--                                    <span class="tiReca">{{item?.typeAttribut?.libelle}}</span>-->
+<!--                                </div>-->
+<!--                                <div class="flex justify-between">-->
+<!--                                    <div class="flex justify-between mt-4" *ngIf="_attributComplementaire">-->
+<!--                                        <span class="tReca">Valeur : </span>-->
+<!--                                        <span class="tiReca ml-6"-->
+<!--                                              *ngIf="item?.typeAttribut?.dataType==='STRING'">{{item?.valeur}}</span>-->
+<!--                                        <span class="tiReca ml-6"-->
+<!--                                              *ngIf="item?.typeAttribut?.dataType==='INTEGER'">{{item?.valeur |-->
+<!--                                            number :-->
+<!--                                            '1.0-0':'fr'}}</span>-->
+<!--                                        <span class="tiReca ml-6"-->
+<!--                                              *ngIf="item?.typeAttribut?.dataType==='BIGDECIMAL'">{{item?.valeur}}</span>-->
+<!--                                        <span class="tiReca ml-6"-->
+<!--                                              *ngIf="item?.typeAttribut?.dataType==='DATE'">{{item?.valeur}}</span>-->
+
+<!--                                        <div class="c_border" *ngIf="item?.typeAttribut?.dataType==='BOOLEAN'">-->
+<!--                                            <mat-slide-toggle-->
+<!--                                                class="tiReca mt-8 sm:mt-0 sm:ml-auto"-->
+<!--                                                [color]="'primary'" [checked]="item?.valeur==='oui'">-->
+<!--                                            </mat-slide-toggle>-->
+<!--                                        </div>-->
+
+<!--                                        <span class="tiReca ml-6"-->
+<!--                                              *ngIf="item?.typeAttribut?.dataType==='LISTE'">{{item?.valeur}}</span>-->
+
+<!--                                        <div *ngIf="item?.typeAttribut?.dataType==='FILE'">-->
+<!--                                            <img-->
+<!--                                                class="w-30 object-center ring-4 ring-bg-card ng-star-inserted mig"-->
+<!--                                                [src]="item?.valeur" alt="attribut complementaire">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+<!--                                    <button (click)="updateAttributComplementaire(item,infosClient)"-->
+<!--                                            class="mt-2 c_btnAccount" matTooltip="Modifier attribut complémentaire"-->
+<!--                                            mat-icon-button>-->
+<!--                                        <mat-icon class=" text-green-500 icon-size-5" [svgIcon]="'edit'">-->
+<!--                                        </mat-icon>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Personne Physique" *ngIf="persPhysique">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                            <div class="flex justify-between">
+                                <div class="leading-tight uppercase c_title_header">Informations personnelles</div>
+                                <button (click)="updateItems(infosClient?.personnePhysique)" class="c_btnAccount_attribut c_btnAccountF" matTooltip="Modifier personne physique" mat-icon-button>
+                                    <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'edit'"></mat-icon>
+                                </button>
+                            </div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 items-center">
+                                        <span class="">Prénom & Nom: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.personnePhysique?.prenom}}
+                                            {{infosClient?.personnePhysique?.nom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Date de naissance: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.dateNaissance
+                                            | date : 'dd/MM/yyyy'}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Lieu de Naissance: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.lieuNaissance}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Ville de Naissance: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.villeNaissance}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Non voyant: </span>
+                                        <span class="leading-none font-bold"
+                                            *ngIf="infosClient?.personnePhysique?.nonVoyant===true">OUI</span>
+                                        <span class="leading-none font-bold"
+                                            *ngIf="infosClient?.personnePhysique?.nonVoyant===false">NON</span>
+                                    </div>
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 items-center">
+                                        <span class="">Nationalité: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.nationalite?.nom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Situation matrimoniale: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.situationMatrimoniale?.libelle}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Profession: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.profession?.libelle}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Capacité juridique: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.capaciteJuridique?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Illetré: </span>
+                                        <span class="leading-none font-bold"
+                                            *ngIf="infosClient?.personnePhysique?.illettre===true">OUI</span>
+                                        <span class="leading-none font-bold"
+                                            *ngIf="infosClient?.personnePhysique?.illettre===false">NON</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="leading-tight mt-8 uppercase c_title_header">Identification</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Nature pièce : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.naturePiece?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Numéro pièce : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.numeroPiece}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Date délivrance : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.dateDelivrancePiece
+                                            | date : 'dd/MM/yyyy'}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Date Validité : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.dateValiditePiece
+                                            | date : 'dd/MM/yyyy'}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Lieu délivrance : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.lieuDelivrancePiece}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Prénom du père : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.prenomPere}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Prénom de la mère : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.prenomMere}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Nom de la mère : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.nomMere}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="leading-tight mt-8 uppercase c_title_header">Coordonnées</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Code Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.phoneCode}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Adresse : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.adresse}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4 items-center">
+                                        <span class="">Email : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personnePhysique?.email}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Personne Morale" *ngIf="!persPhysique">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                            <div class="flex justify-between">
+                                <div class="leading-tight uppercase c_title_header">Informations personne morale</div>
+                                <button (click)="updateItemsMoral(infosClient?.personneMorale)" class="c_btnAccount_attribut c_btnAccountF" matTooltip="Modifier personne morale" mat-icon-button>
+                                    <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'edit'"></mat-icon>
+                                </button>
+                            </div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="">Raison sociale: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.raisonSociale}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Sigle: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.sigle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Ninéa: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.ninea}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Régistre de commerce: </span>
+                                        <span class="leading-none font-bold">{{infosClient?.personneMorale?.rc}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Capital: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.capital}}</span>
+                                    </div>
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2">
+                                        <span class="">Date de constitution: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.dateConstitution
+                                            | date : 'dd/MM/yyyy'}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Représentant légal</span>
+                                        <span
+                                            class="leading-none font-bold">{{getResponsable(infosClient?.personneMorale?.responsable?.id)}}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Nature de la personne morale: </span>
+                                        <span
+                                            class="leading-none font-bold">{{getNaturePersonneMorale(infosClient?.personneMorale?.naturePersonneMorale?.id)}}</span>
+                                    </div>
+
+<!--                                    <div class="grid grid-cols-2 mt-4">-->
+<!--                                        <span class="">Statut juridique: </span>-->
+<!--                                        <span-->
+<!--                                            class="leading-none font-bold">{{getstatutJuridique(infosClient?.personneMorale?.statutJuridique?.id)}}</span>-->
+<!--                                    </div>-->
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Siége sociale: </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.siegeSocial}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="leading-tight mt-8 uppercase c_title_header">Coordonnées</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Code Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.phoneCode}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Téléphone : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.phoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Adresse : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.adresse}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Email : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.email}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="leading-tight mt-8 uppercase c_title_header">Représentant</div>
+                            <hr class="w-full border-t">
+                            <div class="flex flex-auto w-full -mt-4">
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Prénom : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.responsable?.prenom}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Nom : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.responsable?.nom}}</span>
+                                    </div>
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Nature piéce : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.responsable?.naturePiece?.libelle}}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 mt-4">
+                                        <span class="">Numéro piéce : </span>
+                                        <span
+                                            class="leading-none font-bold">{{infosClient?.personneMorale?.responsable?.numeroPiece}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </fuse-card>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<!-- datatable.component.html -->
+<div class="antialiased sans-serif bg-gray-200 h-auto">
+
+ <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative" style="height: 405px;">
+    <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+      <thead>
+      <tr class="text-left">
+        <th *ngFor="let heading of headings" class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"
+           >
+          {{ heading }}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of dataExcel">
+        <td *ngFor="let heading of headings" class="border-dashed border-t border-gray-200">
+          <span class="text-gray-700 px-6 py-3 flex items-center">{{ user[heading] }}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

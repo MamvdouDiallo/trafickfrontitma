@@ -1,0 +1,88 @@
+<div class="w-full heighContentRight" id="heighContentRightId">
+  <span class="text-xl">Détail d'une plainte</span>
+    <div class="w-full mb-10 ">
+        <fuse-card class="flex flex-col w-full p-4">
+            <mat-tab-group dynamicHeight class="w-full">
+              <mat-tab label="Détail">
+                <div class="">
+                  <div class="flex flex-col w-full p-4">
+                    <div class="flex justify-between">
+                      <div class="leading-tight uppercase c_title_header">Plainte pour non dédommagement suite au projet X
+                      </div>
+
+                    </div>
+                    <hr class="w-full border-t">
+                    <div class="flex flex-auto w-full">
+                      <div class="flex flex-col w-full">
+                        <div class="grid grid-cols-2">
+                          <span class="mr-3">Date d'enregistrement: </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.dateEnregistrement}}</span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="mr-3">Commune: </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.lieuEnregistrement}}</span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="mr-3">Etat de la plinte: </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.prenom}}</span>
+                        </div>
+                      </div>
+                      <div class="flex flex-col w-full">
+
+                      </div>
+                    </div>
+                    <div class="leading-tight mt-8 uppercase c_title_header">Pap</div>
+                    <hr class="w-full border-t">
+                    <div class="flex flex-auto w-full -mt-4">
+                      <div class="flex flex-col w-full">
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Code du Pap : </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.codePap}}
+                            {{infosPlainte?.nom}}</span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Prénom & Nom : </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.prenom}}
+                            {{infosPlainte?.nom}}</span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Téléphone : </span>
+                          <span class="leading-none font-bold"></span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Vulnérabilité : </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.vulnerabilite}}</span>
+                        </div>
+                      </div>
+                      <div class="flex flex-col w-full">
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Adresse : </span>
+                          <span class="leading-none font-bold"></span>
+                        </div>
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Numéro : </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.gestionnaire?.numero}}</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 mt-4">
+                          <span class="">Numéro d'identification: </span>
+                          <span class="leading-none font-bold">{{infosPlainte?.numeroIdentification}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </mat-tab>
+                <mat-tab label="Description de la plainte">
+                    <div class="">
+                        <div class="flex flex-col w-full p-4">
+                          {{infosPlainte?.recommandation}}
+                        </div>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+        </fuse-card>
+    </div>
+</div>

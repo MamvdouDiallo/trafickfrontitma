@@ -49,9 +49,23 @@ export class LocalService {
     }
   }
 
+  // public getDataJson(key: string) {
+  //   let data = sessionStorage.getItem(key) || '';
+  //   return this.decryptObject(data);
+  // }
   public getDataJson(key: string) {
     let data = sessionStorage.getItem(key) || '';
-    return this.decryptObject(data);
+    if (!data) {
+      console.warn(`No data found in sessionStorage for key: ${key}`);
+      return null;
+    }
+
+    try {
+      return this.decryptObject(data);
+    } catch (error) {
+      console.error(`Error decrypting data for key: ${key}`, error);
+      return null;
+    }
   }
   public saveItem(key: string, value: number) {
     sessionStorage.setItem(key, this.encryptItem(value));
@@ -71,16 +85,33 @@ export class LocalService {
     const jsonString = JSON.stringify(obj);
     return this.encrypt(jsonString);
   }
-  public decryptObject(txtToDecrypt: string): User | null {
+  // public decryptObject(txtToDecrypt: string): User | null {
+  //   try {
+  //     const decryptedText = this.decrypt(txtToDecrypt);
+  //     const jsonObject = JSON.parse(decryptedText);
+  //     return jsonObject;
+  //   } catch (error) {
+  //     console.error('Error decrypting and parsing object:', error);
+  //     //this.authService.logout();
+  //     sessionStorage.clear();
+  //     this.router.navigate(['/login']);
+  //     return null;
+  //   }
+  // }
+  private decryptObject(encryptedData: string): any {
     try {
-      const decryptedText = this.decrypt(txtToDecrypt);
-      const jsonObject = JSON.parse(decryptedText);
-      return jsonObject;
+      // Log the encrypted data
+      console.log('Encrypted data:', encryptedData);
+
+      const decryptedData = this.decrypt(encryptedData); // Assurez-vous que cette méthode fonctionne correctement
+
+      // Log the decrypted data
+      console.log('Decrypted data:', decryptedData);
+
+      const parsedData = JSON.parse(decryptedData); // C'est ici que l'erreur se produit
+      return parsedData;
     } catch (error) {
       console.error('Error decrypting and parsing object:', error);
-      //this.authService.logout();
-      sessionStorage.clear();
-      this.router.navigate(['/login']);
       return null;
     }
   }

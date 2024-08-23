@@ -1,11 +1,3 @@
-<mat-toolbar class="mat-accent m-0 backToolbar">
-  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
-    <span class="c_title dialog-title">{{ dialogTitle }}</span>
-    <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-toolbar-row>
-</mat-toolbar>
 
 <div class="flex flex-col flex-auto min-w-10-0 p-2 md:p-4">
   <form [formGroup]="initForm" class="event-form w-100-p">

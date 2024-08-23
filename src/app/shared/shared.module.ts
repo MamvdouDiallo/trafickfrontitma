@@ -6,9 +6,12 @@ import { UIModule } from './ui/ui.module';
 import { WidgetModule } from './widget/widget.module';
 import { AngularMaterialModule } from './angular-materiel-module/angular-materiel-module';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { DatatableComponent } from './datatable/datatable.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    DatatableComponent
+  ],
   imports: [
     CommonModule,
     UIModule,

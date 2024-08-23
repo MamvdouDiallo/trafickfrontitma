@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       .login(this.f.email.value, this.f.password.value)
       .subscribe(
         (user: Auth) => {
-          console.log(user.token);
+          console.log(user);
           this.submitted = false;
           this.toastr.success(`Bienvenue ${user.user.firstname}`);
           this.router.navigate(["/dashboards/jobs"]);

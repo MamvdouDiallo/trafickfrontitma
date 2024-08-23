@@ -1,0 +1,184 @@
+<div class="flex flex-col flex-auto min-w-0">
+  <div class="flex flex-col shadow bg-card">
+      <div>
+          <img class="h-24 lg:h-24 object-cover w-full" src="../../../../assets/images/41.jpg" alt="Cover image">
+      </div>
+      <div class="p-2">
+          <span class="text-xl font-bold">Détail de résolution d'une plainte</span>
+      </div>
+  </div>
+  <div class="flex flex-col w-full min-w-0 sm:inset-0 sm:overflow-hidden">
+
+<div class="w-full heighContentRight" id="heighContentRightId">
+  <div class="w-full mb-10 ">
+    <fuse-card class="flex flex-col w-full p-4">
+      <mat-tab-group dynamicHeight class="w-full">
+        <mat-tab label="Détail">
+          <div class="">
+            <div class="flex flex-col w-full p-4">
+              <div class="flex justify-between">
+                <div class="leading-tight uppercase c_title_header">Plainte pour non dédommagement suite au projet X
+                </div>
+                <div class="">
+                  <button (click)="updateClient(infosPap)" class="c_btnAccount_attribut c_btnAccountF"
+                    [disabled]="infosPap?.statut ==='DEMISSION'" matTooltip="Modifier client" mat-icon-button>
+                    <i class="bx bx-edit"></i>
+                  </button>
+                  <button class="ml-2 c_btnAccount_attribut c_btnAccountF" [disabled]="infosPap?.statut ==='DEMISSION'"
+                    matTooltip="Lettre de consentement" mat-icon-button>
+                    <i class="bx bx-edit"></i>
+                  </button>
+                </div>
+              </div>
+              <hr class="w-full border-t">
+              <div class="flex flex-auto w-full">
+                <div class="flex flex-col w-full">
+                  <div class="grid grid-cols-2">
+                    <span class="mr-3">Date d'enregistrement: </span>
+                    <span class="leading-none font-bold">{{infosPap?.idPap}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="mr-3">Commune: </span>
+                    <span class="leading-none font-bold">{{infosPap?.nom}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="mr-3">Etat de la plinte: </span>
+                    <span class="leading-none font-bold">{{infosPap?.prenom}}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+
+                </div>
+              </div>
+              <div class="leading-tight mt-8 uppercase c_title_header">Pap</div>
+              <hr class="w-full border-t">
+              <div class="flex flex-auto w-full -mt-4">
+                <div class="flex flex-col w-full">
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Prénom & Nom : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.prenom}}
+                      {{infosPap?.gestionnaire?.nom}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Téléphone : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.phoneCode}}
+                      {{infosPap?.gestionnaire?.phoneNumber}}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Adresse : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.email}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Numéro : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.numero}}</span>
+                  </div>
+
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Numéro d'identification: </span>
+                    <span class="leading-none font-bold">{{infosPap?.numeroIdentification}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="leading-tight mt-8 uppercase c_title_header">Personne impitable</div>
+              <hr class="w-full border-t">
+              <div class="flex flex-auto w-full -mt-4">
+                <div class="flex flex-col w-full">
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Prénom & Nom : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.prenom}}
+                      {{infosPap?.gestionnaire?.nom}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Téléphone : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.phoneCode}}
+                      {{infosPap?.gestionnaire?.phoneNumber}}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col w-full">
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Email : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.email}}</span>
+                  </div>
+                  <div class="grid grid-cols-2 mt-4">
+                    <span class="">Numéro : </span>
+                    <span class="leading-none font-bold">{{infosPap?.gestionnaire?.numero}}</span>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="CR DES RENCONTRES DES COMMUNICATIONS ET RENCONTRES AVEC LE PAP">
+          <div class=" bg-red-300 w-full h-[500px]">
+
+          </div>
+        </mat-tab>
+        <mat-tab label="PROPOSITIONS DES REGLEMENTS">
+          <div class="w-full p-5">
+         <span class="p-2 shadow-md  bg-red-100 h-auto">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque necessitatibus voluptatem deserunt quas repudiandae accusamus molestiae quia, incidunt excepturi doloremque, voluptates odit, at amet alias voluptas placeat blanditiis ducimus nesciunt!
+          Quo repellat similique nam cupiditate rerum debitis voluptas vitae pariatur, magnam placeat atque quam maiores dolores, minus maxime accusamus sequi porro tempora. Iste, ut fugit! Temporibus id ab quos blanditiis!
+          Cumque modi blanditiis, doloribus, tempore id impedit labore harum, ea illum reiciendis animi maxime dolore minus facilis cum molestias corporis dolorum vero quod laborum nam optio. Numquam illum odio ipsa!
+          Aperiam nobis suscipit iure debitis quis commodi esse ullam quisquam inventore soluta, architecto quidem dignissimos sapiente deleniti temporibus. Soluta non eius molestias possimus vitae magnam similique facere dignissimos nihil perferendis!
+          Possimus quisquam officiis dignissimos quas qui laboriosam animi doloremque assumenda, amet voluptate voluptatem. Sequi totam reprehenderit animi, quaerat aspernatur possimus magni earum consequuntur officiis repellat doloremque omnis nisi eligendi rem.
+          Voluptatem ducimus aut excepturi obcaecati. Corrupti, officiis obcaecati voluptas consequatur vitae nam dolorum adipisci, maiores magnam aut error at ipsam temporibus ratione asperiores eaque hic deleniti sit tempora doloremque. Optio?
+          Qui, aliquid quasi voluptates praesentium fugiat iste blanditiis ea earum accusantium quibusdam asperiores a laboriosam. Earum praesentium ratione consectetur beatae magnam voluptas fuga sunt, molestiae, saepe voluptates, quod at? Corrupti?
+          Tenetur at impedit, optio ducimus vitae aspernatur nostrum, natus eligendi excepturi repellendus ea facilis accusantium expedita ratione, consectetur sapiente voluptates! Perferendis dignissimos, dolore eos ut incidunt assumenda illo ipsum recusandae.
+          Facere repellendus minus modi maiores? Non dolore vero delectus, ab a velit sunt, sapiente ea exercitationem porro, molestias repellat sed cum quam pariatur assumenda illo similique deserunt dicta nulla ullam.
+          Iste, recusandae magnam! Fugit laudantium repellendus qui rerum architecto animi in ut dolores, saepe vel minima necessitatibus laborum expedita quia voluptatum repellat officia est sint! Sunt labore iste odio eveniet?
+          Atque inventore assumenda eligendi sunt laudantium praesentium ullam qui facere cum odio nostrum vel error temporibus harum molestias enim quasi quidem et alias, vitae consequuntur. Dolorem provident modi cupiditate fugit?
+          Sint excepturi quibusdam dolore optio ut, dolorum nam unde vero quod minus! Aut tenetur ipsam corrupti, illo delectus eos cum nemo iure nam numquam, commodi aliquid adipisci non doloremque. Minus!
+          Nulla velit, ipsa deserunt minus aliquam dolores, ducimus, ad repudiandae eum ratione corporis perspiciatis quidem error. Voluptates reprehenderit, soluta adipisci expedita, fugiat possimus cum cumque quas natus illum placeat? In!
+          Provident eum laborum, facilis ea magnam quod aut minima asperiores quasi? Enim est ratione illum, ipsa cumque eos, reprehenderit laudantium quisquam vero quae debitis, libero nihil aliquam culpa nisi asperiores.
+          Repudiandae non ipsum voluptatem! Fugit quo sunt sit itaque quam. Maxime, ipsam aperiam. Sed qui, necessitatibus nulla nesciunt veritatis cumque natus, in cum aspernatur nihil autem fugiat dicta laborum velit.
+         </span>
+         <!-- <div class="mt-3 text-xl font-bold">
+          <span>Réponse du plaignant(accord  sur la proposition)</span>
+         </div> -->
+         <div class="w-full mb-3">
+          <div class="titleRecap">Réponse du plaignant(accord  sur la proposition)</div>
+          <mat-radio-group aria-label="Select an option" class="grid grid-cols-2 gap-4" color="primary"
+            (change)="responsePip($event)">
+            <mat-radio-button value="1">Oui</mat-radio-button>
+            <mat-radio-button value="0">Non</mat-radio-button>
+          </mat-radio-group>
+        </div>
+          </div>
+        </mat-tab>
+
+
+        <mat-tab label="Résolution">
+          <div class="w-full p-5">
+         <span class="p-2 shadow-md  bg-red-100 h-auto">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque necessitatibus voluptatem deserunt quas repudiandae accusamus molestiae quia, incidunt excepturi doloremque, voluptates odit, at amet alias voluptas placeat blanditiis ducimus nesciunt!
+          Quo repellat similique nam cupiditate rerum debitis voluptas vitae pariatur, magnam placeat atque quam maiores dolores, minus maxime accusamus sequi porro tempora. Iste, ut fugit! Temporibus id ab quos blanditiis!
+          Cumque modi blanditiis, doloribus, tempore id impedit labore harum, ea illum reiciendis animi maxime dolore minus facilis cum molestias corporis dolorum vero quod laborum nam optio. Numquam illum odio ipsa!
+          Aperiam nobis suscipit iure debitis quis commodi esse ullam quisquam inventore soluta, architecto quidem dignissimos sapiente deleniti temporibus. Soluta non eius molestias possimus vitae magnam similique facere dignissimos nihil perferendis!
+          Possimus quisquam officiis dignissimos quas qui laboriosam animi doloremque assumenda, amet voluptate voluptatem. Sequi totam reprehenderit animi, quaerat aspernatur possimus magni earum consequuntur officiis repellat doloremque omnis nisi eligendi rem.
+          Voluptatem ducimus aut excepturi obcaecati. Corrupti, officiis obcaecati voluptas consequatur vitae nam dolorum adipisci, maiores magnam aut error at ipsam temporibus ratione asperiores eaque hic deleniti sit tempora doloremque. Optio?
+          Qui, aliquid quasi voluptates praesentium fugiat iste blanditiis ea earum accusantium quibusdam asperiores a laboriosam. Earum praesentium ratione consectetur beatae magnam voluptas fuga sunt, molestiae, saepe voluptates, quod at? Corrupti?
+          Tenetur at impedit, optio ducimus vitae aspernatur nostrum, natus eligendi excepturi repellendus ea facilis accusantium expedita ratione, consectetur sapiente voluptates! Perferendis dignissimos, dolore eos ut incidunt assumenda illo ipsum recusandae.
+          Facere repellendus minus modi maiores? Non dolore vero delectus, ab a velit sunt, sapiente ea exercitationem porro, molestias repellat sed cum quam pariatur assumenda illo similique deserunt dicta nulla ullam.
+          Iste, recusandae magnam! Fugit laudantium repellendus qui rerum architecto animi in ut dolores, saepe vel minima necessitatibus laborum expedita quia voluptatum repellat officia est sint! Sunt labore iste odio eveniet?
+          Atque inventore assumenda eligendi sunt laudantium praesentium ullam qui facere cum odio nostrum vel error temporibus harum molestias enim quasi quidem et alias, vitae consequuntur. Dolorem provident modi cupiditate fugit?
+          Sint excepturi quibusdam dolore optio ut, dolorum nam unde vero quod minus! Aut tenetur ipsam corrupti, illo delectus eos cum nemo iure nam numquam, commodi aliquid adipisci non doloremque. Minus!
+          Nulla velit, ipsa deserunt minus aliquam dolores, ducimus, ad repudiandae eum ratione corporis perspiciatis quidem error. Voluptates reprehenderit, soluta adipisci expedita, fugiat possimus cum cumque quas natus illum placeat? In!
+          Provident eum laborum, facilis ea magnam quod aut minima asperiores quasi? Enim est ratione illum, ipsa cumque eos, reprehenderit laudantium quisquam vero quae debitis, libero nihil aliquam culpa nisi asperiores.
+          Repudiandae non ipsum voluptatem! Fugit quo sunt sit itaque quam. Maxime, ipsam aperiam. Sed qui, necessitatibus nulla nesciunt veritatis cumque natus, in cum aspernatur nihil autem fugiat dicta laborum velit.
+         </span>
+         <div class="mt-3 text-xl font-bold">
+          <span>Date de résolution : le 12/12/12</span>
+         </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </fuse-card>
+  </div>
+</div>
+</div>
+</div>

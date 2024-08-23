@@ -1,0 +1,243 @@
+<div class="container-fluid">
+
+  <!-- <app-page-title title="Profile" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+
+  <div class="row">
+    <div class="col-xl-4">
+      <div class="card overflow-hidden">
+        <div class="bg-primary-subtle">
+          <div class="row">
+            <div class="col-7">
+              <div class="text-primary p-3">
+                <h5 class="text-primary">Welcome Back !</h5>
+
+              </div>
+            </div>
+            <div class="col-5 align-self-end">
+              <img src="assets/images/profile-img.png" alt="" class="img-fluid">
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="avatar-md profile-user-wid mb-4">
+                @if (Detailuser) {
+                @if (Detailuser.image) {
+                <img [src]="this.getImageFromBase64(
+        this.Detailuser.image.type,
+        this.Detailuser.image.image
+      )" alt="" class="img-thumbnail rounded-circle">
+                }
+                }
+              </div>
+              <h5 class="font-size-15 text-truncate">{{Detailuser.firstname}} {{Detailuser.lastname}}</h5>
+              <p class="text-muted mb-0 text-truncate">DEVELOPPER FULL STACK</p>
+            </div>
+
+            <div class="col-sm-8">
+              <div class="pt-4">
+
+                <div class="row">
+                  <div class="col-6">
+                    <h5 class="font-size-15">{{Detailuser.projects.length}}</h5>
+                    <p class="text-muted mb-0">Projets</p>
+                  </div>
+                  <div class="col-6">
+                    <h5 class="font-size-15">0</h5>
+                    <p class="text-muted mb-0">Projets éxécutés</p>
+                  </div>
+                </div>
+                <!-- <div class="mt-4">
+                  <a href="javascript: void(0);" class="btn btn-primary btn-sm">View Profile <i
+                      class="mdi mdi-arrow-right ms-1"></i></a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4 colorTitle">Personal Information</h4>
+
+          <p class="text-muted mb-4">Salut , je suis {{Detailuser.firstname}} {{Detailuser.lastname}} FullStack.</p>
+          <div class="table-responsive">
+            <table class="table table-nowrap mb-0">
+              <tbody>
+                <tr>
+                  <th scope="row">Full Name :</th>
+                  <td>{{Detailuser.firstname}} {{Detailuser.lastname}} </td>
+                </tr>
+                <tr>
+                  <th scope="row">Mobile :</th>
+                  <td>{{Detailuser.contact}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">E-mail :</th>
+                  <td>{{Detailuser.email}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Location :</th>
+                  <td>{{Detailuser.locality}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+
+      <div class="card">
+        <!-- <div class="card-body">
+          <h4 class="card-title mb-5">Experience</h4>
+          <div class="">
+            <ul class="verti-timeline list-unstyled">
+              <li class="event-list active">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                </div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
+                    <i class="bx bx-server h4 text-primary"></i>
+                  </div>
+                  <div class="flex-grow-1">
+                    <div>
+                      <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">Back end Developer</a>
+                      </h5>
+                      <span class="text-primary">2016 - 19</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="event-list">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle"></i>
+                </div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
+                    <i class="bx bx-code h4 text-primary"></i>
+                  </div>
+                  <div class="flex-grow-1">
+                    <div>
+                      <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">Front end Developer</a>
+                      </h5>
+                      <span class="text-primary">2013 - 16</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="event-list">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle"></i>
+                </div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
+                    <i class="bx bx-edit h4 text-primary"></i>
+                  </div>
+                  <div class="flex-grow-1">
+                    <div>
+                      <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">UI /UX Designer</a></h5>
+                      <span class="text-primary">2011 - 13</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div> -->
+      </div>
+      <!-- end card -->
+    </div>
+
+    <div class="col-xl-8">
+
+      <div class="row">
+        @for (stat of statData; track $index) {
+        <div class="col-md-4">
+          <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+        </div>
+        }
+      </div>
+      <!-- <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Détails</h4> -->
+          <!-- <apx-chart dir="ltr" class="apex-charts" [series]="revenueBarChart.series" [chart]="revenueBarChart.chart"
+            [xaxis]="revenueBarChart.xaxis" [colors]="revenueBarChart.colors" [yaxis]="revenueBarChart.yaxis"
+            [dataLabels]="revenueBarChart.dataLabels" [stroke]="revenueBarChart.stroke"
+            [plotOptions]="revenueBarChart.plotOptions" [fill]="revenueBarChart.fill">
+          </apx-chart> -->
+        <!-- </div>
+      </div> -->
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4 colorTitle">Liste des projets</h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead >
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Projects</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Catégorie</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of Detailuser.projects; track $index) {
+                <tr>
+                  <th scope="row">1</th>
+                  <td>{{item.libelle}}</td>
+                  <td>{{item.datedebut}}</td>
+                  <td>{{item.datefin}}</td>
+                  <td>{{item.categorie}}</td>
+                </tr>
+                }
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4 colorTitle">Listes des taches</h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Libelle</th>
+                  <th scope="col">Descrription</th>
+                  <th scope="col">Date début</th>
+                  <th scope="col">Date Fin</th>
+                  <th scope="col">Etat</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of taches; track $index) {
+                <tr>
+                  <th scope="row">{{item.id}}</th>
+                  <td>{{item.libelle}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.dateDebut}}</td>
+                  <td>{{item.dateFin}}</td>
+                  <td>{{item.categorie}}</td>
+                  <td>{{item.statut}}</td>
+                </tr>
+                }
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>

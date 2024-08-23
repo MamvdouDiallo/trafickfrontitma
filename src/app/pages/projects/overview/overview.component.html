@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <!-- start page title -->
-  <app-page-title title="Projects Overview" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title title="Projects Overview" [breadcrumbItems]="breadCrumbItems" class="colorTitle"></app-page-title>
   <!-- end page title -->
 
   <div class="row">
@@ -45,7 +45,7 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4">Maitres d'ouvrages</h4>
+          <h4 class="card-title mb-4 colorTitle">Maitres d'ouvrages</h4>
 
           <div class="table-responsive">
             <table class="table align-middle table-nowrap">
@@ -82,7 +82,7 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-body pb-2">
-          <h4 class="card-title mb-4">Overview</h4>
+          <h4 class="card-title mb-4 colorTitle">Overview</h4>
           <apx-chart dir="ltr" class="apex-charts" [series]="overviewBarChart.series"
             [dataLabels]="overviewBarChart.dataLabels" [chart]="overviewBarChart.chart" [xaxis]="overviewBarChart.xaxis"
             [colors]="overviewBarChart.colors" [yaxis]="overviewBarChart.yaxis" [xaxis]="overviewBarChart.xaxis"
@@ -96,7 +96,7 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4">Attached Files</h4>
+          <h4 class="card-title mb-4 colorTitle">Attached Files</h4>
           <div class="table-responsive">
             <table class="table table-nowrap align-middle table-hover mb-0">
               <tbody>
@@ -134,7 +134,7 @@
     <div class="col-lg-4">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4">Normes du projets</h4>
+          <h4 class="card-title mb-4 colorTitle">Normes du projets</h4>
 
           @for (item of DetailProject.normeProjets; track $index) {
           <div class="d-flex mb-4">

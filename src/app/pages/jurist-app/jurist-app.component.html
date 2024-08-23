@@ -1,0 +1,7 @@
+<div class="sectionPartenaire">
+  @for (partner of partners; track $index) {
+    <img [src]="partner.logo" alt="{{ partner.libelle }}">
+  }
+</div>
+
+

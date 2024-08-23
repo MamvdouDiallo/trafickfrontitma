@@ -1,10 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { taskChart, tasks } from './data';
 
 import { ChartType, Tasklist } from './list.model';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { SnackBarService } from 'src/app/shared/core/snackBar.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { LocalService } from 'src/app/core/services/local.service';
+import { ServiceParent } from 'src/app/core/services/serviceParent';
+import { CoreService } from 'src/app/shared/core/core.service';
+import { PapAddComponent } from '../../pap/pap-add/pap-add.component';
+import { PapService } from '../../pap/pap.service';
+import { SharedService } from '../../projects/shared.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list',
@@ -31,8 +45,57 @@ export class ListComponent implements OnInit {
   inprogressTasks: Tasklist[];
   completedTasks: Tasklist[];
   myFiles: string[] = [];
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  informations: any;
+  displayedColumns: any;
+  searchList: any;
+  codeEnvoye: number; //code envoye par notre menu
+  hasList: boolean;
+  hasAdd: boolean;
+  hasUpdate: boolean;
+  hasDelete: boolean;
+  hasDetail: boolean;
+  length = 100;
+  searchForm: UntypedFormGroup;
+  dialogRef: any;
+  dataSource: MatTableDataSource<any>;
+  datas = [];
+  deleteUser: boolean = false;
+  currentIndex;
+  loadData: boolean = false;
+  exporter: boolean = false;
+  isCollapsed: boolean = false;
+  isSearch2: boolean = false;
+  isSearch: boolean = false;
+  rechercher = "";
+  showLoader = "isNotShow";
+  message = "";
+  config: any;
+  isLoading: boolean = false;
+  pageSizeOptions = [5, 10, 25, 100, 500, 1000];
+  pageSize: number = 10;
+  pageIndex: number = 0;
+  //constantes = CONSTANTES;
+  userConnecter;
+  offset: number = 0;
+  title: string = "Gestion des produits";
+  url: string = "taches";
+  panelOpenState = false;
+  img;
+  image;
+  privilegeByRole: any; //liste des codes recu de l'api lors de la connexion
+  privilegeForPage: number = 2520; //code privilege envoye pour afficher la page
+  privilegePage;
+  headers: any = [];
+  btnActions: any = [];
 
-  constructor(private modalService: BsModalService, private formBuilder: UntypedFormBuilder) { }
+  constructor(private modalService: BsModalService, private formBuilder: UntypedFormBuilder,
+   
+    private parentService: ServiceParent,
+    public toastr: ToastrService,
+
+  ) { }
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'Tasks' }, { label: 'Task List', active: true }];
@@ -45,6 +108,7 @@ export class ListComponent implements OnInit {
     });
 
     this._fetchData();
+    this.getTaches();
   }
 
   onFileChange(event) {
@@ -91,5 +155,26 @@ export class ListComponent implements OnInit {
    */
   openModal(content: any) {
     this.modalRef = this.modalService.show(content);
+  }
+  taches: any[];
+  getTaches() {
+    return this.parentService
+      .list(this.url, this.pageSize, this.offset)
+      .subscribe(
+        (data: any) => {
+          this.loadData = false;
+          if (data["responseCode"] == 200) {
+            this.taches = data["data"]
+            console.log(this.taches);
+
+          } else {
+            this.loadData = false;
+            this.dataSource = new MatTableDataSource();
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 }

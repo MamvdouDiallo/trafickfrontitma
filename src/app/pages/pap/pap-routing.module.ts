@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: "detail",
-    component: InfoClientComponent,
+    component: PapDetailComponent,
   },
 ];
 

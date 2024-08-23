@@ -1,0 +1,160 @@
+<mat-toolbar class="mat-accent m-0 backToolbar">
+  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
+    <span class="c_title dialog-title">Ajouter une entente de compensation</span>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+
+<form [formGroup]="initForm" class="event-form w-100-p">
+  <div class="flex gap-2">
+    <mat-form-field class="w-1/2 mt-2" appearance="outline">
+      <mat-label class="enteteccColor">Libelle projet
+      </mat-label>
+      <input class="typeTitle" matInput type="text" name="libelleProjet" formControlName="libelleProjet" />
+      <mat-error>Le champs est obligatoire</mat-error>
+      <mat-icon matSuffix class="secondary-text">code</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field class=" w-1/2 mt-2"  appearance="outline">
+      <mat-label class="enteteccColor">Code du pap
+      </mat-label>
+      <input class="typeTitle" matInput type="number" name="codePap" formControlName="codePap" />
+      <mat-icon matSuffix class="secondary-text">code</mat-icon>
+      <mat-error>Le champs est obligatoire</mat-error>
+    </mat-form-field>
+  </div>
+
+      <div class="flex gap-2">
+        <mat-form-field class="w-1/2 mt-2" appearance="outline">
+          <mat-label class="enteteccColor">Prénom
+          </mat-label>
+          <input class="typeTitle" matInput type="text" name="prenom" formControlName="prenom" />
+          <mat-error>Le champs est obligatoire</mat-error>
+          <mat-icon matSuffix class="secondary-text">code</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class=" w-1/2 mt-2"  appearance="outline">
+          <mat-label class="enteteccColor">Nom
+          </mat-label>
+          <input class="typeTitle" matInput type="text" name="nom" formControlName="nom" />
+          <mat-icon matSuffix class="secondary-text">code</mat-icon>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex gap-2">
+        <mat-form-field class="w-1/2 mt-2"  fxFlex="50" appearance="outline">
+          <mat-label class="enteteccColor">Date de naissance</mat-label>
+          <input class="enteteccColor" matInput type="text"
+                 (click)="picker2.open()" [autocomplete]="'off'" matInput [matDatepicker]="picker2"
+                 formControlName="dateNaissance" bsDatepicker/>
+          <mat-datepicker-toggle matSuffix [for]="picker2">
+              <mat-icon matDatepickerToggleIcon class="enteteccColor">calendar_today</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error>Le champs est oligatoire</mat-error>
+      </mat-form-field>
+
+        <mat-form-field class=" w-1/2 mt-2" appearance="outline">
+          <mat-label class="enteteccColor">Lieu de naissance
+          </mat-label>
+          <input class="typeTitle" matInput type="text" name="lieuNaissance" formControlName="lieuNaissance" />
+          <mat-icon matSuffix class="secondary-text">place</mat-icon>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex gap-2">
+        <mat-form-field class=" w-full mt-2" fxFlex="50" appearance="outline">
+          <mat-label disabled value="" selected class="enteteccColor">Nature de la pièce</mat-label>
+
+          <input class="typeTitle" matInput type="text" name="typeIdentification"
+            formControlName="typeIdentification" />
+          <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+        <mat-form-field class=" w-1/2 mt-2" appearance="outline">
+          <mat-label class="enteteccColor">Numéro de pièce
+          </mat-label>
+          <input  matInput type="text" name="numeroIdentification"
+            formControlName="numeroIdentification" />
+          <mat-icon matSuffix class="secondary-text">dialpad</mat-icon>
+          <mat-error
+            *ngIf="initForm.get('numeroIdentification')?.touched && initForm.get('numeroIdentification')?.errors?.required">ce
+            champs est requis</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-2">
+        <mat-form-field class=" w-full mt-2" fxFlex="50" appearance="outline">
+          <mat-label disabled value="" selected class="enteteccColor">Localité d'enregistrement</mat-label>
+          <input class="typeTitle" matInput type="text" name="localiteEnregistrement"
+            formControlName="localiteEnregistrement" />
+          <mat-icon matSuffix class="enteteccColor">storage</mat-icon>
+          <mat-error>Le champs est obligatoire</mat-error>
+        </mat-form-field>
+        <mat-form-field class=" w-1/2 mt-2" appearance="outline">
+          <mat-label class="enteteccColor">Date d'enregistrement
+          </mat-label>
+          <input  matInput type="text" name="dateEnregistrement"
+            formControlName="dateEnregistrement" />
+          <mat-icon matSuffix class="secondary-text">dialpad</mat-icon>
+          <mat-error
+            *ngIf="initForm.get('dateEnregistrement')?.touched && initForm.get('dateEnregistrement')?.errors?.required">ce
+            champs est requis</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="inner-repeater mb-4">
+        <form [formGroup]="form">
+          <div class="inner mb-0 row" formArrayName="articles">
+            <label class="col-form-label col-lg-2">Artcles : </label>
+            <ng-container *ngFor="let data of articles.controls; let i = index">
+              <div class="inner col-lg-10 ms-md-auto" [formGroupName]="i">
+                <div class="mb-3 row align-items-center">
+                  <div class="col-md-4">
+                    <mat-form-field class="w-full mt-2" appearance="outline">
+                      <mat-label class="enteteccColor">Titre</mat-label>
+                      <input matInput type="text" formControlName="titre" placeholder="Titre..." />
+                      <mat-icon matSuffix>title</mat-icon>
+                      <mat-error *ngIf="data.get('titre')?.touched && data.get('titre')?.invalid">
+                        Le titre est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="w-full mt-2" appearance="outline">
+                      <mat-label class="enteteccColor">Valeur</mat-label>
+                      <textarea matInput type="text" formControlName="description" placeholder="Valeur..."></textarea>
+                      <mat-icon matSuffix>description</mat-icon>
+                      <mat-error *ngIf="data.get('description')?.touched && data.get('description')?.invalid">
+                        La description est obligatoire
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="mt-2 mt-md-0 d-grid">
+                      <button   mat-raised-button class="submit-buttonRed" (click)="deleteMember(i)">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </form>
+        <div class="row justify-content-end">
+          <div class="col-lg-10">
+            <button  mat-raised-button class="submit-button" (click)="addMember()" [disabled]="form.invalid">Ajouter un article</button>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="flex justify-center gap-4">
+        <button mat-raised-button class="submit-buttonRed"  type="button">
+          <span class="textForm">Annuler</span>
+        </button>&nbsp;
+        <button mat-raised-button class="submit-button" aria-label="VALIDER"  type="button" (click)="addEntente()">
+          <span class="textForm">Ajouter</span>
+        </button>&nbsp;
+      </div>
+

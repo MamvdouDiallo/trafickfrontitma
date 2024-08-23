@@ -52,6 +52,7 @@ import { OrdersEffects } from './store/Crypto/crypto.effects';
 import { CustomerEffects } from './store/customer/customer.effects';
 import { MailEffects } from './store/Email/email.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { DetailPlainteComponent } from './detail-plainte/detail-plainte.component';
 
 if (environment.defaultauth === 'firebase') {
   initFirebaseBackend(environment.firebaseConfig);
@@ -68,6 +69,7 @@ export function createTranslateLoader(http: HttpClient): any {
   declarations: [
     AppComponent,
     CyptolandingComponent,
+    DetailPlainteComponent,
   ],
   imports: [
     BrowserModule,

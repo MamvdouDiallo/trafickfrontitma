@@ -16,7 +16,7 @@ export const environment = {
     appId: "",
     measurementId: "",
   },
-  baseUrl: 'http://localhost:4200',
+  //baseUrl: 'http://localhost:4200',
    // production: false,
     // apiURL: 'https://api.suntelecoms.com/SFD/api/',
     //apiURL: 'https://sfp.suntelecoms.com/api/',

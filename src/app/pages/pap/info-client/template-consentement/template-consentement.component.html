@@ -1,21 +1,7 @@
 <mat-toolbar class="mat-accent m-0 backToolbar">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
-        <span *ngIf="infos?.url !=='depot-terme'" class="c_title dialog-title">{{dialogTitle}}</span>
-        <span *ngIf="infos?.url ==='depot-terme'" class="c_title dialog-title">Contrat dépôt Terme</span>
+        <span  class="c_title dialog-title">{{dialogTitle}}</span>
          <div class="flex">
-            <button *ngIf="infos?.url !=='depot-terme'" (click)="captureScreen()" class="closeButton mr-2"
-                    matTooltip="Imprimer la lettre de consentement"
-                    mat-icon-button>
-                <mat-icon class="text-blue-800 icon-size-6 cursor-pointer" svgIcon="heroicons_outline:printer">
-                </mat-icon>
-            </button>
-             <button *ngIf="infos?.url ==='depot-terme'" (click)="captureScreen()" class="generate mr-2"
-                    matTooltip="Imprimer le contrat"
-                    mat-icon-button>
-             <span>Imprimer</span>
-                <mat-icon [color]="'primary'" class="text-blue-800 icon-size-6 cursor-pointer iconColor" svgIcon="heroicons_outline:printer">
-                </mat-icon>
-            </button>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
                 <mat-icon>close</mat-icon>
             </button>

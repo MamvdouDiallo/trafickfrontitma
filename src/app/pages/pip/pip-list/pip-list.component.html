@@ -1,0 +1,40 @@
+<div>
+  <app-page-title title="Liste des parties intéréssés par le projet" [breadcrumbItems]="breadCrumbItems" class="colorTitle"></app-page-title>
+</div>
+<div class=" row mb-2">
+  <div class="col-sm">
+    <div class="search-box me-2 d-inline-block">
+      <div class="position-relative">
+        <input type="text" class="form-control" autocomplete="off" id="searchTableList" placeholder="Search..."
+          (input)="filterTable($event)">
+        <i class="bx bx-search-alt search-icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-auto">
+    <div class="d-flex flex-wrap gap-2">
+      <button type="submit" class="btn btn-success" (click)="addItems()"> <i class="mdi mdi-plus me-1"></i> Ajouter un
+        pip</button>
+
+    </div>
+    <input type="file" id="file-upload" (change)="fileUpload($event)" name="fileUpload" accept=".xls,.xlsx"
+      style="display: none;">
+  </div>
+</div>
+
+<div class="absolute inset-x-0 bottom-0" *ngIf="loadData">
+  <div class="p-8 sm:p-16 border-t text-1xl font-semibold tracking-tight text-center">
+      Chargement en cours ...
+  </div>
+</div>
+
+<div style="z-index: 0" class="pt-3">
+  <tableau [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [total]="length"
+    [coleurEntete]="headers" [entete]="headers" [data]="datas" [actions]="btnActions"
+    (changePage)="pageChanged($event)"></tableau>
+</div>
+
+<div *ngIf="datas?.length === 0  && !loadData">
+  <div class="p-8 sm:p-16 title-chargement font-semibold tracking-tight text-center textVideMessage">La liste est vide !
+  </div>
+</div>

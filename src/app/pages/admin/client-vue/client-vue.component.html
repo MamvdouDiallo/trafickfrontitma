@@ -1,0 +1,175 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <div class="flex flex-col shadow bg-card ">
+
+        <div>
+            <img class="h-30 lg:h-30 object-cover" src="../../../../assets/images/4.jpg" alt="Cover image">
+        </div>
+
+        <div class="flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-8 lg:h-18 bg-card">
+
+            <div class="-mt-26 lg:-mt-22 rounded-full cursor-pointer relative" matTooltip="Charger l'image du client"
+                (click)="photoP.click()">
+
+                <ng-container *ngIf="noImage !== ''">
+                    <img class="w-32 h-32 rounded-full ring-4 ring-bg-card background_avatarNoImage" [src]="noImage"
+                        alt="">
+                </ng-container>
+                <ng-container *ngIf="noImage === ''">
+                    <h1 class="w-26 h-26 rounded-full object-center ring-4 ring-bg-card background_avatar">
+                        {{getFirstElementWord(infosClient?.intitule)}}</h1>
+                </ng-container>
+                <input hidden #photoP class="use-avatar" (change)="selectOnFile($event,'photo_profile','Thumbnail')"
+                    type="file" id="file" required
+                    accept="image/png, image/PNG, image/jpg, image/JPG, image/jpeg, image/JPEG, .pdf , .PDF , .doc , .DOC , .docx , .DOCX , .docm , .DOCM" />
+                <div *ngIf="loaderImg" class="absolute top-10 left-10">
+                    <mat-progress-spinner class="circle-loader" color="#000000" [mode]="'indeterminate'"
+                        [strokeWidth]="4" [value]="2" [diameter]="30">
+                    </mat-progress-spinner>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center lg:items-start mt-4 lg:mt-0 lg:ml-8">
+                <div class="text-secondary">Intitulé</div>
+                <div class="text-lg font-bold leading-none">{{infosClient?.intitule}}</div>
+            </div>
+
+            <div class="hidden lg:flex h-8 mx-8 border-l-2"></div>
+            <div class="flex items-center mt-6 lg:mt-0 space-x-6">
+                <div class="flex flex-col ">
+                    <span class="text-sm font-medium text-secondary">Matricule</span>
+                    <span class="font-bold">{{infosClient?.matricule}}</span>
+                </div>
+            </div>
+
+
+            <div class="hidden lg:flex h-8 mx-8 border-l-2"></div>
+            <div class="flex items-center mt-6 lg:mt-0 space-x-6">
+                <div class="flex flex-col ">
+                    <button (click)="signatureClient()" class="c_btnAccount_attribut c_btnAccountF" matTooltip="Voir Signature Client" mat-icon-button>
+                        <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center mt-8 mb-4 lg:m-0 lg:ml-auto space-x-6">
+                <button *ngIf="infosClient?.aAdhere === false && infosClient?.statut === 'VALIDE'"
+                    class="fuse-mat-button-rounded bg-accent-700 c_btnAdher" mat-flat-button [color]="'accent'"
+                    matTooltip="Adhésion client" (click)="changeClient('adhesion')">
+                    <mat-icon style="color: #FFFFFF !important;" class="icon-size-4" [svgIcon]="'feather:user-check'"></mat-icon>
+                    <span class="ml-2 textColor">Adhérer</span>
+                </button>
+
+                <button *ngIf="infosClient?.statut === 'SAISI'"
+                    class="fuse-mat-button-rounded bg-accent-700 c_btnAdValider textColor" mat-flat-button [color]="'accent'"
+                    matTooltip="Validation client" (click)="changeClient('validation')">
+                    <mat-icon style="color: #FFFFFF !important;" class="icon-size-4" [svgIcon]="'feather:user-check'"></mat-icon>
+                    <span class="ml-2">Valider</span>
+                </button>
+
+                <button *ngIf="infosClient?.statut === 'VALIDE' && infosClient?.aAdhere === true" (click)="changeClient('demission')" class="c_btnAccount_attribut c_btnAccountF" matTooltip="Démission client" mat-icon-button>
+                    <mat-icon class="c_icons c_cursor icon-size-5" [svgIcon]="'feather:user-minus'"></mat-icon>
+                </button>
+
+                <div *ngIf="loader">
+                    <mat-progress-spinner class="circle-loader" color="#000000" [mode]="'indeterminate'"
+                        [strokeWidth]="4" [value]="2" [diameter]="20">
+                    </mat-progress-spinner>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex flex-col w-full min-w-0 sm:inset-0 sm:overflow-hidden">
+        <mat-drawer-container class="flex-auto sm:h-auto">
+            <mat-drawer id="c_mat_drawerId" class="sm:w-80 dark:bg-gray-900 c_mat_drawer" [autoFocus]="false"
+                [mode]="'side'" [opened]="true" #drawer>
+                <div class="flex flex-col divide-y border-t border-b">
+                    <div class="">
+                        <div class="px-8 py-5">
+                            <nav class="-mx-3 space-y-6 ">
+                                <div class="space-y-3 " *ngFor="let item of menuData">
+                                    <label class="px-3 text-xs  c_label">{{item?.title}}</label>
+                                    <hr>
+                                    <button   class="flex w-full items-center cursor-pointer px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                                        *ngFor="let child of item?.children" [disabled]="(child.id =='bureau' || child.id == 'audit' || child.id =='wallet' || child.id == 'decouvert') || (infosClient?.statut ==='DEMISSION' ? child.id == 'transfert' : '') || (infosClient?.statut ==='DEMISSION' ? child.id == 'demande' : '')"  (click)="goToPanel(child.id)"
+                                       [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedPanel || selectedPanel !== child.id ,
+                                    'bg-primary-50 dark:bg-hover': selectedPanel && selectedPanel === child.id}">
+                                        <mat-icon class="icon-size-5" [svgIcon]="child?.icon"></mat-icon>
+                                        <span class="mx-2 c_text_sm">{{child?.title}}</span>
+                                    </button>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </mat-drawer>
+
+            <mat-drawer-content class="flex flex-col">
+                <div class="flex-auto c_padding">
+                    <div class="flex items-center">
+                        <button  class="lg:hidden -ml-2" mat-icon-button (click)="drawer.toggle()">
+                            <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <ng-container [ngSwitch]="selectedPanel">
+                            <ng-container *ngSwitchCase="'compte'">
+                                <compte></compte>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'epargne'">
+                                <depot-terme></depot-terme>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'permanent'">
+                                <vue-virement-permanent></vue-virement-permanent>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'demande'">
+                                <vue-demande-credit (changePage)="goToPanel($event)" ></vue-demande-credit>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'signataires'">
+                                <signataires></signataires>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'groupement'">
+                                <groupement></groupement>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'actionnaire'">
+                                <actionnaire-client></actionnaire-client>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'gestionnaire'">
+                                <gestionnaire></gestionnaire>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'personne-lie'">
+                                <personne-lie></personne-lie>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'info-client'">
+                                <info-client [infosClient]="infosClient" [persPhysique]="typeClient"
+                                    [attributComplementaire]="attributComplementaires">
+
+                                </info-client>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'transfert'">
+                                <transfert [infosClient]="infosClient" [persPhysique]="typeClient"></transfert>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'fiche-client'">
+                                <fiche-client [infosClient]="infosClient" [persPhysique]="typeClient"></fiche-client>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'credit'">
+                                <vue-credit (changePage)="goToPanel($event)"></vue-credit>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'frais'">
+                                <frais-client></frais-client>
+                            </ng-container>
+
+                        </ng-container>
+                    </div>
+
+                </div>
+
+            </mat-drawer-content>
+
+        </mat-drawer-container>
+
+    </div>
+</div>

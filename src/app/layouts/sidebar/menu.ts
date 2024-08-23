@@ -220,63 +220,62 @@ export const MENU: MenuItem[] = [
   // },
 
   {
-    id: 40,
-    label: "PROJECTS",
-    icon: "bx-briefcase-alt-2",
-    subItems: [
+    "id": 40,
+    "label": "PROJECTS",
+    "icon": "bx-briefcase-alt-2",
+    "subItems": [
       {
-        id: 42,
-        label: "MENUITEMS.PROJECTS.LIST.PROJECTLIST",
-        link: "/projects/list",
-        parentId: 40,
-      },
-      // {
-      //   id: 43,
-      //   label: "MENUITEMS.PROJECTS.LIST.OVERVIEW",
-      //   link: "/projects/overview",
-      //   parentId: 40,
-      // },
-      {
-        id: 44,
-        label: "MENUITEMS.PROJECTS.LIST.CREATE",
-        link: "/projects/create",
-        parentId: 40,
+        "id": 42,
+        "label": "MENUITEMS.PROJECTS.LIST.PROJECTLIST",
+        "icon": "bx-list-ul",
+        "link": "/projects/list",
+        "parentId": 40
       },
       {
-        id: 45,
-        label: "UPDATE",
-        link: "/projects/update",
-        parentId: 40,
+        "id": 44,
+        "label": "MENUITEMS.PROJECTS.LIST.CREATE",
+        "icon": "bx-plus-circle",
+        "link": "/projects/create",
+        "parentId": 40
       },
-    ],
+      {
+        "id": 45,
+        "label": "UPDATE",
+        "icon": "bx-edit",
+        "link": "/projects/update",
+        "parentId": 40
+      }
+    ]
   },
 
   {
-    id: 45,
-    label: "TACHES",
-    icon: "bx-task",
-    subItems: [
+    "id": 45,
+    "label": "TACHES",
+    "icon": "bx-task",
+    "subItems": [
       {
-        id: 46,
-        label: "Liste des taches",
-        link: "/tasks/list",
-        parentId: 45,
+        "id": 46,
+        "label": "Détail des taches",
+        "icon": "bx-detail",
+        "link": "/tasks/list",
+        "parentId": 45
       },
       {
-        id: 47,
-        label: "MENUITEMS.TASKS.LIST.KANBAN",
-        link: "/tasks/kanban",
-        parentId: 45,
+        "id": 47,
+        "label": "Liste des taches",
+        "icon": "bx-list-ul",
+        "link": "/tasks/liste",
+        "parentId": 45
       },
       {
-        id: 48,
-        label: "Créer",
-        link: "/tasks/create",
-        parentId: 45,
-      },
-    ],
+        "id": 48,
+        "label": "Créer",
+        "icon": "bx-plus-circle",
+        "link": "/tasks/create",
+        "parentId": 45
+      }
+    ]
   },
-
   // {
   //   id: 49,
   //   label: "Utilisateurs",
@@ -554,6 +553,7 @@ export const MENU: MenuItem[] = [
       {
         id: 93,
         label: "MO LIST",
+        "icon": "bx-list-ul",
         link: "/maitrouvrages/list",
         parentId: 91,
       },
@@ -567,22 +567,202 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 92,
-    label: "Parties affectées",
+    label: "Parties Prenantes",
     icon: "bxs-user-detail",
     subItems: [
-
       {
         id: 95,
-        label: "LIST",
+        label: "Parties affectées",
+        icon: "bxs-user-detail",
         link: "/pap/list",
         parentId: 92,
       },
       {
-        id: 96,
-        label: "add",
-        link: "/pap/add",
+        id: 95,
+        label: "Parties intéréssées",
+        icon: "bxs-buildings",
         parentId: 92,
+        "subItems": [
+          {
+            "id": 98,
+            "label": "Medias",
+            "icon": "bxs-buildings",
+            "link": "/pip/medias",
+            "parentId": 93
+          },
+          {
+            "id": 99,
+            "label": "ONG",
+            "icon": "bxs-heart",
+            "link": "/pip/ong",
+            "parentId": 93
+          },
+          {
+            "id": 100,
+            "label": "Entreprises",
+            "icon": "bxs-briefcase",
+            "link": "/pip/entreprise",
+            "parentId": 93
+          },
+          {
+            "id": 101,
+            "label": "Organisations",
+            "icon": "bxs-group",
+            "link": "/pip/organisation",
+            "parentId": 93
+          },
+          {
+            "id": 102,
+            "label": "Bailleurs",
+            "icon": "bxs-bank",
+            "link": "/pip/bailleurs",
+            "parentId": 93
+          }
+        ]
       },
     ],
   },
+
+
+  // {
+  //   id: 92,
+  //   label: "Parties affectées",
+  //   icon: "bxs-user-detail",
+  //   subItems: [
+  //     {
+  //       id: 95,
+  //       label: "Liste",
+  //       link: "/pap/list",
+  //       parentId: 92,
+  //     }
+  //   ],
+  // },
+  // {
+  //   id: 93,
+  //   label: "Parties intéréssées",
+  //   icon: "bxs-buildings",
+  //   subItems: [
+
+  //     {
+  //       id: 97,
+  //       label: "LIST",
+  //       link: "/pip/list",
+  //       parentId: 93,
+  //     },
+  //     {
+  //       id: 98,
+  //       label: "Medias",
+  //       link: "/pip/medias",
+  //       parentId: 93,
+  //     },
+  //     {
+  //       id: 99,
+  //       label: "ONG",
+  //       link: "/pip/ong",
+  //       parentId: 93,
+  //     },
+  //     {
+  //       id: 100,
+  //       label: "Entreprises",
+  //       link: "/pip/entreprise",
+  //       parentId: 93,
+  //     },
+  //     {
+  //       id: 101,
+  //       label: "Organisations",
+  //       link: "/pip/organisation",
+  //       parentId: 93,
+  //     },
+  //     {
+  //       id: 102,
+  //       label: "Bailleurs",
+  //       link: "/pip/bailleurs",
+  //       parentId: 93,
+  //     },
+  //   ],
+  // },
+
+  {
+    id: 93,
+    label: "Consultants",
+    icon: "bxs-user-detail",
+    subItems: [
+
+      {
+        id: 102,
+        label: "Role1",
+        "icon": "bx-list-ul",
+        link: "/consultant/list",
+        parentId: 93,
+      },
+      {
+        id: 103,
+        label: "Role2",
+        "icon": "bx-list-ul",
+        link: "/consultant/list",
+        parentId: 93,
+      },
+      {
+        id: 103,
+        label: "Role3",
+        "icon": "bx-list-ul",
+        link: "/consultant/list",
+        parentId: 93,
+      }
+    ],
+  },
+
+
+
+  {
+    id: 94,
+    label: "Plaintes",
+    icon: "bxs-comment-detail",
+    subItems: [
+
+      {
+        id: 102,
+        label: "Liste",
+        "icon": "bx-list-ul",
+        link: "/plainte/list",
+        parentId: 94,
+      }
+    ],
+  },
+
+
+  {
+    id: 95,
+    label: "Entente Compensation",
+    icon: "bxs-detail",
+    subItems: [
+      {
+        id: 103,
+        label: "Liste",
+        "icon": "bx-list-ul",
+        link: "/ententeCompensation/list",
+        parentId: 95,
+      },
+      {
+        id: 104,
+        label: "Ajouter",
+        "icon": "bx-plus-circle",
+        link: "/ententeCompensation/add",
+        parentId: 95,
+      },
+      {
+        id: 105,
+        label: "Détail",
+        "icon": "bx-detail",
+        link: "/ententeCompensation/detail",
+        parentId: 95,
+      }
+    ],
+  },
+
+
 ];
+
+
+
+

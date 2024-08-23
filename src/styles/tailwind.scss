@@ -7,3 +7,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+*, *::before, *::after {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(var(--fuse-border-rgb), var(--tw-border-opacity));
+
+  .dark & {
+      --tw-border-opacity: 0.12 !important;
+  }
+  border-style: none;
+}
+

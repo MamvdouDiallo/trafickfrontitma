@@ -8,6 +8,7 @@ import { FilemanagerComponent } from "./filemanager/filemanager.component";
 import { PersonnePhysiqueComponent } from "./personne-physique/personne-physique.component";
 import { AjoutPersonnePhysiqueComponent } from "./personne-physique/ajout/ajout.component";
 import { TesterComponent } from "./tester/tester.component";
+import { JuristAppComponent } from "./jurist-app/jurist-app.component";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'dashboard' },
@@ -111,9 +112,36 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pap/pap-routing.module").then((m) => m.PapRoutingModule),
   },
+
+  {
+    path: "pip",
+    loadChildren: () =>
+      import("./pip/pip-routing.module").then((m) => m.PipRoutingModule),
+  },
+
+
+  {
+    path: "consultant",
+    loadChildren: () =>
+      import("./consultant/consulant-routing.module").then((m) => m.ConsultantRoutingModule),
+  },
+
+  {
+    path: "plainte",
+    loadChildren: () =>
+      import("./plainte/plainte-routing.module").then((m) => m.PlainteRoutingModule),
+  },
+  {
+    path: "ententeCompensation",
+    loadChildren: () =>
+      import("./entente-compensation/entente-compensation-routing.module").then((m) => m.EntenteCompensationRoutingModule),
+  },
+
   { path: "tester", component: TesterComponent },
 
-  
+  { path: "juristApp", component: JuristAppComponent },
+
+
 ];
 
 @NgModule({

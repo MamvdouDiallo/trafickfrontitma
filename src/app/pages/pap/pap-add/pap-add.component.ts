@@ -12,7 +12,11 @@ import {
   UntypedFormBuilder,
   Validators,
 } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { MatStepper } from "@angular/material/stepper";
 import * as moment from "moment";
@@ -20,29 +24,41 @@ import { CoreService } from "src/app/shared/core/core.service";
 import { SnackBarService } from "src/app/shared/core/snackBar.service";
 import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
 import { MatPaginatorIntl } from "@angular/material/paginator";
-import {MatFormFieldModule } from "@angular/material/form-field";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+import { DatePipe } from "@angular/common";
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from "@angular/material/core";
+import { LocalService } from "src/app/core/services/local.service";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 @Component({
-  selector: 'app-pap-add',
-  templateUrl: './pap-add.component.html',
-  styleUrl: './pap-add.component.css',
+  selector: "app-pap-add",
+  templateUrl: "./pap-add.component.html",
+  styleUrl: "./pap-add.component.css",
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatIconModule,AngularMaterialModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    AngularMaterialModule,
+    MatDatepickerModule,
+    MatNativeDateModule, //
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    {
-      provide: MatDialogRef,
-      useValue: [],
-    },
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    {provide: MatPaginatorIntl},
+    { provide: MAT_DATE_LOCALE, useValue: "fr-FR" },
+    { provide: MatPaginatorIntl },
+    SnackBarService,
+    MatDatepickerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PapAddComponent implements OnInit {
-
+export class PapAddComponent  {
   panelOpenState = false;
   @ViewChild("drawer") drawer: MatDrawer;
   @ViewChild("stepper") private myStepper: MatStepper;
@@ -50,16 +66,19 @@ export class PapAddComponent implements OnInit {
   id: string;
   initForm: UntypedFormGroup;
   labelButton: string;
-  suffixe: string = " une personne physique";
+  suffixe: string = " une personne affectée";
   countries: any;
-  categories: any[]=[{"id":"1","libelle":"Agricole"},{"id":"2","libelle":"Miniere"}];
+  categories: any[] = [
+    { id: "1", libelle: "Agricole" },
+    { id: "2", libelle: "Miniere" },
+  ];
   sexe = [
-    { name: "Homme", id: "M" },
-    { name: "Femme", id: "F" },
+    { id: "1", value: "Masculin" },
+    { id: "2", value: "Feminin" },
   ];
   nrSelect;
   situationsMatrimoniales: any;
-  naturePieces: any = [];
+  typeIdentifications: any = [];
   capaciteJuridiques: any;
   dateDelivrance;
   regimeMatrimoniaux: any;
@@ -71,7 +90,7 @@ export class PapAddComponent implements OnInit {
   fields: any;
   canAdd: boolean;
   dataCheck;
-  url = "personne-physique";
+  url = "personneAffectes";
   hasPhoneError: boolean;
   currentValue: any;
   countryChange: boolean = false;
@@ -85,6 +104,7 @@ export class PapAddComponent implements OnInit {
   ng2TelOptions;
   idPiece;
   listeNoire: boolean = false;
+  currentUser: any;
 
   constructor(
     public matDialogRef: MatDialogRef<PapAddComponent>,
@@ -92,61 +112,42 @@ export class PapAddComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private coreService: CoreService,
     private snackbar: SnackBarService,
-    private changeDetectorRefs: ChangeDetectorRef
+    private changeDetectorRefs: ChangeDetectorRef,
+    private localService: LocalService
   ) {
-    this.initForms();
+    this.currentUser=this.localService.getDataJson("user");
+
+    console.log("user connecter",this.currentUser)
+    console.log("==data fomrmr==================================");
+    console.log(_data.data.pays);
+    console.log("====================================");
     if (_data?.action == "new") {
       this.initForms();
       this.labelButton = "Ajouter ";
     } else if (_data?.action == "edit") {
       this.labelButton = "Modifier ";
       this.id = _data.data.id;
-      _data.data.phoneNumber == _data.data.whatsappPhoneNumber
-        ? (this.isValidOnWhatsApp = true)
-        : (this.isValidOnWhatsApp = false);
       this.initForms(_data.data);
-      this.checkCNI();
-    } else if (_data?.canAdd == false) {
-      this.labelButton = "Ajouter";
-      this.dataCheck = _data.donnees;
-      this.initForms();
+      console.log(_data.data);
+        this.initForm.get("sexe").setValue(_data.data.sexe);
+      const selectedCountry = _data.data.pays;
       this.checkCNI();
     }
     this.action = _data?.action;
     this.canAdd = _data.canAdd;
     this.dialogTitle = this.labelButton + this.suffixe;
-    //this.ng2TelOptions = {initialCountry: 'sn'};
+    this.ng2TelOptions = { initialCountry: "sn" };
+
+
   }
 
-  checkValidOnWhatsApp($event): void {
-    $event?.value == 1
-      ? (this.isValidOnWhatsApp = true)
-      : (this.isValidOnWhatsApp = false);
-    if (this.isValidOnWhatsApp) {
-      // const phoneCode = (this.initForm.get('phoneNumber')?.value)?.substring(1,4);
-      this.initForm
-        .get("whatsappPhoneNumber")
-        .setValue(this.initForm.get("phoneNumber").value);
-      this.initForm
-        .get("whatsappPhoneCode")
-        .setValue(this.initForm.get("phoneCode").value);
-    } else {
-      this.initForm.get("whatsappPhoneNumber").setValue(null);
-      this.initForm
-        .get("whatsappPhoneCode")
-        .setValue(this.initForm.get("phoneCode").value);
-    }
+
+  checkValidOnWhatsApp(event: any): void {
+    const value = event.value;
+    this.initForm.get("statutVulnerable")?.setValue(value);
   }
 
-  ngOnInit(): void {
-   // this.dateDelivrance = this.initForm.get("dateDelivrancePiece").value;
-    //this.minBirthDay = moment().subtract(18, "years");
-   this.getListPays();
-    this.getListSituationsMatrimoniales();
-    //this.getListNaturePieces();
-    //this.getListCapaciteJuridiques();
-    //this.getListProfession();
-  }
+
 
   goToStep(index) {
     this.myStepper.selectedIndex = index;
@@ -166,147 +167,124 @@ export class PapAddComponent implements OnInit {
       lieuNaissance: this.fb.control(donnees ? donnees?.lieuNaissance : null, [
         Validators.required,
       ]),
-      villeNaissance: this.fb.control(
-        donnees ? donnees?.villeNaissance : null,
-        [Validators.required]
-      ),
-      paysNaissance: this.fb.control(
-        donnees ? donnees?.paysNaissance?.id : null,
-        [Validators.required]
-      ),
-      nationalite: this.fb.control(donnees ? donnees?.nationalite?.id : null, [
+      pays: this.fb.control(donnees ? donnees?.pays : null, [
+        Validators.required,
+      ]),
+      nationalite: this.fb.control(donnees ? donnees?.nationalite : null, [
+        Validators.required,
+      ]),
+      categorie: this.fb.control(donnees ? donnees?.categorie : null, [
+        Validators.required,
+      ]),
+      age: this.fb.control(donnees ? donnees?.age : null, [
         Validators.required,
       ]),
       sexe: this.fb.control(donnees ? donnees?.sexe : null, [
         Validators.required,
       ]),
       situationMatrimoniale: this.fb.control(
-        donnees ? donnees?.situationMatrimoniale?.id : null,
+        donnees ? donnees?.situationMatrimoniale : null,
         [Validators.required]
       ),
-      naturePiece: this.fb.control(
-        donnees
-          ? donnees?.naturePiece?.id
-          : !this.canAdd
-          ? this.dataCheck?.nature
-          : null,
-        [Validators.required]
-      ),
-      numeroPiece: this.fb.control(
-        donnees
-          ? donnees?.numeroPiece
-          : !this.canAdd
-          ? this.dataCheck?.numeroPiece
-          : null,
-        [Validators.required]
-      ),
-      dateDelivrancePiece: this.fb.control(
-        donnees ? donnees?.dateDelivrancePiece : null,
-        [Validators.required]
-      ),
-      dateValiditePiece: this.fb.control(
-        donnees ? donnees?.dateValiditePiece : null,
-        [Validators.required]
-      ),
-      paysDelivrancePiece: this.fb.control(
-        donnees ? donnees?.paysDelivrancePiece.id : null,
-        [Validators.required]
-      ),
-      lieuDelivrancePiece: this.fb.control(
-        donnees ? donnees?.lieuDelivrancePiece : null,
-        [Validators.required]
-      ),
-      nomMere: this.fb.control(donnees ? donnees?.nomMere : null, [
+      idPap: this.fb.control(donnees ? donnees?.idPap : null, [
         Validators.required,
       ]),
+      typeIdentification: this.fb.control(
+        donnees ? donnees?.typeIdentification : null,
+        [Validators.required]
+      ),
+      numeroIdentification: this.fb.control(
+        donnees ? donnees?.numeroIdentification : null,
+        [Validators.required]
+      ),
+      statutPap: this.fb.control(donnees ? donnees?.statutPap : null, [
+        Validators.required,
+      ]),
+
       prenomMere: this.fb.control(donnees ? donnees?.prenomMere : null, [
         Validators.required,
       ]),
       prenomPere: this.fb.control(donnees ? donnees?.prenomPere : null, [
         Validators.required,
       ]),
-      prenomPersonneContact: this.fb.control(
-        donnees ? donnees?.prenomPersonneContact : null,
-        [Validators.required]
-      ),
-      nomPersonneContact: this.fb.control(
-        donnees ? donnees?.nomPersonneContact : null,
-        [Validators.required]
-      ),
-      capaciteJuridique: this.fb.control(
-        donnees ? donnees?.capaciteJuridique?.id : null,
-        [Validators.required]
-      ),
-      // regimeMatrimonial: this.fb.control(donnees? donnees?.regimeMatrimonial?.id: null,[]),
-      profession: this.fb.control(donnees ? donnees?.profession?.id : null, []),
-      nonVoyant: this.fb.control(donnees ? donnees?.nonVoyant : false, [
+
+      nomExploitant: this.fb.control(donnees ? donnees?.nomExploitant : null, [
         Validators.required,
       ]),
-      illettre: this.fb.control(donnees ? donnees?.illettre : false, [
-        Validators.required,
-      ]),
-      paysResidence: this.fb.control(
-        donnees ? donnees?.paysResidence?.id : null,
+      prenomExploitant: this.fb.control(
+        donnees ? donnees?.prenomExploitant : null,
         [Validators.required]
       ),
-      ville: this.fb.control(donnees ? donnees?.ville : null, [
+      localiteResidence: this.fb.control(
+        donnees ? donnees?.localiteResidence : null,
+        [Validators.required]
+      ),
+      departement: this.fb.control(donnees ? donnees?.departement : null, [
+        Validators.required,
+      ]),
+      region: this.fb.control(donnees ? donnees?.region : null, [
         Validators.required,
       ]),
       adresse: this.fb.control(donnees ? donnees?.adresse : null, [
         Validators.required,
       ]),
-      adresseEntreprise: this.fb.control(
-        donnees ? donnees?.adresseEntreprise : null,
+      numeroTelephone: this.fb.control(
+        donnees ? donnees?.numeroTelephone : null,
         [Validators.required]
       ),
-      phoneCode: this.fb.control(donnees ? donnees?.phoneCode : 221, []),
-      whatsappPhoneCode: this.fb.control(
-        donnees ? donnees?.whatsappPhoneCode : 221,
-        []
+      superficieCultive: this.fb.control(
+        donnees ? donnees?.superficieCultive : null,
+        [Validators.required]
       ),
-      phoneNumber: this.fb.control(donnees ? donnees?.phoneNumber : null, [
+      superficieAffecte: this.fb.control(
+        donnees ? donnees?.superficieAffecte : null,
+        [Validators.required]
+      ),
+
+      statutVulnerable: this.fb.control(
+        donnees ? donnees?.statutVulnerable : null
+      ),
+
+      descriptionBienAffecte: this.fb.control(
+        donnees ? donnees?.descriptionBienAffecte : null,
+        [Validators.required]
+      ),
+      nombreParcelle: this.fb.control(
+        donnees ? donnees?.nombreParcelle : null,
+        [Validators.required]
+      ),
+      idParcelle: this.fb.control(donnees ? donnees?.idParcelle : null, [
         Validators.required,
       ]),
-      phoneNumberPersonneContact: this.fb.control(
-        donnees ? donnees?.phoneNumberPersonneContact : null,
+      typeEquipement: this.fb.control(
+        donnees ? donnees?.typeEquipement : null,
         [Validators.required]
       ),
-      whatsappPhoneNumber: this.fb.control(
-        donnees ? donnees?.whatsappPhoneNumber : null
-      ),
-      email: this.fb.control(donnees ? donnees?.email : null, [
-        Validators.pattern(this.emailPattern),
+      project_id: this.fb.control(this.currentUser.projects ? this.currentUser.projects[0]?.id   : null, [
+        Validators.required,
       ]),
-      emailPersonneContact: this.fb.control(
-        donnees ? donnees?.emailPersonneContact : null,
-        [Validators.pattern(this.emailPattern)]
-      ),
-      descriptionDesBiensAffectes: this.fb.control(
-        donnees ? donnees?.descriptionDesBiensAffectes : null,
-        [Validators.required]
-      ),
     });
   }
 
   refresh(): void {
-    this.initForm.get("numeroPiece").setValue(null);
+    this.initForm.get("numeroIdentification").setValue(null);
     this.initForm.get("dateDelivrancePiece").setValue(null);
     this.initForm.get("dateValiditePiece").setValue(null);
   }
   checkCNI() {
     this.errorCNI = "";
-    const fieldCNI = "numeroPiece";
+    const fieldCNI = "numeroIdentification";
     if (
       this.initForm.get(fieldCNI).value &&
-      this.initForm.get("naturePiece").value
+      this.initForm.get("typeIdentification").value
     ) {
       const cni = this.initForm.get(fieldCNI).value.toString();
       const taille = cni.length;
-      const type = this.initForm.get("naturePiece").value;
-      const nombreCaractereMin = this.naturePieces.find(
+      const type = this.initForm.get("typeIdentification").value;
+      const nombreCaractereMin = this.typeIdentifications.find(
         (piece) => piece?.id == type
       )?.nombreCaractereMin;
-      const nombreCaractereMax = this.naturePieces.find(
+      const nombreCaractereMax = this.typeIdentifications.find(
         (piece) => piece?.id == type
       )?.nombreCaractereMax;
       if (taille < nombreCaractereMin || taille > nombreCaractereMax) {
@@ -316,33 +294,7 @@ export class PapAddComponent implements OnInit {
   }
 
   get phoneValue() {
-    return this.initForm.controls["phoneNumberPersonneContact"];
-  }
-
-  checkDateDexpiration(evt) {
-    this.initForm.get("dateValiditePiece").setValue("");
-    const codePiece = this.naturePieces.find(
-      (el) => el.id == this.initForm.get("naturePiece").value
-    )?.code;
-    if (
-      (this.initForm.get("dateDelivrancePiece").value !== "" &&
-        this.initForm.get("naturePiece").value !== "" &&
-        codePiece === "CNI") ||
-      codePiece === "NP0001"
-    ) {
-      let typeDePiece = this.initForm.get("naturePiece").value;
-      let durreValidite = this.naturePieces.find(
-        (piece) => piece?.id == typeDePiece
-      )?.durreValidite;
-      let dateDelivrance = moment(
-        this.initForm.get("dateDelivrancePiece").value
-      )
-        .add(durreValidite, "years")
-        .subtract(1, "day")
-        .toDate();
-      this.initForm.get("dateValiditePiece").setValue(dateDelivrance);
-      this.initForm.get("dateValiditePiece").updateValueAndValidity();
-    }
+    return this.initForm.controls["numeroTelephonePersonneContact"];
   }
 
   getNationalite(value: any) {
@@ -368,21 +320,19 @@ export class PapAddComponent implements OnInit {
     }
   }
 
-  getPaysNaissance(value: any) {
+  getpays(value: any) {
     if (this.countries) {
       const liste = this.countries.filter((type) => type.id == value);
       return liste.length != 0 ? liste[0]?.nom : value;
     }
   }
 
-  getNaturePiece(value: any) {
-    if (this.naturePieces) {
-      const liste = this.naturePieces.filter((type) => type.id == value);
+  gettypeIdentification(value: any) {
+    if (this.typeIdentifications) {
+      const liste = this.typeIdentifications.filter((type) => type.id == value);
       return liste.length != 0 ? liste[0]?.libelle : value;
     }
   }
-
-
 
   firstStep() {
     if (
@@ -390,14 +340,14 @@ export class PapAddComponent implements OnInit {
       this.initForm.get("nom").invalid ||
       this.initForm.get("dateNaissance").invalid ||
       this.initForm.get("lieuNaissance").invalid ||
-      this.initForm.get("villeNaissance").invalid ||
-      this.initForm.get("paysNaissance").invalid ||
+      this.initForm.get("departementNaissance").invalid ||
+      this.initForm.get("pays").invalid ||
       this.initForm.get("nationalite").invalid ||
       this.initForm.get("situationMatrimoniale").invalid ||
       this.initForm.get("capaciteJuridique").invalid ||
       this.initForm.get("nonVoyant").invalid ||
       this.initForm.get("illettre").invalid ||
-      this.initForm.get("descriptionDesBiensAffectes").invalid
+      this.initForm.get("descriptionBienAffecte").invalid
     ) {
       return false;
     } else {
@@ -407,8 +357,8 @@ export class PapAddComponent implements OnInit {
 
   secondStep() {
     if (
-      this.initForm.get("naturePiece").invalid ||
-      this.initForm.get("numeroPiece").invalid ||
+      this.initForm.get("typeIdentification").invalid ||
+      this.initForm.get("numeroIdentification").invalid ||
       this.initForm.get("dateDelivrancePiece").invalid ||
       this.initForm.get("dateValiditePiece").invalid ||
       this.initForm.get("paysDelivrancePiece").invalid ||
@@ -419,7 +369,7 @@ export class PapAddComponent implements OnInit {
       this.initForm.get("prenomPersonneContact").invalid ||
       this.initForm.get("nomPersonneContact").invalid ||
       this.initForm.get("emailPersonneContact").invalid ||
-      this.initForm.get("phoneNumberPersonneContact").invalid
+      this.initForm.get("numeroTelephonePersonneContact").invalid
     ) {
       return false;
     } else {
@@ -430,17 +380,16 @@ export class PapAddComponent implements OnInit {
   getListPays() {
     this.coreService.list("pays", 0, 10000).subscribe((response) => {
       if (response["responseCode"] === 200) {
-
         this.countries = response["data"];
-        console.log("countries",this.countries);
+        console.log("countries", this.countries);
 
         this.nrSelect = response["data"]
           .filter((el) => el.codeAlpha2 == "SN" || el.codeAlpha2 == "SEN")
           .map((e) => e.id)[0];
-        this.initForm.get("paysNaissance").setValue(this.nrSelect);
-        this.initForm.get("nationalite").setValue(this.nrSelect);
-        this.initForm.get("paysDelivrancePiece").setValue(this.nrSelect);
-        this.initForm.get("paysResidence").setValue(this.nrSelect);
+        this.initForm.get("pays").setValue(this.nrSelect);
+       // this.initForm.get("nationalite").setValue(this.nrSelect);
+        // this.initForm.get("paysDelivrancePiece").setValue(this.nrSelect);
+        //this.initForm.get("localiteResidence").setValue(this.nrSelect);
 
         this.changeDetectorRefs.markForCheck();
       }
@@ -452,10 +401,9 @@ export class PapAddComponent implements OnInit {
       .list("situation-matrimoniale", 0, 10000)
       .subscribe((response) => {
         console.log(response);
-       // alert("Please select")
+        // alert("Please select")
 
         if (response["responseCode"] === 200) {
-
           this.situationsMatrimoniales = response["data"];
           this.changeDetectorRefs.markForCheck();
         }
@@ -468,10 +416,10 @@ export class PapAddComponent implements OnInit {
     }
   }
 
-  getListNaturePieces() {
+  getListtypeIdentifications() {
     this.coreService.list("nature-piece", 0, 10000).subscribe((response) => {
       if (response["responseCode"] === 200) {
-        this.naturePieces = response["data"];
+        this.typeIdentifications = response["data"];
         this.changeDetectorRefs.markForCheck();
       }
     });
@@ -541,53 +489,21 @@ export class PapAddComponent implements OnInit {
 
   addItems() {
     // if(this.listeNoire){
+    console.log("====================================");
+    console.log(this.initForm.value);
+    console.log("====================================");
     this.snackbar
-      .showConfirmation(
-        "Voulez-vous vraiment ajouter cette personne physique ?"
-      )
+      .showConfirmation("Voulez-vous vraiment ajouter ce pap ?")
       .then((result) => {
         if (result["value"] == true) {
           this.loader = true;
-          this.changeDetectorRefs.markForCheck();
-          const dateNaissance = moment(
-            this.initForm.get("dateNaissance")?.value
-          ).format("YYYY-MM-DD");
-          this.initForm.get("dateNaissance")?.setValue(dateNaissance);
-          const dateDelivrancePiece = moment(
-            this.initForm.get("dateDelivrancePiece")?.value
-          ).format("YYYY-MM-DD");
-          this.initForm
-            .get("dateDelivrancePiece")
-            ?.setValue(dateDelivrancePiece);
-          const dateValiditePiece = moment(
-            this.initForm.get("dateValiditePiece")?.value
-          ).format("YYYY-MM-DD");
-          this.initForm.get("dateValiditePiece")?.setValue(dateValiditePiece);
           const value = this.initForm.value;
-          if (!this.countryChange) {
-            // const phoneCode = (this.initForm.get('phoneNumber')?.value)?.substring(1,4);
-            const phoneCode = "221";
-            value["phoneCode"] = phoneCode;
-            value["phoneNumber"] = this.initForm.get("phoneNumber")?.value;
-          } else {
-            value["phoneCode"] = this.eventNumber;
-            value["phoneNumber"] = this.currentValue;
-          }
-          if (!this.isValidOnWhatsApp) {
-            value["whatsappPhoneCode"] =
-              this.initForm.get("whatsappPhoneCode").value;
-            value["whatsappPhoneNumber"] = this.initForm.get(
-              "whatsappPhoneNumber"
-            )?.value;
-          }
           this.coreService.addItem(value, this.url).subscribe(
             (resp) => {
               if (resp["responseCode"] == 200) {
-                this.snackbar.openSnackBar(
-                  "Personne physique ajoutée avec succés",
-                  "OK",
-                  ["mycssSnackbarGreen"]
-                );
+                this.snackbar.openSnackBar("Pap  ajoutée avec succés", "OK", [
+                  "mycssSnackbarGreen",
+                ]);
                 this.loader = false;
                 this.matDialogRef.close(resp["data"]);
                 this.changeDetectorRefs.markForCheck();
@@ -597,9 +513,11 @@ export class PapAddComponent implements OnInit {
               }
             },
             (error) => {
+              console.log(error);
+
               this.loader = false;
               this.changeDetectorRefs.markForCheck();
-              this.snackbar.showErrors(error);
+              this.snackbar.showErrors(error.message);
             }
           );
         }
@@ -612,7 +530,7 @@ export class PapAddComponent implements OnInit {
   updateItems() {
     this.snackbar
       .showConfirmation(
-        "Voulez-vous vraiment modifier cette personne physique ?"
+        "Voulez-vous vraiment modifier cette personne affectée ?"
       )
       .then((result) => {
         if (result["value"] == true) {
@@ -624,7 +542,7 @@ export class PapAddComponent implements OnInit {
                 this.loader = false;
                 this.matDialogRef.close(resp);
                 this.snackbar.openSnackBar(
-                  "Personne physique modifiée avec succés",
+                  "Personne affectée modifiée avec succés",
                   "OK",
                   ["mycssSnackbarGreen"]
                 );
@@ -646,18 +564,10 @@ export class PapAddComponent implements OnInit {
   }
 
   checkRecap(type) {
-    if (this.initForm.invalid) {
-      this.checkValidity(this.initForm);
-    } else {
-      if (this.canAdd == false) {
-        this.addItems();
-      }
-      if (type == "new") {
-        this.addItems();
-      } else if (type == "edit") {
-        this.updateItems();
-      }
+    if (type == "new") {
+      this.addItems();
+    } else if (type == "edit") {
+      this.updateItems();
     }
   }
 }
-

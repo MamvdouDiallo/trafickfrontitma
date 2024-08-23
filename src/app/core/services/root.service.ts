@@ -1,6 +1,8 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { T } from "@fullcalendar/core/internal-common";
 import { number } from "echarts";
+import { tap } from "lodash";
 import { Observable } from "rxjs";
 import { Image } from "src/app/shared/models/image.model";
 import { environment } from "src/environments/environment";
@@ -51,7 +53,30 @@ export class RootService {
   updateImage(file: File, filename: string, id: number): Observable<Image> {
     const imageFormData = new FormData();
     imageFormData.append("image", file, filename);
-    const url = this.url +"/image/update/"+`${id}`;
+    const url = this.url + "/image/update/" + `${id}`;
     return this.http.put<Image>(url, imageFormData);
   }
+
+  getByCodePap<T>(url: string, codePap: string, offset: number = 0, max: number = 100): Observable<T> {
+    const params = new HttpParams()
+      .set('codePap', codePap)
+      .set('offset', offset.toString())
+      .set('max', max.toString());
+
+    return this.http.get<T>(`${this.url}/${url}/by-codePap`, { params });
+  }
+
+
+
+  getPlaintEntenteByCodePap<T>(url: string, codePap: string): Observable<T> {
+    const params = new HttpParams()
+      .set('codePap', codePap)
+
+
+    return this.http.get<T>(`${this.url}/${url}/by-codePap`, { params });
+  }
+
+
+
+
 }

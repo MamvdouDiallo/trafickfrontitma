@@ -17,6 +17,8 @@ import { UIModule } from '../../shared/ui/ui.module';
 import { ListComponent } from './list/list.component';
 import { KanbanboardComponent } from './kanbanboard/kanbanboard.component';
 import { CreatetaskComponent } from './createtask/createtask.component';
+import { AngularMaterialModule } from 'src/app/shared/angular-materiel-module/angular-materiel-module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ListComponent, KanbanboardComponent, CreatetaskComponent],
@@ -31,7 +33,9 @@ import { CreatetaskComponent } from './createtask/createtask.component';
     ModalModule.forRoot(),
     CKEditorModule,
     DndModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    AngularMaterialModule,
+    MatDialogModule
   ]
 })
 export class TasksModule { }

@@ -68,10 +68,15 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     if (this.authService.currentUser()) {
       this.user = this.authService.currentUser();
-      this.myImage = this.getImageFromBase64(
-        this.user.user.image.type,
-        this.user.user.image.image
-      );
+      if(this.user.user.image){
+        this.myImage = this.getImageFromBase64(
+          this.user.user.image.type,
+          this.user.user.image.image
+        );
+      }else{
+        this.myImage = 'assets/images/user.png';
+      }
+
     }
 
     this.store.select("layout").subscribe((data) => {

@@ -20,20 +20,15 @@
         <div class="card-body">
           <div class="d-flex">
             <div class="flex-grow-1">
-              <p class="text-muted fw-medium">????</p>
-              <h4 class="mb-0">14,487</h4>
+              <p class="text-muted fw-medium">PAP(Personnes Affectées)</p>
+              <h4 class="mb-0">14</h4>
             </div>
 
-            <div class="flex-shrink-0 align-self-center">
-              <apx-chart class="apex-charts" dir="ltr" [series]="jobViewChart.series" [chart]="jobViewChart.chart"
-                [stroke]="jobViewChart.stroke" [colors]="jobViewChart.colors" [fill]="jobViewChart.fill"
-                [tooltip]="jobViewChart.tooltip"></apx-chart>
-            </div>
+
           </div>
         </div>
         <div class="card-body border-top py-3">
-          <p class="mb-0"> <span class="badge badge-soft-success me-1"><i
-                class="bx bx-trending-up align-bottom me-1"></i> 18.89%</span> Increase last month</p>
+
         </div>
       </div>
     </div><!--end col-->
@@ -42,20 +37,15 @@
         <div class="card-body">
           <div class="d-flex">
             <div class="flex-grow-1">
-              <p class="text-muted fw-medium">????</p>
-              <h4 class="mb-0">7,402</h4>
+              <p class="text-muted fw-medium">PIP(Parties Intérésseés)</p>
+              <h4 class="mb-0">7</h4>
             </div>
 
-            <div class="flex-shrink-0 align-self-center">
-              <apx-chart class="apex-charts" dir="ltr" [series]="ApplicationChart.series"
-                [chart]="ApplicationChart.chart" [stroke]="ApplicationChart.stroke" [colors]="ApplicationChart.colors"
-                [fill]="ApplicationChart.fill" [tooltip]="ApplicationChart.tooltip"></apx-chart>
-            </div>
+
           </div>
         </div>
         <div class="card-body border-top py-3">
-          <p class="mb-0"> <span class="badge badge-soft-success me-1"><i
-                class="bx bx-trending-up align-bottom me-1"></i> 24.07%</span> Increase last month</p>
+
         </div>
       </div>
     </div><!--end col-->
@@ -64,20 +54,15 @@
         <div class="card-body">
           <div class="d-flex">
             <div class="flex-grow-1">
-              <p class="text-muted fw-medium">????</p>
-              <h4 class="mb-0">12,487</h4>
+              <p class="text-muted fw-medium">Plaintes</p>
+              <h4 class="mb-0">20</h4>
             </div>
 
-            <div class="flex-shrink-0 align-self-center">
-              <apx-chart class="apex-charts" dir="ltr" [series]="jobViewChart.series" [chart]="jobViewChart.chart"
-                [stroke]="jobViewChart.stroke" [colors]="jobViewChart.colors" [fill]="jobViewChart.fill"
-                [tooltip]="jobViewChart.tooltip"></apx-chart>
-            </div>
+
           </div>
         </div>
         <div class="card-body border-top py-3">
-          <p class="mb-0"> <span class="badge badge-soft-success me-1"><i
-                class="bx bx-trending-up align-bottom me-1"></i> 8.41%</span> Increase last month</p>
+
         </div>
       </div>
     </div><!--end col-->
@@ -86,20 +71,15 @@
         <div class="card-body">
           <div class="d-flex">
             <div class="flex-grow-1">
-              <p class="text-muted fw-medium">?????</p>
-              <h4 class="mb-0">12,487</h4>
+              <p class="text-muted fw-medium">Consultations</p>
+              <h4 class="mb-0">12</h4>
             </div>
 
-            <div class="flex-shrink-0 align-self-center">
-              <apx-chart class="apex-charts" dir="ltr" [series]="RejectedChart.series" [chart]="RejectedChart.chart"
-                [stroke]="RejectedChart.stroke" [colors]="RejectedChart.colors" [fill]="RejectedChart.fill"
-                [tooltip]="RejectedChart.tooltip"></apx-chart>
-            </div>
+           
           </div>
         </div>
         <div class="card-body border-top py-3">
-          <p class="mb-0"> <span class="badge badge-soft-danger me-1"><i
-                class="bx bx-trending-down align-bottom me-1"></i> 20.63%</span> Decrease last month</p>
+
         </div>
       </div>
     </div><!--end col-->
@@ -131,6 +111,11 @@
             [labels]="emailSentBarChart.labels" [dataLabels]="emailSentBarChart.dataLabels"
             [colors]="emailSentBarChart.colors" [markers]="emailSentBarChart.markers">
           </apx-chart>
+          <apx-chart dir="ltr" class="apex-charts" [series]="emailSentPieChart.series" [chart]="emailSentPieChart.chart"
+            [labels]="emailSentPieChart.labels" [legend]="emailSentPieChart.legend" [colors]="emailSentPieChart.colors"
+            [dataLabels]="emailSentPieChart.dataLabels" [plotOptions]="emailSentPieChart.plotOptions">
+          </apx-chart>
+
         </div>
       </div>
     </div><!--end col-->
@@ -154,13 +139,13 @@
         </div> -->
       </div><!--end card-->
       <div class="card">
-       
+
       </div><!--end card-->
     </div><!--end col-->
   </div><!--end row-->
 
   <div class="row">
-  <!--end col-->
+    <!--end col-->
 
   </div><!--end row-->
 

@@ -11,7 +11,7 @@ import { PapDetailComponent } from './pap-detail/pap-detail.component';
     TableauComponent
   ],
   declarations: [
-    PapDetailComponent
+    
   ]
 })
 export class PapModule { }
