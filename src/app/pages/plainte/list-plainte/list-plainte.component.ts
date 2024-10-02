@@ -1,29 +1,40 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { LocalService } from 'src/app/core/services/local.service';
-import { ServiceParent } from 'src/app/core/services/serviceParent';
-import { CoreService } from 'src/app/shared/core/core.service';
-import { SnackBarService } from 'src/app/shared/core/snackBar.service';
-import { ButtonAction, TableauComponent } from 'src/app/shared/tableau/tableau.component';
-import { PapAddComponent } from '../../pap/pap-add/pap-add.component';
-import { PapService } from '../../pap/pap.service';
-import { SharedService } from '../../projects/shared.service';
-import { AddComponent } from '../../tasks/add/add.component';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { AngularMaterialModule } from 'src/app/shared/angular-materiel-module/angular-materiel-module';
-import { UIModule } from 'src/app/shared/ui/ui.module';
-import { AddPlainteComponent } from '../add-plainte/add-plainte.component';
+import { DatePipe } from "@angular/common";
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
+import { UntypedFormGroup } from "@angular/forms";
+import * as moment from "moment";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from "@angular/material/dialog";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { LocalService } from "src/app/core/services/local.service";
+import { ServiceParent } from "src/app/core/services/serviceParent";
+import { CoreService } from "src/app/shared/core/core.service";
+import { SnackBarService } from "src/app/shared/core/snackBar.service";
+import {
+  ButtonAction,
+  TableauComponent,
+} from "src/app/shared/tableau/tableau.component";
+import { PapAddComponent } from "../../pap/pap-add/pap-add.component";
+import { PapService } from "../../pap/pap.service";
+import { SharedService } from "../../projects/shared.service";
+import { AddComponent } from "../../tasks/add/add.component";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
+import { UIModule } from "src/app/shared/ui/ui.module";
+import { AddPlainteComponent } from "../add-plainte/add-plainte.component";
+import * as XLSX from "xlsx";
+import { DatatableComponent } from "src/app/shared/datatable/datatable.component";
+import { ExportService } from "src/app/shared/core/export.service";
 
 @Component({
-  selector: 'app-list-plainte',
-  templateUrl: './list-plainte.component.html',
+  selector: "app-list-plainte",
+  templateUrl: "./list-plainte.component.html",
   standalone: true,
   providers: [
     {
@@ -36,12 +47,17 @@ import { AddPlainteComponent } from '../add-plainte/add-plainte.component';
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: "outline" },
     },
+    ExportService
   ],
-  imports: [TableauComponent, UIModule, AngularMaterialModule],
-  styleUrl: './list-plainte.component.css'
+  imports: [
+      TableauComponent,
+      UIModule,
+      AngularMaterialModule,
+      DatatableComponent,
+  ],
+  styleUrl: "./list-plainte.component.css",
 })
 export class ListPlainteComponent implements OnInit {
-
   breadCrumbItems: (
     | { label: string; active?: undefined }
     | { label: string; active: boolean }
@@ -108,7 +124,9 @@ export class ListPlainteComponent implements OnInit {
     public toastr: ToastrService,
     private sharedService: SharedService,
     private localService: LocalService,
-    private coreService: CoreService
+    private coreService: CoreService,
+    private exportService: ExportService,
+
   ) {}
 
   ngOnInit(): void {
@@ -147,7 +165,6 @@ export class ListPlainteComponent implements OnInit {
         th: "Objet",
         td: "recommandation",
       },
-
     ];
   }
 
@@ -221,7 +238,7 @@ export class ListPlainteComponent implements OnInit {
   updateItems(information): void {
     console.log(information);
     this.snackbar.openModal(
-      AddComponent,
+      AddPlainteComponent,
       "50rem",
       "edit",
       "",
@@ -268,13 +285,11 @@ export class ListPlainteComponent implements OnInit {
   }
 
   detailItems(id, information) {
-    console.log("ttetete",information);
+    console.log("ttetete", information);
     this.localService.saveDataJson("plainte", information);
     this.sharedService.setSelectedItem(information);
     this._router.navigate(["plainte/detail"]);
   }
-
-
 
   record(item) {}
 
@@ -312,19 +327,170 @@ export class ListPlainteComponent implements OnInit {
     }
   }
 
+  // importData() {
+  //   return this.papService
+  //     .add("plaintes/importer", this.dataExcel)
+  //     .subscribe(
+  //       (data: any) => {
+  //         console.log(data);
+  //         this.toastr.success(data.message);
+  //         this.dataExcel = [];
+  //         this.getPlainte();
+  //       },
+  //       (err) => {
+  //         this.toastr.error(err);
+  //       }
+  //     );
+  // }
+  invalidComplaints: any[] = [];
   importData() {
-    return this.papService
-      .add("personneAffectes/importer", this.dataExcel)
-      .subscribe(
-        (data: any) => {
-          console.log(data);
-          this.toastr.success(data.message);
+    this.papService.add("plaintes/importer", this.dataExcel).subscribe(
+      (response: any) => {
+        console.log(response);
+        if (response.responseCode === 201) {
+          this.toastr.success(response.message);
           this.dataExcel = [];
-          this.getPlainte();
-        },
-        (err) => {
-          this.toastr.error(err);
+        } else if (response.responseCode === 207) {
+          this.toastr.warning(response.message);
+          this.dataExcel = [];
+          this.invalidComplaints = response.data[0].plaintesInvalides.map(
+            (item: any) => item.plainteRequest
+          );
+          //this.invalidComplaints = response.data[0].plaintesInvalides;
+          console.log("Invalid complaints:", this.invalidComplaints);
+          this.dataExcel = this.invalidComplaints;
+        } else if (response.responseCode === 400) {
+          this.toastr.error(response.message);
+          this.dataExcel = [];
+          // this.invalidComplaints = response.data[0].plaintesInvalides;
+          this.invalidComplaints = response.data[0].plaintesInvalides.map(
+            (item: any) => item.plainteRequest
+          );
+          console.log("All invalid complaints:", this.invalidComplaints);
+          this.dataExcel = this.invalidComplaints;
         }
-      );
+        //  this.dataExcel = [];
+
+        this.getPlainte();
+      },
+      (error) => {
+        console.error(error);
+        this.toastr.error("An error occurred during the import process.");
+      }
+    );
   }
+
+  fileUpload(event: any) {
+    console.log(event.target.files);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsBinaryString(selectedFile);
+    fileReader.onload = (event: any) => {
+      console.log(event);
+      let binaryData = event.target.result;
+      let workbook = XLSX.read(binaryData, { type: "binary" });
+      workbook.SheetNames.forEach((sheet) => {
+        const worksheet = workbook.Sheets[sheet];
+        const data: any[][] = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+        }) as any[][];
+        const headers = data[0];
+        this.headings = headers;
+        const jsonData = data.slice(1).map((row: any[]) => {
+          let obj: any = {};
+          headers.forEach((header: string, index: number) => {
+            obj[header] = row[index];
+          });
+          return obj;
+        });
+        this.dataExcel = jsonData;
+        //this.convertedJson = JSON.stringify(jsonData, undefined, 4);
+        console.log(this.dataExcel);
+      });
+    };
+  }
+
+
+
+
+  exportAs(format) {
+    let nom = 'invalid data';
+    let value = this.invalidComplaints; // Utilisation de invalidComplaints au lieu de l'appel backend
+
+    if (value.length != 0) {
+      if (format == "excel") {
+        var col = this.headings;
+        var rows = [];
+        var itemCurrent;
+
+        for (var item of value) {
+          itemCurrent = item;
+          let tabField = [];
+          let elementKeys = Object.keys(item);
+          let i = 0;
+
+          for (let field of this.headings) {
+            for (let element of elementKeys) {
+              if (element.toString() == field.toString()) {
+                if (
+                  field == "createdAt" ||
+                  field == "dateNaiss" ||
+                  field == "dateCirculation" ||
+                  field == "dateDepart" ||
+                  field == "dateDarriver"
+                ) {
+                  tabField.push({
+                    [this.headings[i]]:
+                      moment(itemCurrent[field]).format("DD/MM/YYYY") || "",
+                  });
+                } else {
+                  if (
+                    typeof itemCurrent[field] === "object" &&
+                    itemCurrent[field] !== null
+                  ) {
+                    let fieldValue =
+                      itemCurrent[field]["libelle"] ||
+                      itemCurrent[field]["nom"] ||
+                      itemCurrent[field]["libellePays"] ||
+                      "";
+                    let fieldName = this.headings[i];
+
+                    tabField.push({
+                      [fieldName]: fieldValue,
+                    });
+                  } else {
+                    tabField.push({
+                      [this.headings[i]]:
+                        itemCurrent[field] || "",
+                    });
+                  }
+                }
+              }
+            }
+            i++;
+          }
+          rows.push(Object.assign({}, ...tabField));
+        }
+
+        this.exportService.exportAsExcelFile(
+          this.exportService.preFormatLoanInfo(rows),
+          nom
+        );
+        this.snackbar.openSnackBar("Téléchargement réussi", "OK", [
+          "mycssSnackbarGreen",
+        ]);
+        this.exporter = false;
+      }
+    } else {
+      this.snackbar.openSnackBar("La liste est vide!!!", "OK", [
+        "mycssSnackbarRed",
+      ]);
+    }
+  }
+
+
+
+
+
+
 }

@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './datatable.component.html',
   standalone: true,
   imports:[CommonModule],
-  styleUrls: ['./datatable.component.scss']
+  //styleUrls: ['./datatable.component.scss']
 })
 export class DatatableComponent {
   @Input() headings: [];

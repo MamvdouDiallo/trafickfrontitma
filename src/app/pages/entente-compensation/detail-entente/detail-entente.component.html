@@ -7,35 +7,39 @@
     <img src="assets/images/Rectangle109.png" alt="" srcset="">
   </div>
   <div class="flex flex-col text-[15px] text-black">
-    <label for="">Plan de réinstallation :</label>
-    <label for="">Code Pap :</label>
+    <label for="">Plan de réinstallation : {{projectName}}</label>
+    <label for="">Code Pap : {{entente.codePap}}</label>
     <label for="">Mr/Mme</label>
-    <label for="">Prénom & Nom :</label>
-    <label for="">Date & Lieu de naissance :</label>
-    <label for="">Cni/Passport :</label>
-    <label for="">Localité :</label>
+    <label for="">Prénom & Nom : {{entente.prenom}} {{entente.nom}}</label>
+    <label for="">Date & Lieu de naissance : {{entente.dateNaissance}} à {{entente.lieuNaissance}}</label>
+    <label for="">Cni/Passport : {{entente.numeroPiece}}</label>
   </div>
-  <div class="p-4">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur possimus molestiae perspiciatis incidunt quibusdam laboriosam sed dignissimos numquam inventore. Illo quae possimus necessitatibus qui architecto esse veniam eligendi iusto soluta.
-    Perspiciatis praesentium reprehenderit cumque provident incidunt voluptas mollitia id porro ex officia numquam magni tempora sapiente, beatae natus dicta, consequuntur suscipit debitis. Enim obcaecati unde hic ad iure saepe maxime!
-    Fugit harum nihil beatae sunt natus pariatur sint praesentium nostrum porro totam perspiciatis, facere illum quasi recusandae in est debitis aperiam dolor ratione accusamus, labore laboriosam corrupti? Ex, officiis mollitia?
-    Impedit consectetur blanditiis error doloribus quod mollitia sint eum deserunt, neque, nihil ducimus possimus eveniet totam maxime. Enim autem expedita quis possimus harum, quibusdam deserunt voluptatem dolorem, ab, tenetur sunt.
-    Laudantium, ad aperiam fuga deserunt recusandae odio ducimus deleniti impedit quod repellat esse asperiores. Alias molestias exercitationem dignissimos, quisquam delectus sint. Unde nisi iusto ipsum fugit reiciendis cumque iure omnis.
-    Tenetur soluta id ex fuga tempore reiciendis ducimus harum dolorum maiores ea assumenda maxime, inventore labore provident culpa! Perferendis illo officiis aperiam perspiciatis nulla nobis vitae commodi rerum eos error.
-    Ratione, reiciendis optio hic saepe, tenetur impedit exercitationem facere ducimus quo illo quas? Dolores eaque nobis repellendus aspernatur quia ipsum sit repellat illo. In aspernatur soluta facere. Quam, dolorem aliquid.
-    Optio quidem illum qui quis maxime reiciendis consequuntur nihil quasi sunt officiis! Sunt labore ut impedit voluptas architecto nihil cumque cum natus alias? Tempora ipsam, sint recusandae obcaecati natus iste.
-    Sunt veniam soluta fugit unde perspiciatis necessitatibus perferendis illum exercitationem qui velit laboriosam, quidem consequuntur voluptatibus mollitia tempora totam nostrum iste, alias quaerat tempore sed voluptatum! Dolorum ex modi voluptas?
-    Maiores consequuntur vero accusamus corporis veniam voluptas fuga nobis excepturi quibusdam optio omnis, ex distinctio sed reprehenderit minus eum hic, soluta, fugit necessitatibus et rerum autem! Rerum officiis itaque nulla!
-    Illum ea dolore sunt qui! Expedita delectus aliquid, cumque repellendus placeat dolorum. Amet minus, iusto dolore enim facere soluta nulla facilis, iste ratione laborum commodi nemo quae voluptate voluptas ut.
-    Laudantium omnis, saepe illo vel harum est a neque velit quidem nemo doloremque aspernatur perspiciatis animi cumque recusandae. Tempore perspiciatis deleniti repellat excepturi maiores consequuntur atque labore iste nam quod!
-    Placeat voluptas, corporis dolores delectus fugit quos, illum debitis doloribus reiciendis in veniam! Adipisci totam sed dolorum? Sunt, dolorem. Ex quaerat praesentium doloribus, odit distinctio maxime earum facilis architecto iusto!
-    Dignissimos dolorem at velit explicabo neque ex ratione ea quis possimus laborum, consequatur ab, similique provident eaque architecto eligendi magnam tempora totam vitae beatae qui saepe odio dolor assumenda? Iste!
-    Dolor delectus, odio laudantium voluptatem tenetur, consequatur neque commodi error sit, sint veritatis assumenda animi temporibus non! Reprehenderit provident impedit, sequi facilis ullam assumenda eius velit itaque deserunt voluptate id.
-    Nobis voluptatibus officiis corrupti placeat corporis! Voluptates optio saepe autem minima deleniti unde laudantium quod, nihil quisquam tempore reprehenderit repellendus, enim accusantium. Debitis vel deserunt, eius iure mollitia ipsa tenetur.
-    Doloremque nulla illo repellat tenetur, nisi minus assumenda obcaecati sequi in nemo qui facilis ullam? Iure, inventore accusantium. Exercitationem neque in eaque quidem placeat provident autem molestias cupiditate perspiciatis sit.
-    Labore totam, sit fuga dolores minima deleniti. Ut ullam magnam accusantium, porro aut, reiciendis sapiente iusto debitis ad consectetur quisquam voluptas quas perferendis qui eaque reprehenderit beatae cupiditate libero eligendi!
-    Assumenda impedit ducimus nulla maxime ea reiciendis soluta saepe iusto tempore vero, enim laboriosam doloremque aperiam eveniet at amet repellat dolorum animi eius! Dolorum, laudantium eum? Itaque, veniam. Autem, pariatur.
-    Et porro eveniet asperiores doloremque! Voluptatum perspiciatis voluptatibus officiis odit? Iusto sunt eveniet esse architecto eius tempore minus corporis laboriosam, enim repellendus! Repellendus praesentium nesciunt vel, facere est error! Labore.
+  <div class="p-4 detail-entente">
+    <h1>Détail de l'entente</h1>
+
+    <div *ngFor="let item of entente.articles" class="article">
+      <div class="titre">
+        {{item.titre}}
+      </div>
+      <div class="description">
+        {{item.description}}
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="signature flex items-center justify-content-around">
+
+    <div>
+      <h1>Signature du Pap</h1>
+      <img class="w-32 h-32 " [src]="entente.urlSignaturePap ? entente.urlSignaturePap : imageDefautSignature " alt="" style="border-radius: 5%;">
+    </div>
+
+    <div>
+      <h1>Signature du Responsable</h1>
+      <img class="w-32 h-32" [src]="entente.urlSignatureResponsable ? entente.urlSignatureResponsable : imageDefautSignature " alt="" style="border-radius: 5%;">
+    </div>
 
   </div>
 

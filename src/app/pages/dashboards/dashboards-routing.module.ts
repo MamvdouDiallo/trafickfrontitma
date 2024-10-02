@@ -6,6 +6,7 @@ import { SaasComponent } from './saas/saas.component';
 import { CryptoComponent } from './crypto/crypto.component';
 import { BlogComponent } from './blog/blog.component';
 import { JobsComponent } from "./jobs/jobs.component";
+import { MiseEnOeuvreComponent } from './mise-en-oeuvre/mise-en-oeuvre.component';
 
 const routes: Routes = [
     {
@@ -27,7 +28,12 @@ const routes: Routes = [
     {
         path:"jobs",
         component:JobsComponent
-    }
+    },
+    {
+      path:"miseEnOeuvre",
+      component:MiseEnOeuvreComponent
+  }
+
 ];
 
 @NgModule({

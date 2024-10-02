@@ -201,25 +201,9 @@ export class PapListComponent implements OnInit {
     this.getPap();
     this.headers = this.createHeader();
     this.btnActions = this.createActions();
-    // if (this.privilegePage) {
-    //   this.getList();
-    // //  this.checkCodePrivilegeForRole();
 
-    // }
   }
 
-  // checkCodePrivilegeForRole() {
-  //   this.hasList =
-  //     this.privilegeByRole.indexOf("0" + (this.privilegeForPage + 1)) != -1;
-  //   this.hasAdd =
-  //     this.privilegeByRole.indexOf("0" + (this.privilegeForPage + 2)) != -1;
-  //   this.hasUpdate =
-  //     this.privilegeByRole.indexOf("0" + (this.privilegeForPage + 3)) != -1;
-  //   this.hasDelete =
-  //     this.privilegeByRole.indexOf("0" + (this.privilegeForPage + 4)) != -1;
-  //   this.hasDetail =
-  //     this.privilegeByRole.indexOf("0" + (this.privilegeForPage + 5)) != -1;
-  // }
 
   createHeader() {
     return [
@@ -673,6 +657,7 @@ export class PapListComponent implements OnInit {
             console.log(data);
             this.toastr.success(data.message);
             this.dataExcel = [];
+
             this.getPap();
           },
           (err) => {
@@ -689,13 +674,16 @@ export class PapListComponent implements OnInit {
         console.log(data);
         console.log("====================================");
         this.toastr.success(data.message);
-        this.dataExcel = [];
+        this.selectedOption=""
+      this.resetDataFromExcel()
+
       },
       (err) => {
         console.log("====================================");
         console.log(err);
         console.log("====================================");
         this.toastr.error(err);
+        this.resetDataFromExcel()
       }
     );
   }

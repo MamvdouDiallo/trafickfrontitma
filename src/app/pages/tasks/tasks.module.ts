@@ -19,9 +19,17 @@ import { KanbanboardComponent } from './kanbanboard/kanbanboard.component';
 import { CreatetaskComponent } from './createtask/createtask.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-materiel-module/angular-materiel-module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [ListComponent, KanbanboardComponent, CreatetaskComponent],
+  declarations: [ListComponent, KanbanboardComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -35,7 +43,19 @@ import { MatDialogModule } from '@angular/material/dialog';
     DndModule,
     BsDropdownModule.forRoot(),
     AngularMaterialModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+
+
   ]
 })
 export class TasksModule { }

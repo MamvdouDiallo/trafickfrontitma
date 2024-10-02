@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <!-- start page title -->
-  <app-page-title title="Projects Overview" [breadcrumbItems]="breadCrumbItems" class="colorTitle"></app-page-title>
+  <app-page-title title="Détail du projet" [breadcrumbItems]="breadCrumbItems"  class="colorTitle"></app-page-title>
   <!-- end page title -->
 
   <div class="row">
@@ -9,8 +9,11 @@
         <div class="card-body">
           <div class="d-flex">
             <div class="flex-shrink-0 me-4">
-              <img
+              <!-- <img
                 [src]="DetailProject?.image ? getImageFromBase64(DetailProject.image.type, DetailProject.image.image) : 'assets/images/companies/img-1.png'"
+                alt="" class="avatar-sm"> -->
+                  <img
+                [src]="DetailProject?.imageUrl ? DetailProject.imageUrl : 'assets/images/companies/img-1.png'"
                 alt="" class="avatar-sm">
             </div>
 
@@ -79,29 +82,14 @@
   <!-- end row -->
 
   <div class="row">
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body pb-2">
-          <h4 class="card-title mb-4 colorTitle">Overview</h4>
-          <apx-chart dir="ltr" class="apex-charts" [series]="overviewBarChart.series"
-            [dataLabels]="overviewBarChart.dataLabels" [chart]="overviewBarChart.chart" [xaxis]="overviewBarChart.xaxis"
-            [colors]="overviewBarChart.colors" [yaxis]="overviewBarChart.yaxis" [xaxis]="overviewBarChart.xaxis"
-            [plotOptions]="overviewBarChart.plotOptions">
-          </apx-chart>
-        </div>
-      </div>
-    </div>
-    <!-- end col -->
-
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4 colorTitle">Attached Files</h4>
+          <h4 class="card-title mb-4 colorTitle">Fichiers liés</h4>
           <div class="table-responsive">
             <table class="table table-nowrap align-middle table-hover mb-0">
               <tbody>
-                @for (item of DetailProject.files ; track $index) {
-                <tr>
+                <tr *ngFor="let item of DetailProject.fichiers; let i = index">
                   <td style="width: 45px;">
                     <div class="avatar-sm">
                       <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-24">
@@ -110,28 +98,31 @@
                     </div>
                   </td>
                   <td>
-                    <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">{{item.name}}</a>
+                    <h5 class="font-size-14 mb-1">
+                      <a [href]="item.fichierUrl" class="text-dark" target="_blank">
+                        {{ getFileName(item.fichierUrl) }}
+                      </a>
                     </h5>
-                    <small>Size :???</small>
                   </td>
                   <td>
                     <div class="text-center">
-                      <a href="javascript: void(0);" class="text-dark"><i class="bx bx-download h3 m-0"></i></a>
+                      <a [href]="item.fichierUrl" target="_blank" class="text-dark">
+                        <i class="bx bx-download h3 m-0"></i>
+                      </a>
                     </div>
                   </td>
+
                 </tr>
-                }
-
-
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+
     <!-- end col -->
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title mb-4 colorTitle">Normes du projets</h4>
@@ -148,9 +139,7 @@
 
           }
 
-          <!-- <div class="text-center mt-4 pt-2">
-            <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
-          </div> -->
+        
         </div>
       </div>
     </div>

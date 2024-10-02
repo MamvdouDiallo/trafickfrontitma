@@ -19,6 +19,7 @@ import { PapService } from '../../pap/pap.service';
 import { SharedService } from '../../projects/shared.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MoService } from 'src/app/core/services/mo.service';
 
 @Component({
   selector: 'app-list',
@@ -30,6 +31,9 @@ import { MatPaginator } from '@angular/material/paginator';
  * Tasks-list component
  */
 export class ListComponent implements OnInit {
+getImageFromBase64(arg0: any,arg1: any): any {
+throw new Error('Method not implemented.');
+}
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -89,16 +93,20 @@ export class ListComponent implements OnInit {
   privilegePage;
   headers: any = [];
   btnActions: any = [];
+DetailProject: any;
+overviewBarChart: any;
 
+tache:any
   constructor(private modalService: BsModalService, private formBuilder: UntypedFormBuilder,
-   
+
     private parentService: ServiceParent,
     public toastr: ToastrService,
+    private localService: LocalService,
 
   ) { }
 
   ngOnInit() {
-    this.breadCrumbItems = [{ label: 'Tasks' }, { label: 'Task List', active: true }];
+    this.breadCrumbItems = [{ label: 'Détail' }];
 
     this.formData = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -109,6 +117,12 @@ export class ListComponent implements OnInit {
 
     this._fetchData();
     this.getTaches();
+
+    this.tache = this.localService.getDataJson("task");
+
+    console.log("dggdgdgteste",this.tache);
+
+
   }
 
   onFileChange(event) {
@@ -177,4 +191,6 @@ export class ListComponent implements OnInit {
         }
       );
   }
+
+
 }

@@ -45,23 +45,24 @@
                       </div>
                     </label>
                     <input class="form-control d-none" value="" id="project-image-input" type="file"
-                      accept="image/png, image/gif, image/jpeg" (change)="fileChange($event)">
+                      accept="image/png, image/PNG, image/jpg, image/JPG, image/jpeg, image/JPEG, .pdf , .PDF , .doc , .DOC , .docx , .DOCX , .docm , .DOCM"
+                      (change)="selectOnFile($event,'photo_profile','Thumbnail')">
                   </div>
                   <div class="avatar-lg">
                     <div class="avatar-title bg-light rounded-circle">
-                      <img [src]="toff" class="avatar-md h-auto rounded-circle" />
+                      <img [src]="imageProjet" class="avatar-md h-auto rounded-circle" />
                     </div>
                   </div>
                 </div>
-                 <!-- Bouton pour supprimer l'image -->
-                 @if (uploadedImage) {
-                  <div>
-                    <button type="button" class="btn btn-danger btn-sm mt-1" id="delete-image-btn"
-                      (click)="deleteImage()">
-                      <i class="bx bx-trash me-1"></i>
-                    </button>
-                  </div>
-                  }
+                <!-- Bouton pour supprimer l'image -->
+                @if (uploadedImage) {
+                <div>
+                  <button type="button" class="btn btn-danger btn-sm mt-1" id="delete-image-btn"
+                    (click)="deleteImage()">
+                    <i class="bx bx-trash me-1"></i>
+                  </button>
+                </div>
+                }
               </div>
             </div>
             <div class="relative">
@@ -167,10 +168,10 @@
             </div>
             <div>
               <label class="form-label">Fichiers attachés</label>
-
               <dropzone class="dropzone" [config]="dropzoneConfig" [message]="'Drop files here or click to upload.'"
                 (success)="onUploadSuccess($event)">
               </dropzone>
+
 
               <ul class="list-unstyled mb-0" id="dropzone-preview" *ngIf="uploadedFiles && uploadedFiles.length > 0">
                 <li class="mt-2" id="dropzone-preview-list" *ngFor="let file of uploadedFiles; trackBy: $index">
@@ -297,7 +298,8 @@
 
           </div>
           }
-          <div *ngIf="projectForm.errors?.dateInvalid && (f.datedebut.touched || f.datefin.touched)" class="text-red-600 position-absolute left-1 top-17">
+          <div *ngIf="projectForm.errors?.dateInvalid && (f.datedebut.touched || f.datefin.touched)"
+            class="text-red-600 position-absolute left-1 top-17">
             La date de fin ne peut pas être inférieure à la date de début.
           </div>
         </div>

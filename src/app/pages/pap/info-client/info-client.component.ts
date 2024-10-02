@@ -36,6 +36,7 @@ import { PapService } from "../pap.service";
 @Component({
   selector: "info-client",
   templateUrl: "./info-client.component.html",
+  styleUrl: "./info-client.component.css",
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [AngularMaterialModule],

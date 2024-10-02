@@ -38,10 +38,7 @@ export class ProfileComponent implements OnInit {
       this.user.user.image.type,
       this.user.user.image.image
     );
-    this.breadCrumbItems = [
-      { label: "Contacts" },
-      { label: "Profile", active: true },
-    ];
+    this.breadCrumbItems = [];
 
     // fetches the data
     this._fetchData();

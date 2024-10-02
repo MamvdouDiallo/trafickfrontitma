@@ -1,0 +1,40 @@
+.title {
+  font-size: 1rem;
+}
+
+.circle-loader {
+  margin: auto !important;
+}
+
+.field {
+  display: flex;
+  mat-form-field {
+      width: 50%;
+  }
+}
+
+.fieldTop {
+  display: flex;
+  mat-form-field {
+      width: 45%;
+  }
+}
+
+.myImg {
+  height: 145px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.use-avatar {
+  overflow: hidden;
+  width: 100%;
+  height: 48px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  .s-32 {
+      color: #FFFFFF !important;
+      position: relative;
+      margin: 15px;
+  }
+}

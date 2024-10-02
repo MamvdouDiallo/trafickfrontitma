@@ -9,6 +9,8 @@ import {
   ViewEncapsulation,
 } from "@angular/core";
 import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
+import * as XLSX from "xlsx";
+
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { CoreService } from "src/app/shared/core/core.service";
@@ -35,6 +37,10 @@ import {
   ButtonAction,
   TableauComponent,
 } from "src/app/shared/tableau/tableau.component";
+import { DatatableComponent } from "src/app/shared/datatable/datatable.component";
+import { ToastrService } from "ngx-toastr";
+import { CommonModule } from "@angular/common";
+import { AddPlainteComponent } from "../../plainte/add-plainte/add-plainte.component";
 
 @Component({
   selector: "app-pap-detail",
@@ -48,7 +54,9 @@ import {
     CommunicationPapComponent,
     EntenteCompensationFormuleComponent,
     ListPlainteComponent,
-    TableauComponent
+    TableauComponent,
+    DatatableComponent,
+    CommonModule,
   ],
   styleUrl: "./pap-detail.component.css",
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -112,343 +120,6 @@ export class PapDetailComponent implements OnInit {
 
   plaintes: any = [];
 
-  batiments: any[] = [
-    {
-      id: 1,
-      geo: "45.12345,-73.12345",
-      codePap: "11111",
-      codeRevise: "REV001",
-      codeBatiment: "BAT001",
-      contour: "Rectangular",
-      typeBatiment: "Residential",
-      nombrePiece: 4,
-      nombrePieceUtilise: 3,
-      etatBatiment: "Bon",
-      natureSol: "Béton",
-      structureMur: "Brique",
-      typeToiture: "Ardoise",
-      autreTypeToiture: null,
-      porteFentre: "Oui",
-      propriete: "Privée",
-      infoComplementaire: "Aucune",
-      decriptionBatiment: "Maison familiale",
-      parentcle: null,
-      cle: null,
-      childcle: null,
-    },
-    {
-      id: 2,
-      geo: "46.12345,-74.12345",
-      codePap: "22222",
-      codeRevise: "REV002",
-      codeBatiment: "BAT002",
-      contour: "Carré",
-      typeBatiment: "Commercial",
-      nombrePiece: 5,
-      nombrePieceUtilise: 4,
-      etatBatiment: "Très bon",
-      natureSol: "Carrelage",
-      structureMur: "Béton",
-      typeToiture: "Métal",
-      autreTypeToiture: "Zinc",
-      porteFentre: "Non",
-      propriete: "Publique",
-      infoComplementaire: "Bâtiment utilisé pour des bureaux",
-      decriptionBatiment: "Bureau commercial",
-      parentcle: null,
-      cle: null,
-      childcle: null,
-    },
-    {
-      id: 3,
-      geo: "45.12345,-73.12345",
-      codePap: "11111",
-      codeRevise: "REV001",
-      codeBatiment: "BAT001",
-      contour: "Rectangular",
-      typeBatiment: "Residential",
-      nombrePiece: 4,
-      nombrePieceUtilise: 3,
-      etatBatiment: "Bon",
-      natureSol: "Béton",
-      structureMur: "Brique",
-      typeToiture: "Ardoise",
-      autreTypeToiture: null,
-      porteFentre: "Oui",
-      propriete: "Privée",
-      infoComplementaire: "Aucune",
-      decriptionBatiment: "Maison familiale",
-      parentcle: null,
-      cle: null,
-      childcle: null,
-    },
-    {
-      id: 4,
-      geo: "46.12345,-74.12345",
-      codePap: "22222",
-      codeRevise: "REV002",
-      codeBatiment: "BAT002",
-      contour: "Carré",
-      typeBatiment: "Commercial",
-      nombrePiece: 5,
-      nombrePieceUtilise: 4,
-      etatBatiment: "Très bon",
-      natureSol: "Carrelage",
-      structureMur: "Béton",
-      typeToiture: "Métal",
-      autreTypeToiture: "Zinc",
-      porteFentre: "Non",
-      propriete: "Publique",
-      infoComplementaire: "Bâtiment utilisé pour des bureaux",
-      decriptionBatiment: "Bureau commercial",
-      parentcle: null,
-      cle: null,
-      childcle: null,
-    },
-  ];
-  equipements: any[] = [
-    {
-      id: 1,
-      geo: "12.3456, -7.8910",
-      codePap: "11111",
-      codeEquipement: "EQ001",
-      nombreEquipement: 5,
-      count: 3,
-      photo: "photo_url",
-      typeEquipement: "Type A",
-      etatEquipement: "Bon",
-      proprietaire: "John Doe",
-      infoComplementaire: "Aucun",
-      parentcle: "parent_001",
-      cle: "key_001",
-      childcle: "child_001",
-    },
-    {
-      id: 2,
-      geo: "23.4567, -8.9101",
-      codePap: "22222",
-      codeEquipement: "EQ002",
-      nombreEquipement: 2,
-      count: 1,
-      photo: "photo_url_2",
-      typeEquipement: "Type B",
-      etatEquipement: "Mauvais",
-      proprietaire: "Jane Doe",
-      infoComplementaire: "Réparations nécessaires",
-      parentcle: "parent_002",
-      cle: "key_002",
-      childcle: "child_002",
-    },
-  ];
-  coProprietaires: any[] = [
-    {
-      id: 7,
-      prenomNom: "John Doe",
-      contactTelephonique: "1234567890",
-      codePap: "11111",
-      codeCoProprietaire: "C001",
-      sexe: "M",
-      age: 35,
-      situationMatrimoniale: "Marié",
-      photo: "photoUrl",
-      infoComplementaire: "Aucune",
-    },
-    {
-      id: 8,
-      prenomNom: "Jane Doe",
-      contactTelephonique: "0987654321",
-      codePap: "22222",
-      codeCoProprietaire: "C002",
-      sexe: "F",
-      age: 30,
-      situationMatrimoniale: "Célibataire",
-      photo: "photoUrl",
-      infoComplementaire: "Aucune",
-    },
-    {
-      id: 9,
-      prenomNom: "John Doe",
-      contactTelephonique: "1234567890",
-      codePap: "11111",
-      codeCoProprietaire: "C001",
-      sexe: "M",
-      age: 35,
-      situationMatrimoniale: "Marié",
-      photo: "photoUrl",
-      infoComplementaire: "Aucune",
-    },
-  ];
-
-  betails: any[] = [
-    {
-      id: 1,
-      codePap: "11111",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 2,
-      codePap: "22222",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 3,
-      codePap: "11111",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 4,
-      codePap: "22222",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 5,
-      codePap: "11111",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 6,
-      codePap: "22222",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-    {
-      id: 7,
-      codePap: "11111",
-      typeBetails: "Type Exemple",
-      description: "Description détaillée de Betails",
-    },
-  ];
-  cultures: any[] = [
-    {
-      id: 1,
-      codePap: "11111",
-      typeCulture: "TypeA",
-      description: "Description de la culture A",
-    },
-    {
-      id: 2,
-      codePap: "22222",
-      typeCulture: "TypeB",
-      description: "Description de la culture B",
-    },
-    {
-      id: 3,
-      codePap: "11111",
-      typeCulture: "TypeA",
-      description: "Description de la culture A",
-    },
-    {
-      id: 4,
-      codePap: "22222",
-      typeCulture: "TypeB",
-      description: "Description de la culture B",
-    },
-    {
-      id: 5,
-      codePap: "11111",
-      typeCulture: "TypeA",
-      description: "Description de la culture A",
-    },
-    {
-      id: 6,
-      codePap: "22222",
-      typeCulture: "TypeB",
-      description: "Description de la culture B",
-    },
-    {
-      id: 7,
-      codePap: "11111",
-      typeCulture: "TypeA",
-      description: "Description de la culture A",
-    },
-    {
-      id: 8,
-      codePap: "22222",
-      typeCulture: "TypeB",
-      description: "Description de la culture B",
-    },
-    {
-      id: 9,
-      codePap: "11111",
-      typeCulture: "TypeA",
-      description: "Description de la culture A",
-    },
-    {
-      id: 10,
-      codePap: "22222",
-      typeCulture: "TypeB",
-      description: "Description de la culture B",
-    },
-  ];
-  polygones: any[];
-  employes: any[] = [
-    {
-      id: 5,
-      codePap: "11111",
-      codeEmploye: "E001",
-      numeroIdentifiant: "ID001",
-      prenomNom: "Jean Dupont",
-      contactTelephonique: "0701234567",
-      categorieActivite: "Agriculture",
-      sexe: "M",
-      age: 35,
-      nationalite: "Sénégal",
-      qualiteEmploye: "Technicien",
-      remuneration: 1200.0,
-      prime: 150.0,
-      handicap: "Non",
-      parentcle: null,
-      cle: null,
-      childcle: null,
-      infoComplementaire: "Aucune",
-    },
-    {
-      id: 6,
-      codePap: "11111",
-      codeEmploye: "E001",
-      numeroIdentifiant: "ID001",
-      prenomNom: "Jean Dupont",
-      contactTelephonique: "0701234567",
-      categorieActivite: "Agriculture",
-      sexe: "M",
-      age: 35,
-      nationalite: "Sénégal",
-      qualiteEmploye: "Technicien",
-      remuneration: 1200.0,
-      prime: 150.0,
-      handicap: "Non",
-      parentcle: "PK001",
-      cle: "K001",
-      childcle: "CK001",
-      infoComplementaire: "Aucune",
-    },
-    {
-      id: 7,
-      codePap: "11111",
-      codeEmploye: "E001",
-      numeroIdentifiant: "ID001",
-      prenomNom: "Jean Dupont",
-      contactTelephonique: "0701234567",
-      categorieActivite: "Agriculture",
-      sexe: "M",
-      age: 35,
-      nationalite: "Sénégal",
-      qualiteEmploye: "Technicien",
-      remuneration: 1200.0,
-      prime: 150.0,
-      handicap: "Non",
-      parentcle: "PK001",
-      cle: "K001",
-      childcle: "CK001",
-      infoComplementaire: "Aucune",
-    },
-  ];
-
   /**
    * Constructor
    */
@@ -462,7 +133,9 @@ export class PapDetailComponent implements OnInit {
     private clientServive: ClientVueService,
     private _matDialog: MatDialog,
     private papservice: PapService,
-    private localService: LocalService
+    private localService: LocalService,
+    private papService: PapService,
+    public toastr: ToastrService
   ) {
     this.menuData = [
       {
@@ -478,11 +151,11 @@ export class PapDetailComponent implements OnInit {
             title: "Plaintes",
             icon: "heroicons_outline:user-group",
           },
-          {
-            id: "entente",
-            title: "Ententes de compensation",
-            icon: "heroicons_outline:users",
-          },
+          // {
+          //   id: "entente",
+          //   title: "Ententes de compensation",
+          //   icon: "heroicons_outline:users",
+          // },
         ],
       },
     ];
@@ -536,7 +209,6 @@ export class PapDetailComponent implements OnInit {
       },
     ];
     this.getpap();
-
   }
 
   getAttributComplementaireClient(infosPap) {
@@ -780,11 +452,12 @@ export class PapDetailComponent implements OnInit {
     let data = this.localService.getDataJson("pap");
     this.infosPap = this.localService.getDataJson("pap");
 
+    console.log("infos", this.infosPap.codePap);
+
     if (this.infosPap.imagePath != null) {
       this.imagePath = `${this.urlImage + this.infosPap.imagePath}`;
     }
   }
-
 
   getPlainteByCodePap() {
     return this.papservice
@@ -886,15 +559,10 @@ export class PapDetailComponent implements OnInit {
   }
 
   detailItemsPlainte(id, information) {
-    console.log("ttetete",information);
+    console.log("ttetete", information);
     this.localService.saveDataJson("plainte", information);
     this._router.navigate(["plainte/detail"]);
   }
-
-
-
-
-
 
   createActionsEntente(): ButtonAction[] {
     return [
@@ -910,11 +578,10 @@ export class PapDetailComponent implements OnInit {
   }
 
   detailItemsEntente(id, information) {
-    console.log("ttetete",information);
+    console.log("ttetete", information);
     this.localService.saveDataJson("entente", information);
-    this._router.navigate(['ententeCompensation/detail']);
+    this._router.navigate(["ententeCompensation/detail"]);
   }
-
 
   pageChanged(event) {
     console.log(event);
@@ -925,5 +592,103 @@ export class PapDetailComponent implements OnInit {
     this.pageIndex = event.pageIndex;
     this.offset = this.pageIndex;
     this.getPlainteByCodePap();
+  }
+
+  triggerFileUpload() {
+    const fileUploadElement = document.getElementById(
+      "file-upload"
+    ) as HTMLInputElement;
+    if (fileUploadElement) {
+      fileUploadElement.click();
+    }
+  }
+  headings = [];
+  dataExcel = [];
+  fileUpload(event: any) {
+    console.log(event.target.files);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsBinaryString(selectedFile);
+    fileReader.onload = (event: any) => {
+      console.log(event);
+      let binaryData = event.target.result;
+      let workbook = XLSX.read(binaryData, { type: "binary" });
+      workbook.SheetNames.forEach((sheet) => {
+        const worksheet = workbook.Sheets[sheet];
+        const data: any[][] = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+        }) as any[][];
+        const headers = data[0];
+        this.headings = headers;
+        const jsonData = data.slice(1).map((row: any[]) => {
+          let obj: any = {};
+          headers.forEach((header: string, index: number) => {
+            obj[header] = row[index];
+          });
+          return obj;
+        });
+        this.dataExcel = jsonData;
+        console.log(this.dataExcel);
+
+        //this.convertedJson = JSON.stringify(jsonData, undefined, 4);
+      });
+    };
+  }
+  convertedJson: string;
+
+  resetDataFromExcel() {
+    this.headings = [];
+    this.dataExcel = [];
+    this.convertedJson = "";
+  }
+  invalidComplaints: any[] = [];
+  importData() {
+    // Ajouter la clé 'codePap' à chaque objet dans 'this.dataExcel'
+    this.dataExcel = this.dataExcel.map((item: any) => {
+      return { ...item, codePap: this.infosPap.codePap };
+    });
+
+    // Ensuite, envoyer la requête
+    this.papService.add("plaintes/importer", this.dataExcel).subscribe(
+      (response: any) => {
+        console.log(response);
+        if (response.responseCode === 201) {
+          this.toastr.success(response.message);
+          this.dataExcel = [];
+        } else if (response.responseCode === 207) {
+          //   this.toastr.warning(response.message);
+          // this.dataExcel = [];
+          //this.invalidComplaints = response.data[0].plaintesInvalides.map(
+          //(item: any) => item.plainteRequest
+          // );
+          //  console.log("Invalid complaints:", this.invalidComplaints);
+          //this.dataExcel = this.invalidComplaints;
+        } else if (response.responseCode === 400) {
+          this.toastr.error(response.message);
+          this.dataExcel = [];
+          console.log("All invalid complaints:", this.invalidComplaints);
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.toastr.error("An error occurred during the import process.");
+      }
+    );
+    this.dataExcel=[]
+  }
+
+
+  addItems(): void {
+    this.snackbar.openModal(
+      AddPlainteComponent,
+      "55rem",
+      "new",
+      "",
+      this.datas,
+      "",
+      () => {
+        //this.getPlainte();
+      }
+    );
   }
 }

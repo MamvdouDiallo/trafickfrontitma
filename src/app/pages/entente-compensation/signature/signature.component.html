@@ -1,0 +1,17 @@
+<mat-toolbar class="mat-accent m-0 backToolbar">
+  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
+      <span class="c_title dialog-title">{{dialogTitle}}</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
+          <mat-icon>close</mat-icon>
+      </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="flex justify-center">
+
+  <div class="cursor-pointer" matTooltip="Cliquer pour charger le signature">
+      <img (click)="photoP.click()" class="w-32 h-32" [src]="signature" alt="">
+      <input hidden #photoP class="use-avatar" (change)="selectOnFile($event,'photo_profile','Thumbnail')" type="file" id="file" required accept="image/png, image/PNG, image/jpg, image/JPG, image/jpeg, image/JPEG, .pdf , .PDF , .doc , .DOC , .docx , .DOCX , .docm , .DOCM"
+      />
+  </div>
+</div>
+<div *ngIf="loaderImg" class="custom-loader"></div>

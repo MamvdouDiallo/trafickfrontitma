@@ -6,6 +6,7 @@ import { Store } from "@ngrx/store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Auth, User } from "src/app/store/Authentication/auth.models";
+import { LocalService } from "src/app/core/services/local.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
     //  private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private localService: LocalService
   ) {}
 
   ngOnInit() {
@@ -56,13 +58,14 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (user: Auth) => {
           console.log(user);
+          this.localService.saveDataJson("user", user.user);
           this.submitted = false;
           this.toastr.success(`Bienvenue ${user.user.firstname}`);
           this.router.navigate(["/dashboards/jobs"]);
         },
         (error) => {
           this.submitted = false;
-        //  console.error("Erreur lors de la tentative de connexion :", error);
+          //  console.error("Erreur lors de la tentative de connexion :", error);
           this.toastr.error(`${error}`);
         }
       );

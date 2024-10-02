@@ -40,7 +40,7 @@ export class SnackBarService {
             });
         }else{
             this.matSnackBar.open(message, action, {
-                duration: 10000,
+                duration: 1000,
                 panelClass: className
             });
         }

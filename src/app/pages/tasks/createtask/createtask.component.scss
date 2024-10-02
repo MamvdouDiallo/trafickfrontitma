@@ -19,3 +19,10 @@
 .custom-day.faded {
   background-color: #7d90ee;
 }
+
+.custom-ckeditor {
+  .ck-editor__editable {
+    max-height: 150; /* Limite la hauteur à 300px */
+    overflow-y: auto; /* Ajoute une barre de défilement verticale si le contenu dépasse la hauteur maximale */
+  }
+}

@@ -52,9 +52,11 @@ export interface Mo {
   contact?: string;
   locality?: string;
   enabled?: boolean;
+  imageUrl?: string;
   image?: Image;
   role?: Role[];
   projects: Proj[];
+  sous_role?:string
 }
 
 export interface Proj {

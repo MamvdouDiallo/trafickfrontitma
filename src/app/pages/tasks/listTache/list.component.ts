@@ -1,12 +1,16 @@
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormGroup } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule, UntypedFormGroup } from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialog,
+  MatDialogModule,
   MatDialogRef,
 } from "@angular/material/dialog";
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
+} from "@angular/material/form-field";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -26,6 +30,21 @@ import { SharedService } from "../../projects/shared.service";
 import { LocalService } from "src/app/core/services/local.service";
 import { AddComponent } from "../add/add.component";
 import { CoreService } from "src/app/shared/core/core.service";
+import { CreatetaskComponent } from "../createtask/createtask.component";
+import { MatNativeDateModule, MatOptionModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSelectModule } from "@angular/material/select";
+import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { DndModule } from "ngx-drag-drop";
+import { TasksRoutingModule } from "../tasks-routing.module";
 
 @Component({
   selector: "app-list",
@@ -44,13 +63,38 @@ import { CoreService } from "src/app/shared/core/core.service";
       useValue: { appearance: "outline" },
     },
   ],
-  imports: [TableauComponent, UIModule, AngularMaterialModule],
+  imports: [
+    TableauComponent,
+    UIModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    UIModule,
+    NgApexchartsModule,
+    CKEditorModule,
+    DndModule,
+    AngularMaterialModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
 })
 export class ListTacheComponent implements OnInit {
+  getImageFromBase64(arg0: any, arg1: any): any {
+    throw new Error("Method not implemented.");
+  }
   breadCrumbItems: (
     | { label: string; active?: undefined }
     | { label: string; active: boolean }
   )[];
+  DetailProject: any;
   filterTable($event: any) {
     throw new Error("Method not implemented.");
   }
@@ -117,8 +161,8 @@ export class ListTacheComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-      this.getTaches();
-   // this.getConsultant();
+    this.getTaches();
+    // this.getConsultant();
 
     this.headers = this.createHeader();
     this.btnActions = this.createActions();
@@ -147,7 +191,6 @@ export class ListTacheComponent implements OnInit {
         th: "Etat",
         td: "statut",
       },
-
     ];
   }
 
@@ -169,14 +212,14 @@ export class ListTacheComponent implements OnInit {
         isDisabled: this.hasDelete,
         action: (element?) => this.supprimerItems(element.id, element),
       },
-      // {
-      //   icon: "bxs-info-circle",
-      //   couleur: "text-red-400",
-      //   size: "icon-size-4",
-      //   title: "détail",
-      //   isDisabled: this.hasDelete,
-      //   action: (element?) => this.detailItems(element.id, element),
-      // },
+      {
+        icon: "bxs-info-circle",
+        couleur: "text-red-400",
+        size: "icon-size-4",
+        title: "détail",
+        isDisabled: this.hasDelete,
+        action: (element?) => this.detailItems(element.id, element),
+      },
     ];
   }
 
@@ -218,12 +261,12 @@ export class ListTacheComponent implements OnInit {
     this.getTaches();
   }
 
-  updateItems(information): void {
-    console.log(information);
+  // updateItems(information): void {
+  //   console.log(information);
 
-    this.localService.saveDataJson("tacheToUpdate", information);
-   this._router.navigate(['tasks/create']);
-  }
+  //   this.localService.saveDataJson("tacheToUpdate", information);
+  //   this._router.navigate(["tasks/create"]);
+  // }
 
   //cette fonction permet de supprimer
   supprimerItems(id, information) {
@@ -445,19 +488,44 @@ export class ListTacheComponent implements OnInit {
   record(item) {}
 
   addItems(): void {
-    // this.snackbar.openModal(
-    //   AddComponent,
-    //   "55rem",
-    //   "new",
-    //   "",
-    //   this.datas,
-    //   "",
-    //   () => {
-    //     this.getConsultant();
-    //   }
-    // );
-    this._router.navigate(['tasks/create']);
+    this.snackbar.openModal(
+      CreatetaskComponent,
+      "55rem",
+      "new",
+      "auto",
+      this.datas,
+      "",
+      () => {
+        this.getTaches();
+      }
+    );
+
+    //   this._router.navigate(['tasks/create']);
   }
+
+
+
+  updateItems(information): void {
+    console.log(information);
+    this.snackbar.openModal(
+      CreatetaskComponent,
+      "50rem",
+      "edit",
+      "",
+      information,
+      "",
+      () => {
+        // this.getList();
+      }
+    );
+  }
+
+
+
+
+
+
+
 
   convertedJson: string;
 
@@ -497,9 +565,9 @@ export class ListTacheComponent implements OnInit {
 
   detailItems(id, information) {
     console.log(information);
-    this.localService.saveDataJson("consultant", information);
+    this.localService.saveDataJson("task", information);
     this.sharedService.setSelectedItem(information);
-    this._router.navigate(["consultant/detail"]);
+    this._router.navigate(["tasks/list"]);
   }
 
   getConsultant() {

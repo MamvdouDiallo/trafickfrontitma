@@ -7,7 +7,7 @@
         }
         <div class="ms-3 flex-grow-1">
           <h5 class="mb-2 card-title">Hello, {{userConnected.firstname}} {{userConnected.lastname}}</h5>
-          <p class="text-muted mb-0">?????</p>
+          <p class="text-muted mb-0"></p>
         </div>
 
       </div>
@@ -16,303 +16,173 @@
 
   <div class="row">
     <div class="col-lg-3">
-      <div class="card mini-stats-wid">
+      <div class="card">
         <div class="card-body">
-          <div class="d-flex">
-            <div class="flex-grow-1">
-              <p class="text-muted fw-medium">PAP(Personnes Affectées)</p>
-              <h4 class="mb-0">14</h4>
-            </div>
-
-
-          </div>
+          <h4>{{lengthPap}}</h4>
+          <p>Personnes affectées</p>
         </div>
-        <div class="card-body border-top py-3">
 
-        </div>
+
+
+
       </div>
     </div><!--end col-->
     <div class="col-lg-3">
-      <div class="card mini-stats-wid">
+      <div class="card ">
         <div class="card-body">
-          <div class="d-flex">
-            <div class="flex-grow-1">
-              <p class="text-muted fw-medium">PIP(Parties Intérésseés)</p>
-              <h4 class="mb-0">7</h4>
-            </div>
-
-
-          </div>
+          <h4> {{lengthPip}}</h4>
+          <p>Parties intérésseés</p>
         </div>
-        <div class="card-body border-top py-3">
 
-        </div>
+
+
       </div>
     </div><!--end col-->
     <div class="col-lg-3">
-      <div class="card mini-stats-wid">
+      <div class="card ">
         <div class="card-body">
-          <div class="d-flex">
-            <div class="flex-grow-1">
-              <p class="text-muted fw-medium">Plaintes</p>
-              <h4 class="mb-0">20</h4>
-            </div>
-
-
-          </div>
+          <h4> {{lengthPlainte}}</h4>
+          <p>Nombre de plaintes</p>
         </div>
-        <div class="card-body border-top py-3">
 
-        </div>
+
+
+
       </div>
     </div><!--end col-->
     <div class="col-lg-3">
-      <div class="card mini-stats-wid">
+      <div class="card ">
         <div class="card-body">
-          <div class="d-flex">
-            <div class="flex-grow-1">
-              <p class="text-muted fw-medium">Consultations</p>
-              <h4 class="mb-0">12</h4>
-            </div>
-
-           
-          </div>
+          <h4> 12</h4>
+          <p>Nombre de consultations</p>
         </div>
-        <div class="card-body border-top py-3">
 
-        </div>
       </div>
     </div><!--end col-->
   </div><!--end row-->
 
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-sm-flex flex-wrap">
-            <h4 class="card-title mb-4">Statistics Applications</h4>
-            <div class="ms-auto">
-              <ul class="nav nav-pills">
-                <li class="nav-item">
-                  <a class="nav-link" href="javascript:void(0);" (click)="weeklyreport()">Week</a>
-                </li>
-                <li class=" nav-item">
-                  <a class="nav-link" href="javascript:void(0);" (click)="monthlyreport()">Month</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" href="javascript:void(0);" (click)="yearlyreport()"> Year</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <apx-chart dir="ltr" class="apex-charts" [series]="emailSentBarChart.series" [chart]="emailSentBarChart.chart"
-            [legend]="emailSentBarChart.legend" [stroke]="emailSentBarChart.stroke"
-            [plotOptions]="emailSentBarChart.plotOptions" [fill]="emailSentBarChart.fill"
-            [labels]="emailSentBarChart.labels" [dataLabels]="emailSentBarChart.dataLabels"
-            [colors]="emailSentBarChart.colors" [markers]="emailSentBarChart.markers">
-          </apx-chart>
-          <apx-chart dir="ltr" class="apex-charts" [series]="emailSentPieChart.series" [chart]="emailSentPieChart.chart"
-            [labels]="emailSentPieChart.labels" [legend]="emailSentPieChart.legend" [colors]="emailSentPieChart.colors"
-            [dataLabels]="emailSentPieChart.dataLabels" [plotOptions]="emailSentPieChart.plotOptions">
-          </apx-chart>
 
-        </div>
-      </div>
-    </div><!--end col-->
-    <div class="col-lg-4">
-      <div class="card">
-        <!-- <div class="card-body">
-          <div class="d-flex">
-            <div>
-              <h4 class="card-title mb-3">Invite your friends to Skote</h4>
-              <p class="text-muted">Nor again is there anyone who loves or pursues or desires to obtain
-                pain of itself, because it is pain, but because occasionally.</p>
-              <div>
-                <a href="javascript:void(0);" class="btn btn-primary btn-sm"><i
-                    class='bx bx-user-plus align-middle'></i> Invite Friends</a>
+  <div class="dashboard">
+    <div class="">
+      <h2 class="titre">Statistiques des Plaintes</h2>
+      <apx-chart [series]="complaintChart.series" [chart]="complaintChart.chart" [labels]="complaintChart.labels"
+        [colors]="complaintChart.colors" [legend]="complaintChart.legend">
+      </apx-chart>
+    </div>
+    <div>
+      <h2 class="titre">Statistiques des pap</h2>
+      <apx-chart [series]="vulnerabilityChart.series" [chart]="vulnerabilityChart.chart"
+        [labels]="vulnerabilityChart.labels" [colors]="vulnerabilityChart.colors" [legend]="vulnerabilityChart.legend">
+      </apx-chart>
+    </div>
+  </div>
+  <div class="d-flex justify-between my-3 ">
+    <div class="mx-2">
+      <label class="titre">Liste des documents enregistrés</label>
+      <!-- <ngx-doc-viewer [url]="'/assets/files/Projet_bon_ami_Guinee.pdf'" viewer="pdf" style="width:500px; height:400px;">
+      </ngx-doc-viewer> -->
+      <table class="table table-nowrap align-middle table-hover mb-0">
+        <tbody>
+          <tr *ngFor="let item of DetailProject.fichiers; let i = index">
+            <td style="width: 45px;">
+              <div class="avatar-sm">
+                <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-24">
+                  <i class="bx bxs-file-doc"></i>
+                </span>
               </div>
-            </div>
-            <div>
-              <img src="assets/images/jobs.png" alt="" height="130">
-            </div>
-          </div>
-        </div> -->
-      </div><!--end card-->
-      <div class="card">
-
-      </div><!--end card-->
-    </div><!--end col-->
-  </div><!--end row-->
-
-  <div class="row">
-    <!--end col-->
-
-  </div><!--end row-->
-
-  <div class="row">
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex">
-            <h4 class="card-title">Applications</h4>
-            <div class="dropdown ms-auto" dropdown>
-              <a class="text-muted font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                dropdownToggle>
-                <i class="mdi mdi-dots-horizontal"></i>
-              </a>
-
-              <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                <a class="dropdown-item" href="javascript:void(0);">Action</a>
-                <a class="dropdown-item" href="javascript:void(0);">Another action</a>
-                <a class="dropdown-item" href="javascript:void(0);">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0);">Separated link</a>
+            </td>
+            <td>
+              <h5 class="font-size-14 mb-1">
+                <a [href]="item.fichierUrl" class="text-dark" target="_blank">
+                  {{ getFileName(item.fichierUrl) }}
+                </a>
+              </h5>
+            </td>
+            <td>
+              <div class="text-center">
+                <a [href]="item.fichierUrl" target="_blank" class="text-dark">
+                  <i class="bx bx-download h3 m-0"></i>
+                </a>
               </div>
-            </div>
-          </div>
+            </td>
 
-          <apx-chart class="apex-charts" dir="ltr" [series]="receivedTimeChart.series" [chart]="receivedTimeChart.chart"
-            [stroke]="receivedTimeChart.stroke" [colors]="receivedTimeChart.colors"
-            [fill]="receivedTimeChart.fill"></apx-chart>
-        </div>
-      </div><!--end card-->
-    </div><!--end col-->
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title mb-4">Activity Feed</h4>
-          <ngx-simplebar style="max-height: 376px;">
-            <ul class="verti-timeline list-unstyled">
-              <li class="event-list">
-                <div class="event-timeline-dot">
-                  <i class="bx bx-right-arrow-circle font-size-18"></i>
-                </div>
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xs rounded-circle">
-                  </div>
-                  <div class="flex-grow-1">
-                    <div>
-                      <b>Charles Brown</b> applied for the job <b>Sr.frontend Developer</b>
-                      <p class="mb-0 text-muted">3 min ago</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="event-list">
-                <div class="event-timeline-dot">
-                  <i class="bx bx-right-arrow-circle font-size-18"></i>
-                </div>
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar-xs">
-                      <div class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                        <i class='bx bx-revision font-size-14'></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <div>
-                      Your subscription expires today <a href="javascript: void(0);">Renew Now</a>
-                      <p class="text-muted mb-0">53 min ago</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="event-list">
-                <div class="event-timeline-dot">
-                  <i class="bx bx-right-arrow-circle font-size-18"></i>
-                </div>
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar-xs">
-                      <div class="avatar-title bg-primary-subtle text-primary t rounded-circle">
-                        JA
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <div>
-                      <b>Jennifer Alexandar</b> created a new account as a <b>Freelance</b>.
-                      <p class="text-muted mb-0">1 hrs ago</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="event-list">
-                <div class="event-timeline-dot">
-                  <i class="bx bx-right-arrow-circle font-size-18"></i>
-                </div>
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xs rounded-circle">
-                  </div>
-                  <div class="flex-grow-1">
-                    <div>
-                      <b>Mark Ellison</b> applied for the job <b>Project Manager</b>
-                      <p class="mb-0 text-muted">3 hrs ago</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="event-list">
-                <div class="event-timeline-dot">
-                  <i class="bx bx-right-arrow-circle font-size-18"></i>
-                </div>
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar-xs">
-                      <div class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                        AZ
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <div>
-                      <b>Acolin Zelton</b> created a new account as a <b>Freelance</b>.
-                      <p class="text-muted mb-0">1 hrs ago</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <div class="text-center mt-4"><a href="javascript: void(0);"
-                class="btn btn-primary waves-effect waves-light btn-sm">View More <i
-                  class="mdi mdi-arrow-right ms-1"></i></a></div>
-          </ngx-simplebar>
-        </div>
-      </div><!--end card-->
-    </div><!--end col-->
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title mb-4">Recent Added Jobs</h4>
-          <ngx-simplebar style="max-height: 376px;">
-            <div class="vstack gap-4">
-              @for (data of recentJobsData; track $index) {
-              <div class="d-flex">
-                <img src="{{data.image}}" alt="" height="40" class="rounded">
-                <div class="ms-2 flex-grow-1">
-                  <h6 class="mb-1 font-size-15"><a routerLink="/jobs/details" class="text-body">{{data.title}}</a></h6>
-                  <p class="text-muted mb-0">{{data.brand}}, {{data.location}} - <b>{{data.time}}</b>
-                    sec ago</p>
-                </div>
-                <div class="dropdown" dropdown>
-                  <button class="btn btn-light" type="button" id="*dropdownMenuButton1" data-bs-toggle="dropdown"
-                    aria-expanded="false" dropdownToggle>
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="*dropdownMenuButton1" *dropdownMenu>
-                    <li><a class="dropdown-item" routerLink="/jobs/details">View Details</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0);">Apply Now</a></li>
-                  </ul>
-                </div>
-              </div>}
-            </div>
-          </ngx-simplebar>
-        </div>
-      </div><!--end card-->
-    </div><!--end col-->
-  </div><!--end row-->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <label for="" class="titre">Délimitation de la zone impacté par le projet</label>
+      <img src="assets/images/villageImpacte.png" alt="" srcset="" height="300px">
+    </div>
+  </div>
+  <div  class="d-flex justify-between mt-5">
+    <div>
+      <label for="" class="titre">Résumé des rencontres menées dans le cadre de l’élaboration du PAR</label>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Type d'engagement</th>
+            <th>Date</th>
+            <th>Référence compte rendu</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let engagement of engagements | paginate: { itemsPerPage: 5, currentPage: page }; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ engagement.type }}</td>
+            <td>{{ engagement.date }}</td>
+            <td>{{ engagement.reference }}</td>
+            <td>
+              <button class="" (click)="viewPV(engagement.reference)" title="Voir le PV">
+                <i class="fa fa-eye" style="color: green;"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
 
-</div> <!-- container-fluid -->
+    <div>
+      <label for="" class="titre">Estimation des coûts et budget du PAR 3 pour le dédommagement des biens affectés</label>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Type de pertes</th>
+            <th>Compensation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Arbres</td>
+            <td>5 199 399 900</td>
+          </tr>
+          <tr>
+            <td>Cultures annuelles</td>
+            <td>57 767 630</td>
+          </tr>
+          <tr>
+            <td>Cultures pérennes</td>
+            <td>38 139 297 020</td>
+          </tr>
+          <tr>
+            <td>Infrastructures</td>
+            <td>139 179 485</td>
+          </tr>
+          <tr>
+            <td>Terres</td>
+            <td>3 080 554 601</td>
+          </tr>
+          <tr>
+            <td>Total général</td>
+            <td>46 616 198 636</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+</div>

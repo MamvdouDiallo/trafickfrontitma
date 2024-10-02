@@ -1,75 +1,95 @@
-<div class="container-fluid">
-
-  <!-- start page title -->
-  <app-page-title   title="Création d'une tache" [breadcrumbItems]="breadCrumbItems" class="colorTitle"></app-page-title>
-  <!-- end page title -->
-
-  <div class="row">
-    <form action="" [formGroup]="initForm">
+<mat-toolbar class="mat-accent m-0 backToolbar">
+  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="c_formulaire">
+    <span class="c_title dialog-title">{{ dialogTitle }}</span>
+    <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog" class="closeButton">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="row">
+  <form action="" [formGroup]="initForm">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4  colorTitle">Création d'une nouvelle tache</h4>
-            <div data-repeater-list="outer-group" class="outer">
-              <div data-repeater-item class="outer">
-                <div class="row mb-4">
-                  <label for="taskname" class="col-form-label col-lg-2">Libelle</label>
-                  <div class="col-lg-10">
-                    <input id="taskname" name="taskname" type="text" class="form-control" placeholder="libelle..." formControlName="libelle">
-                  </div>
-                </div>
-                <div class="row mb-4">
-                  <label class="col-form-label col-lg-2">Description</label>
-                  <div class="col-lg-10">
-                    <ckeditor [editor]="Editor" data="<p>Content of the editor.</p>" formControlName="description"></ckeditor>
-                  </div>
-                </div>
-
-                <div class="form-group row mb-4">
-                  <label class="col-form-label col-lg-2">Task Date</label>
-                  <div class="col-lg-10">
-                    <div class="input-daterange input-group">
-                      <input type="date" class="form-control"  formControlName="dateDebut"  />
-                      <input type="date" class="form-control" formControlName="dateFin"   />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group mb-3">
-                  <label class="col-form-label">Assigné<span class="text-danger">*</span></label>
-                  <ul class="list-unstyled user-list validate" id="taskassignee">
-                    @for(data of listMo;track $index){
-                    <li>
-                      <div class="form-check form-check-primary mb-2 d-flex align-items-center">
-                        <input class="form-check-input" type="checkbox" [checked]="data.checked == true" (change)="slectMember($index)">
-                        <label class="form-check-label ms-2">{{data.firstname}}</label>
-                        <img [src]="getImageFromBase64(data.image?.type,data.image?.image)" alt=""
-                        class="rounded-circle avatar-xs m-1" alt="" />
-                      </div>
-                    </li>
-                    }
-                  </ul>
-                </div>
-                <div class="form-group mb-4">
-                  <label class="col-form-label">Status<span class="text-danger">*</span></label>
-                  <div class="col-lg-12">
-                    <select class="form-select validate" id="TaskStatus"  formControlName="statut" required>
-                      <option value="" selected>Choose..</option>
-                      <option value="Waiting">Waiting</option>
-                      <option value="Approved">Approved</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Complete">Complete</option>
-                    </select>
-                  </div>
+          <div data-repeater-list="outer-group" class="outer">
+            <div data-repeater-item class="outer">
+              <div class="mb-4">
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Libelle</mat-label>
+                  <input matInput formControlName="libelle" placeholder="libelle...">
+                </mat-form-field>
+              </div>
+              <div class="row mb-4">
+                <div class="">
+                  <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Décrivez ici..." rows="5"></textarea>
+                    <mat-error>Le champ est obligatoire</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
+
+
+              <div class="form-group row mb-2" style="display: flex; align-items: center;">
+                <label class="col-form-label col-lg-2">Date estimée</label>
+
+                <div class="col-lg-5">
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Date de début</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="dateDebut">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error>Le champ est obligatoire</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-lg-5">
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Date de fin</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="dateFin">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error>Le champ est obligatoire</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+              <div class="form-group mb-1">
+                <label class="col-form-label">Assigné<span class="text-danger">*</span></label>
+                <ul class="list-unstyled user-list validate" id="taskassignee">
+                  @for(data of listMo;track $index){
+                  <li>
+                    <div class="form-check form-check-primary mb-2 d-flex align-items-center">
+                      <input class="form-check-input" type="checkbox" [checked]="data.checked == true"
+                        (change)="slectMember($index)">
+                      <label class="form-check-label ms-2">{{data.firstname}}</label>
+                      <img [src]="data.imageUrl" alt="" class="rounded-circle avatar-xs m-1" alt="" />
+                    </div>
+                  </li>
+                  }
+                </ul>
+              </div>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Status<span class="text-danger">*</span></mat-label>
+                <mat-select formControlName="statut" required>
+                  <mat-option value="" disabled>Choisir...</mat-option>
+                  <mat-option value="en-attente">En attente</mat-option>
+                  <mat-option value="approuve">Approuvé</mat-option>
+                  <mat-option value="en-cours">En cours</mat-option>
+                  <mat-option value="complete">Complété</mat-option>
+                </mat-select>
+                <mat-error>Le champ est obligatoire</mat-error>
+              </mat-form-field>
+
             </div>
+          </div>
           <div class="justify-content-end flex items-center flex-row">
             <div class="mx-2">
               <button type="submit" class="btn btn-primary" (click)="checkRecap(action)">{{ labelButton }}</button>
             </div>
             <div class="">
-              <button  class="btn btn-danger cursor-pointer" (click)="annuler()">Annuler</button>
+              <button class="btn btn-danger cursor-pointer" (click)="annuler()">Annuler</button>
             </div>
           </div>
 
@@ -78,7 +98,5 @@
     </div>
   </form>
 
-  </div>
-  <!-- end row -->
-
-</div> <!-- container-fluid -->
+</div>
+<!-- end row -->

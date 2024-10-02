@@ -50,6 +50,9 @@ import { MatInputModule } from "@angular/material/input";
 import { MatDialogModule } from "@angular/material/dialog";
 import { AjoutPersonnePhysiqueComponent } from "./personne-physique/ajout/ajout.component";
 import { TesterComponent } from './tester/tester.component';
+import { RoleComponent } from './parametrages/role/role.component';
+import { CategorieUtilisateurComponent } from './parametrages/categorie-utilisateur/categorie-utilisateur.component';
+import { AddCategorieComponent } from './parametrages/categorie-utilisateur/add-categorie/add-categorie.component';
 
 
 @NgModule({

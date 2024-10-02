@@ -1,0 +1,14 @@
+<mat-toolbar class="mat-accent m-0 backToolbar">
+  <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="heade">
+    <span class="titre">Liste des pv de la rencontre</span> <br>
+    <button mat-icon-button (click)="matDialogRef.close()"  class="text-red-600 font-bold text-xl">
+      <mat-icon>Fermer</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="bg-white h-[150px]  d-flex items-center justify-center flex-col">
+  <div>
+    {{references}}
+  </div>
+
+</div>

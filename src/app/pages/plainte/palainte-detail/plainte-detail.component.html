@@ -7,28 +7,6 @@
   </div>
   <div class="flex flex-col w-full min-w-0 sm:inset-0 sm:overflow-hidden">
       <mat-drawer-container class="flex-auto sm:h-auto">
-          <mat-drawer id="c_mat_drawerId" class="sm:w-80 dark:bg-gray-900 c_mat_drawer" [autoFocus]="false" [mode]="'side'" [opened]="true" #drawer>
-              <div class="flex flex-col divide-y border-t border-b">
-                  <div class="">
-                      <div class="px-8 py-5">
-                          <nav class="-mx-3 space-y-6">
-                              <div class="space-y-3" *ngFor="let item of menuData">
-                                  <label class="px-3 text-xs c_label">{{item?.title}}</label>
-                                  <hr>
-                                  <button class="flex w-full items-center cursor-pointer px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-                                      *ngFor="let child of item?.children"
-                                      [disabled]="(child.id =='bureau' || child.id == 'audit' || child.id =='wallet' || child.id == 'decouvert') || (infosPlainte?.statut ==='DEMISSION' ? child.id == 'transfert' : '') || (infosPlainte?.statut ==='DEMISSION' ? child.id == 'demande' : '')"
-                                      (click)="goToPanel(child.id)"
-                                      [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedPanel || selectedPanel !== child.id, 'bg-primary-50 dark:bg-hover': selectedPanel && selectedPanel === child.id}">
-                                      <i class="bx {{child?.icon}} icon-size-5"></i>
-                                      <span class="mx-2 c_text_sm">{{child?.title}}</span>
-                                  </button>
-                              </div>
-                          </nav>
-                      </div>
-                  </div>
-              </div>
-          </mat-drawer>
           <mat-drawer-content class="flex flex-col">
               <div class="flex-auto c_padding">
                   <div class="flex items-center">

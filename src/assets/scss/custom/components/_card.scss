@@ -1,6 +1,6 @@
-// 
+//
 // _card.scss
-// 
+//
 
 .card {
   margin-bottom: $grid-gutter-width;
@@ -11,12 +11,7 @@
   color: var(--#{$prefix}body-color);
 }
 
-.card-title {
-  font-size: 15px;
-  margin: 0 0 7px 0;
-  font-weight: $font-weight-semibold;
-  color: var(--#{$prefix}emphasis-color);
-}
+
 
 .card-title-desc {
   color: var(--#{$prefix}secondary-color);

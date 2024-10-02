@@ -19,6 +19,16 @@
 
   .card {
     border-radius: 4px;
+
+  }
+
+  .section-card{
+    padding: 15px;
+    border-radius: 4px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .card-header:first-child {

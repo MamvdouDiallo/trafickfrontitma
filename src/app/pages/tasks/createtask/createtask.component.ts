@@ -13,6 +13,8 @@ import {
 import {
   FormArray,
   FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormControl,
@@ -34,13 +36,53 @@ import { Mo, ResponseData } from "../../projects/project.model";
 import { ProjectService } from "src/app/core/services/project.service";
 import { SnackBarService } from "src/app/shared/core/snackBar.service";
 import { CoreService } from "src/app/shared/core/core.service";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from "@angular/material/dialog";
 import { LocalService } from "src/app/core/services/local.service";
 import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatOptionModule, MatNativeDateModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { DndModule } from "ngx-drag-drop";
+import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
+import { UIModule } from "src/app/shared/ui/ui.module";
 
 @Component({
   selector: "app-createtask",
   templateUrl: "./createtask.component.html",
+  standalone: true,
+  imports: [
+    UIModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    UIModule,
+    NgApexchartsModule,
+    CKEditorModule,
+    DndModule,
+    AngularMaterialModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   styleUrls: ["./createtask.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,7 +93,7 @@ import { Router } from "@angular/router";
 export class CreatetaskComponent implements OnInit {
   // bread crumb items
   breadCrumbItems: Array<{}>;
-
+  dialogTitle: string = "";
   public Editor = ClassicEditor;
   form = new UntypedFormGroup({
     member: new UntypedFormArray([new UntypedFormControl("")]),
@@ -94,25 +136,23 @@ export class CreatetaskComponent implements OnInit {
 
   usersToUpdate: any = [];
   ngOnInit() {
-    this.tacheToUpdate = this.localService.getDataJson("tacheToUpdate");
-    console.log(this.localService.getDataJson("tacheToUpdate"));
-    if (this.tacheToUpdate !== null) {
-    this.initForms(this.tacheToUpdate);
-      this.id = this.tacheToUpdate.id;
-      this.labelButton = "modifier ";
-      this.action = "edit";
+   // this.tacheToUpdate = this.localService.getDataJson("tacheToUpdate");
+   // console.log(this.localService.getDataJson("tacheToUpdate"));
+    // if (this.tacheToUpdate !== null) {
+    //   this.initForms(this.tacheToUpdate);
+    //   this.id = this.tacheToUpdate.id;
+    //   this.labelButton = "modifier ";
+    //   this.action = "edit";
 
-      this.usersToUpdate = this.tacheToUpdate.utilisateurs;
-      // this.usersToUpdate.forEach(user => {
-      //     this.assignListFormArray.push(this.fb.control(user));
-      // });
-console.log( this.usersToUpdate);
-
-
-    } else {
-      this.action = "new";
-      this.initForms();
-    }
+    //   this.usersToUpdate = this.tacheToUpdate.utilisateurs;
+    //   // this.usersToUpdate.forEach(user => {
+    //   //     this.assignListFormArray.push(this.fb.control(user));
+    //   // });
+    //   console.log(this.usersToUpdate);
+    // } else {
+    //   this.action = "new";
+    //   this.initForms();
+    // }
     this.fetchMo();
     this.breadCrumbItems = [
       { label: "Taches" },
@@ -128,8 +168,8 @@ console.log( this.usersToUpdate);
   }
 
   constructor(
-    //public matDialogRef: MatDialogRef<CreatetaskComponent>,
-    // @Inject(MAT_DIALOG_DATA) _data,
+    public matDialogRef: MatDialogRef<CreatetaskComponent>,
+    @Inject(MAT_DIALOG_DATA) _data,
     public store: Store,
     private fb: FormBuilder,
     private projectService: ProjectService,
@@ -137,10 +177,19 @@ console.log( this.usersToUpdate);
     private snackbar: SnackBarService,
     private changeDetectorRefs: ChangeDetectorRef,
     private localService: LocalService,
-    private _router: Router,
-
+    private _router: Router
   ) {
     // this.action = "new";
+    if (_data?.action == "new") {
+      this.initForms();
+      this.labelButton = "Ajouter ";
+      this.dialogTitle="Créer une tache"
+    } else if (_data?.action == "edit") {
+      this.labelButton = "Modifier ";
+      this.id = _data.data.id;
+      this;this.dialogTitle="Modifier une tache"
+      this.initForms(_data.data);
+    }
   }
 
   initForms(donnees?) {
@@ -188,11 +237,9 @@ console.log( this.usersToUpdate);
     }
   }
 
-
-
   fetchMo(): void {
     this.projectService
-      .all<ResponseData<any[]>>('users/by_role?roleName=Consultant')
+      .all<ResponseData<any[]>>("users/by_role?roleName=Consultant")
       .subscribe((response: ResponseData<any[]>) => {
         console.log(response);
         if (this.tacheToUpdate !== null) {
@@ -205,12 +252,12 @@ console.log( this.usersToUpdate);
           );
           return {
             ...user,
-            checked: isUserToUpdate ? '1' : '0',
+            checked: isUserToUpdate ? "1" : "0",
           };
         });
 
-        this.listMo.forEach(user => {
-          if (user.checked === '1') {
+        this.listMo.forEach((user) => {
+          if (user.checked === "1") {
             this.assignListFormArray.push(this.fb.control(user));
           }
         });
@@ -248,7 +295,7 @@ console.log( this.usersToUpdate);
                 this.loader = false;
                 this._router.navigate(["tasks/liste"]);
                 //this.matDialogRef.close(resp["data"]);
-               // this.changeDetectorRefs.markForCheck();
+                // this.changeDetectorRefs.markForCheck();
               } else {
                 this.loader = false;
                 this.changeDetectorRefs.markForCheck();
@@ -311,7 +358,7 @@ console.log( this.usersToUpdate);
 
   annuler() {
     this.initForm.reset();
-    this.labelButton = "Créer une tache";
-    this.localService.removeData("tacheToUpdate");
+  //  this.labelButton = "Créer une tache";
+   // this.localService.removeData("tacheToUpdate");
   }
 }

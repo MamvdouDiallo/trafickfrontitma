@@ -14,6 +14,8 @@ export interface Project {
   datefin?: string;
   image?: Image;
   files?: File[];
+  fichiers?: any[];
+  imageUrl?: string;
   users: Mo[];
   normeProjets?:NormeProject[];
 }
@@ -67,5 +69,6 @@ export interface Mo {
   locality?: string;
   enabled?: boolean;
   image?: Image;
+  imageUrl?: string;
   role?: Role[];
 }

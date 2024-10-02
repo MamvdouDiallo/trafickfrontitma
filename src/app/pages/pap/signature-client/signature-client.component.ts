@@ -44,73 +44,6 @@ export class SignatureClientComponent {
 
     }
 
-    // selectOnFile(evt) {
-    //     let accept = [];
-    //     let extension = '';
-
-    //     for (const file of evt.target.files) {
-    //         const index = file.name.lastIndexOf('.');
-    //         const strsubstring = file.name.substring(index, file.name.length);
-    //         const ext = strsubstring;
-    //         // Verification de l'extension du fichier est valide
-    //         if (accept.indexOf(strsubstring) === -1) {
-    //             this.snackbar.openSnackBar('Ce fichier ' + file.name + ' n\'est ' + extension, 'OK', ['mycssSnackbarRed']);
-    //             return;
-    //         } else {
-    //             // recuperation du fichier et conversion en base64
-    //             const reader = new FileReader();
-    //             reader.onload = (e: any) => {
-    //                 {
-    //                     const img = new Image();
-    //                     img.src = e.target.result;
-    //                     img.onload = () => {
-    //                         const docBase64Path = e.target.result;
-    //                         if (ext === '.png' || ext === '.PNG' || ext === '.jpg' || ext === '.JPG' || ext === '.jpeg' || ext === '.JPEG') {
-    //                             this.signature = docBase64Path;
-    //                             this._changeDetectorRef.detectChanges();
-    //                             this.saveStoreFile(file);
-    //                         }
-    //                     };
-    //                 }
-    //             };
-    //             reader.readAsDataURL(file);
-    //         }
-    //     }
-
-    // }
-
-    // saveStoreFile(file) {
-    //     let formData = new FormData();
-    //     formData.append('file', file);
-    //     this._changeDetectorRef.detectChanges();
-    //     const dataFile = {'file': file};
-    //     this.clientService.saveStoreFile('store-file', formData).subscribe((resp) => {
-    //         if (resp) {
-    //             this.noImage = resp['urlprod'];
-    //             this.saveFile(this.noImage);
-    //             this._changeDetectorRef.detectChanges();
-    //         }
-    //     }, (error) => {
-    //         this.snackbar.showErrors(error);
-    //     });
-    // }
-
-    // saveFile(file) {
-    //     this.loaderImg = true;
-    //     const dataFile =
-    //         {'signature': file};
-    //     this.clientServive.updateSignature(this.infosPap?.id, dataFile).subscribe((resp) => {
-    //         if (resp[this.constantes.RESPONSE_CODE] === this.constantes.HTTP_STATUS.SUCCESSFUL) {
-    //             this.signature = resp[this.constantes.RESPONSE_DATA]['signature'];
-    //             this.loaderImg = false;
-    //             this._changeDetectorRef.detectChanges();
-    //             this.snackbar.openSnackBar('Fichier chargée avec succès', 'OK', ['mycssSnackbarGreen']);
-    //         }
-    //     }, (error) => {
-    //         this.loaderImg = false;
-    //         this.snackbar.showErrors(error);
-    //     });
-    // }
 
 
     selectOnFile(evt, type, name) {
@@ -179,7 +112,6 @@ export class SignatureClientComponent {
         },
         (error) => {
           console.log(error);
-
           this.snackbar.showErrors(error);
         }
       );

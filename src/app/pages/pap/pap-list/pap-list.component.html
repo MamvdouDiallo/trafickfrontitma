@@ -1,5 +1,5 @@
 <div>
-  <app-page-title title="Liste des personnes affectées par le projet" [breadcrumbItems]="breadCrumbItems" class="colorTitle"></app-page-title>
+  <app-page-title title="Liste des personnes affectées par le projet" [breadcrumbItems]="breadCrumbItems" style="color: green;"></app-page-title>
 </div>
 <div class=" row mb-2">
   <div class="col-sm">
@@ -26,15 +26,15 @@
                   [(ngModel)]="selectedOption" (change)="onOptionSelected()">
             <option value="">Que souhaitez-vous importer?</option>
             <option value="batiments">Bâtiment</option>
-            <option value="betails">Bétails</option>
-            <option value="culture">Culture</option>
+            <!-- <option value="betails">Bétails</option> -->
+            <option value="cultures">Culture</option>
             <option value="coproprietaires">Copropriétaire</option>
             <option value="employePap">Employé Pap</option>
             <option value="geopolys">Géo Polygone</option>
           </select>
         </div>
 
-      <button type="submit" class="btn btn-success" (click)="triggerFileUpload()"> <i
+      <button type="submit" class="btn btn-success" (click)="triggerFileUpload()" [disabled]="!selectedOption"> <i
           class="mdi mdi-file-excel me-1">Importer un fichier excel</i>
       </button>
     </div>
@@ -53,8 +53,6 @@
     </div>
   </div>
 </div>
-
-
 }
 
 

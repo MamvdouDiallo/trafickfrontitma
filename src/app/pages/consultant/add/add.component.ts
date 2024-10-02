@@ -19,6 +19,7 @@ import { Image } from "src/app/shared/models/image.model";
 import { MoService } from "src/app/core/services/mo.service";
 import { ResponseData } from "../../projects/project.model";
 import { LocalService } from "src/app/core/services/local.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-add",
@@ -71,6 +72,7 @@ export class AddComponent {
   categoriePartieInteresses: any;
   uploadedImage!: File;
   imageURL: string | undefined;
+  urlImage = environment.apiURL + "image/getFile/";
 
   constructor(
 
@@ -83,7 +85,8 @@ export class AddComponent {
     private clientService: ClientVueService,
     private moservice: MoService,
     private _matDialog: MatDialog,
-    private localService: LocalService
+    private localService: LocalService,
+    private clientServive: ClientVueService,
   ) {
     this.currentUser=this.localService.getDataJson("user");
 
@@ -166,17 +169,14 @@ export class AddComponent {
       locality: this.fb.control(donnees ? donnees?.locality : null, [
         Validators.required,
       ]),
-      // date_of_birth: this.fb.control(donnees ? donnees?.date_of_birth : null, [
-      //   Validators.required,
-      // ]),
-      // place_of_birth: this.fb.control(
-      //   donnees ? donnees?.place_of_birth : null,
-      //   [Validators.required]
-      // ),
+
       project_id: this.fb.control(this.currentUser.projects ? this.currentUser.projects[0]?.id   : null, [
         Validators.required,
       ]),
       sous_role: this.fb.control(donnees ? donnees?.sous_role:null, [
+        Validators.required,
+      ]),
+      imageUrl: this.fb.control(donnees ? donnees?.imageUrl:null, [
         Validators.required,
       ]),
       contact: this.fb.control(donnees ? donnees?.contact : null, [
@@ -285,6 +285,9 @@ saveFile(file, type, name) {
   const dataFile = {'file': file};
   this.clientService.saveStoreFile('store-file', formData).subscribe((resp) => {
       if (resp) {
+        console.log('====================================');
+        console.log(resp);
+        console.log('====================================');
           this.noImage = resp['urlprod'];
           this.initForm.get(name).setValue(this.noImage);
           this.loaderImg = false;
@@ -420,6 +423,86 @@ addItems(image?: Image) {
   //   console.log(this.selectedProjects);
   //   this.updateSelectedProjects();
   // }
+
+
+
+
+
+
+  selectOnFile(evt, type, name) {
+
+    let accept = [];
+    let extension = "";
+    if (type === "photo_profile") {
+      accept = [".png", ".PNG", ".jpg", ".JPG"];
+      extension = "une image";
+    }
+    for (const file of evt.target.files) {
+      const index = file.name.lastIndexOf(".");
+      const strsubstring = file.name.substring(index, file.name.length);
+      const ext = strsubstring;
+      // Verification de l'extension du ficihier est valide
+      if (accept.indexOf(strsubstring) === -1) {
+        this.snackbar.openSnackBar(
+          "Ce fichier " + file.name + " n'est " + extension,
+          "OK",
+          ["mycssSnackbarRed"]
+        );
+        return;
+      } else {
+        // recuperation du fichier et conversion en base64
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          if (type === "photo_profile") {
+            const img = new Image();
+            img.src = e.target.result;
+            this.saveStoreFile(file);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+
+  imageToff:any
+
+  saveStoreFile(file) {
+    let formData = new FormData();
+    formData.append("file", file);
+    this.changeDetectorRefs.detectChanges();
+    const dataFile = { file: file };
+    this.clientServive
+      .saveStoreFile("image/uploadFileDossier", formData)
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            console.log(resp);
+             this.imageToff = `${this.urlImage + resp["data"]}`;
+             this.initForm.get('imageUrl').setValue(this.imageToff);
+            // Fermez le dialogue et renvoyez l'URL de la signature
+           // this.matDialogRef.close(signatureUrl);
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.snackbar.showErrors(error);
+        }
+      );
+  }
+
+  roles: string[] = [
+    'Chef de mission',
+    'Spécialiste en réinstallation',
+    'Spécialiste en gestion des parties prenantes',
+    'Spécialiste en Genre et Inclusions Sociale',
+    'Spécialiste en base de données et SIG',
+    'Animateurs communautaires'
+  ];
+
+
+
+
 
 
 

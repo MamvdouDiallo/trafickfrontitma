@@ -10,7 +10,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
 import { SnackBarService } from "src/app/shared/core/snackBar.service";
 import {
@@ -47,6 +47,8 @@ import { CoreService } from "src/app/shared/core/core.service";
   imports: [TableauComponent, UIModule, AngularMaterialModule],
 })
 export class ListComponent implements OnInit {
+  role: string;
+
   breadCrumbItems: (
     | { label: string; active?: undefined }
     | { label: string; active: boolean }
@@ -113,11 +115,37 @@ export class ListComponent implements OnInit {
     public toastr: ToastrService,
     private sharedService: SharedService,
     private localService: LocalService,
-    private coreService: CoreService
+    private coreService: CoreService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
+  lienBrute: string;
+  lien: string;
+  pathUrl: string;
 
   ngOnInit(): void {
-    this.getConsultant();
+    this.lienBrute = this.router.url;
+    this.lien = this.lienBrute.substring(12, this.lienBrute.length);
+
+    console.log("====================================");
+    console.log(this.lien);
+    console.log("====================================");
+
+    if (this.lien === "chef-de-mission") {
+      this.pathUrl = "Chef de mission";
+    } else if (this.lien === "specialiste-reinstallation") {
+      this.pathUrl = "Spécialiste en réinstallation";
+    } else if (this.lien === "gestion-parties-prenantes") {
+      this.pathUrl = "Spécialiste en gestion des parties prenantes";
+    } else if (this.lien === "genre-inclusions-sociale") {
+      this.pathUrl = "Spécialiste en Genre et Inclusions Sociale";
+    } else if (this.lien === "base-de-donnees-sig") {
+      this.pathUrl = "Spécialiste en base de données et SIG";
+    } else if (this.lien === "animateurs-communautaires") {
+      this.pathUrl = "Animateurs communautaires";
+    }
+
+    this.getConsultantBySousRole();
     this.headers = this.createHeader();
     this.btnActions = this.createActions();
 
@@ -196,7 +224,6 @@ export class ListComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.datas = data["data"];
             this.length = data["length"];
-            console.log("length", this.length);
             this._changeDetectorRef.markForCheck();
           } else {
             this.loadData = false;
@@ -273,12 +300,9 @@ export class ListComponent implements OnInit {
   exportAs(format) {
     const nom = "Liste des produits";
     let value = [];
-
   }
 
-  exempleGenPdfHeaderFooter(userName, fileName) {
-   
-  }
+  exempleGenPdfHeaderFooter(userName, fileName) {}
 
   record(item) {}
 
@@ -362,5 +386,32 @@ export class ListComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  getConsultantBySousRole() {
+    return this.papService
+      .all(`users/by_sous_role?roleName=${this.pathUrl}`)
+      .subscribe(
+        (data: any) => {
+          this.loadData = false;
+          if (data["status"] == 200) {
+            this.loadData = false;
+            console.log(data);
+            this.dataSource = new MatTableDataSource(data["data"]);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            this.datas = data["data"];
+            this.length = data["length"];
+            console.log("length", this.length);
+            this._changeDetectorRef.markForCheck();
+          } else {
+            this.loadData = false;
+            this.dataSource = new MatTableDataSource();
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 }

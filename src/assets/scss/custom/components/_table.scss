@@ -1,10 +1,14 @@
-// 
+//
 // _table.scss
-// 
+//
 
 .table {
+  thead{
+    border-radius: 10px;
+  }
   th {
-      font-weight: $font-weight-bold;
+     // background-color: green;
+      color: green;
   }
 }
 

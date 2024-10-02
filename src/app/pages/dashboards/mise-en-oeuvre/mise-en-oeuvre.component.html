@@ -1,0 +1,51 @@
+<div class="container">
+  <h1>Statistiques Dynamiques relatives à la mise en œuvre du PAR</h1>
+  <div class="section-jobs">
+    <h2>Statut des dossiers</h2>
+    <div class="cards">
+      <div class="card">Dossiers incomplets : <span>{{ dossiersIncomplets }}</span></div>
+      <div class="card">Dossiers complets : <span>{{ dossiersComplets }}</span></div>
+      <div class="card">Ententes de compensation signées : <span>{{ ententesCompensation }}</span></div>
+      <div class="card">Dossiers transmis pour paiement : <span>{{ dossiersTransmis }}</span></div>
+      <div class="card">Nombre de PAP payées : <span>{{ papPayees }}</span></div>
+    </div>
+  </div>
+
+
+  <div class="d-flex justify-evenly">
+    <div>
+      <h1>Effectif Désagrégé de PAP selon les Catégories</h1>
+
+      <div class="chart-container">
+        <apx-chart [series]="pieChart.series" [chart]="pieChart.chart" [labels]="pieChart.labels"
+          [colors]="pieChart.colors" [legend]="pieChart.legend">
+        </apx-chart>
+      </div>
+    </div>
+    <div>
+      <div class="chart-container">
+        <h2>Selon la vulnérabidivté</h2>
+        <apx-chart [series]="vulnerableChart.series" [chart]="vulnerableChart.chart" [labels]="vulnerableChart.labels"
+          [colors]="vulnerableChart.colors" [legend]="vulnerableChart.legend">
+        </apx-chart>
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- Graphique en barres empilées pour les effectifs par genre -->
+    <div class="chart-container">
+      <h2>Effectif féminin et mascudivn par catégorie</h2>
+      <apx-chart [series]="barChart.series" [chart]="barChart.chart" [xaxis]="barChart.xaxis" [colors]="barChart.colors"
+        [legend]="barChart.legend" [plotOptions]="barChart.plotOptions">
+      </apx-chart>
+    </div>
+
+    <!-- Graphique en colonnes pour les compensations -->
+    <div class="chart-container">
+      <h2>Total des compensations par catégorie</h2>
+      <apx-chart [series]="compensationChart.series" [chart]="compensationChart.chart" [xaxis]="compensationChart.xaxis"
+        [colors]="compensationChart.colors" [dataLabels]="compensationChart.dataLabels">
+      </apx-chart>
+    </div>
+  </div>
+</div>

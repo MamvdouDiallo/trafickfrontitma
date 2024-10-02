@@ -13,11 +13,19 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 1,
-        label: "Accueil",
+        label: "BaseLine PAR",
         link: "/dashboards/jobs",
         parentId: 2,
+        icon: "bx bx-line-chart", // Example of a Boxicon class
       },
-    ],
+      {
+        id: 2,
+        label: "Mise en Oeuvre",
+        link: "/dashboards/miseEnOeuvre",
+        parentId: 2,
+        icon: "bx bx-wrench", // Example of a Boxicon class
+      },
+    ]
   },
 
   // {
@@ -220,61 +228,61 @@ export const MENU: MenuItem[] = [
   // },
 
   {
-    "id": 40,
-    "label": "PROJECTS",
-    "icon": "bx-briefcase-alt-2",
-    "subItems": [
+    id: 40,
+    label: "PROJETS",
+    icon: "bx-briefcase-alt-2",
+    subItems: [
       {
-        "id": 42,
-        "label": "MENUITEMS.PROJECTS.LIST.PROJECTLIST",
-        "icon": "bx-list-ul",
-        "link": "/projects/list",
-        "parentId": 40
+        id: 42,
+        label: "Liste",
+        icon: "bx-list-ul",
+        link: "/projects/list",
+        parentId: 40,
       },
       {
-        "id": 44,
-        "label": "MENUITEMS.PROJECTS.LIST.CREATE",
-        "icon": "bx-plus-circle",
-        "link": "/projects/create",
-        "parentId": 40
+        id: 44,
+        label: "Créer",
+        icon: "bx-plus-circle",
+        link: "/projects/create",
+        parentId: 40,
       },
-      {
-        "id": 45,
-        "label": "UPDATE",
-        "icon": "bx-edit",
-        "link": "/projects/update",
-        "parentId": 40
-      }
-    ]
+      // {
+      //   "id": 45,
+      //   "label": "UPDATE",
+      //   "icon": "bx-edit",
+      //   "link": "/projects/update",
+      //   "parentId": 40
+      // }
+    ],
   },
 
   {
-    "id": 45,
-    "label": "TACHES",
-    "icon": "bx-task",
-    "subItems": [
+    id: 45,
+    label: "TACHES",
+    icon: "bx-task",
+    subItems: [
+      // {
+      //   "id": 46,
+      //   "label": "Détail des taches",
+      //   "icon": "bx-detail",
+      //   "link": "/tasks/list",
+      //   "parentId": 45
+      // },
       {
-        "id": 46,
-        "label": "Détail des taches",
-        "icon": "bx-detail",
-        "link": "/tasks/list",
-        "parentId": 45
+        id: 47,
+        label: "Liste des taches",
+        icon: "bx-list-ul",
+        link: "/tasks/liste",
+        parentId: 45,
       },
-      {
-        "id": 47,
-        "label": "Liste des taches",
-        "icon": "bx-list-ul",
-        "link": "/tasks/liste",
-        "parentId": 45
-      },
-      {
-        "id": 48,
-        "label": "Créer",
-        "icon": "bx-plus-circle",
-        "link": "/tasks/create",
-        "parentId": 45
-      }
-    ]
+      // {
+      //   id: 48,
+      //   label: "Créer",
+      //   icon: "bx-plus-circle",
+      //   link: "/tasks/create",
+      //   parentId: 45,
+      // },
+    ],
   },
   // {
   //   id: 49,
@@ -544,25 +552,25 @@ export const MENU: MenuItem[] = [
     label: "MAITRES D'OUVRAGES",
     icon: "bxs-user-detail",
     subItems: [
-      // {
-      //   id: 92,
-      //   label: "MO GRID",
-      //   link: "/maitrouvrages/grid",
-      //   parentId: 91,
-      // },
-      {
-        id: 93,
-        label: "MO LIST",
-        "icon": "bx-list-ul",
-        link: "/maitrouvrages/list",
-        parentId: 91,
-      },
-      // {
-      //   id: 94,
-      //   label: "MO PROFILE",
-      //   link: "/maitrouvrages/profile",
-      //   parentId: 91,
-      // },
+  // {
+  //   id: 92,
+  //   label: "MO GRID",
+  //   link: "/maitrouvrages/grid",
+  //   parentId: 91,
+  // },
+  {
+    id: 93,
+    label: "Liste",
+    "icon": "bx-list-ul",
+    link: "/maitrouvrages/list",
+    parentId: 91,
+  },
+  // {
+  //   id: 94,
+  //   label: "MO PROFILE",
+  //   link: "/maitrouvrages/profile",
+  //   parentId: 91,
+  // },
     ],
   },
   {
@@ -582,47 +590,46 @@ export const MENU: MenuItem[] = [
         label: "Parties intéréssées",
         icon: "bxs-buildings",
         parentId: 92,
-        "subItems": [
+        subItems: [
           {
-            "id": 98,
-            "label": "Medias",
-            "icon": "bxs-buildings",
-            "link": "/pip/medias",
-            "parentId": 93
+            id: 98,
+            label: "Medias",
+            icon: "bxs-buildings",
+            link: "/pip/medias",
+            parentId: 93,
           },
           {
-            "id": 99,
-            "label": "ONG",
-            "icon": "bxs-heart",
-            "link": "/pip/ong",
-            "parentId": 93
+            id: 99,
+            label: "ONG",
+            icon: "bxs-heart",
+            link: "/pip/ong",
+            parentId: 93,
           },
           {
-            "id": 100,
-            "label": "Entreprises",
-            "icon": "bxs-briefcase",
-            "link": "/pip/entreprise",
-            "parentId": 93
+            id: 100,
+            label: "Entreprises",
+            icon: "bxs-briefcase",
+            link: "/pip/entreprise",
+            parentId: 93,
           },
           {
-            "id": 101,
-            "label": "Organisations",
-            "icon": "bxs-group",
-            "link": "/pip/organisation",
-            "parentId": 93
+            id: 101,
+            label: "Organisations",
+            icon: "bxs-group",
+            link: "/pip/organisation",
+            parentId: 93,
           },
           {
-            "id": 102,
-            "label": "Bailleurs",
-            "icon": "bxs-bank",
-            "link": "/pip/bailleurs",
-            "parentId": 93
-          }
-        ]
+            id: 102,
+            label: "Bailleurs",
+            icon: "bxs-bank",
+            link: "/pip/bailleurs",
+            parentId: 93,
+          },
+        ],
       },
     ],
   },
-
 
   // {
   //   id: 92,
@@ -687,82 +694,164 @@ export const MENU: MenuItem[] = [
     label: "Consultants",
     icon: "bxs-user-detail",
     subItems: [
-
       {
         id: 102,
-        label: "Role1",
-        "icon": "bx-list-ul",
-        link: "/consultant/list",
+        label: "Chef de mission",
+        icon: "bx-list-ul",
+        link: "/consultant/chef-de-mission",  // Lien vers la liste des "Chef de mission"
         parentId: 93,
       },
       {
         id: 103,
-        label: "Role2",
-        "icon": "bx-list-ul",
-        link: "/consultant/list",
+        label: "Spécialiste en réinstallation",
+        icon: "bx-list-ul",
+        link: "/consultant/specialiste-reinstallation",  // Lien vers la liste des "Spécialiste en réinstallation"
         parentId: 93,
       },
       {
-        id: 103,
-        label: "Role3",
-        "icon": "bx-list-ul",
-        link: "/consultant/list",
+        id: 104,
+        label: "Spécialiste en gestion des parties prenantes",
+        icon: "bx-list-ul",
+        link: "/consultant/gestion-parties-prenantes",  // Lien vers la liste des "Spécialiste en gestion des parties prenantes"
+        parentId: 93,
+      },
+      {
+        id: 105,
+        label: "Spécialiste en Genre et Inclusions Sociale",
+        icon: "bx-list-ul",
+        link: "/consultant/genre-inclusions-sociale",  // Lien vers la liste des "Spécialiste en Genre et Inclusions Sociale"
+        parentId: 93,
+      },
+      {
+        id: 106,
+        label: "Spécialiste en base de données et SIG",
+        icon: "bx-list-ul",
+        link: "/consultant/base-de-donnees-sig",  // Lien vers la liste des "Spécialiste en base de données et SIG"
+        parentId: 93,
+      },
+      {
+        id: 107,
+        label: "Animateurs communautaires",
+        icon: "bx-list-ul",
+        link: "/consultant/animateurs-communautaires",  // Lien vers la liste des "Animateurs communautaires"
         parentId: 93,
       }
     ],
   },
-
-
-
   {
     id: 94,
     label: "Plaintes",
     icon: "bxs-comment-detail",
     subItems: [
-
       {
         id: 102,
-        label: "Liste",
-        "icon": "bx-list-ul",
+        label: "Phase d'Étude",
+        icon: "bx-list-ul",
         link: "/plainte/list",
         parentId: 94,
-      }
+      },
+      {
+        id: 102,
+        label: "Phase de Mise en Œuvre",
+        icon: "bx-list-ul",
+        link: "/plainte/miseEnOeuvrePlainte",
+        parentId: 94,
+      },
     ],
   },
 
-
   {
-    id: 95,
-    label: "Entente Compensation",
-    icon: "bxs-detail",
+    id: 94,
+    label: "GestIon des priviléges",
+    icon: "bxs-comment-detail",
     subItems: [
       {
+        id: 102,
+        label: "Roles",
+        icon: "bx-list-ul",
+        link: "/roles",
+        parentId: 94,
+      },
+      {
         id: 103,
-        label: "Liste",
-        "icon": "bx-list-ul",
-        link: "/ententeCompensation/list",
-        parentId: 95,
+        label: "Profil",
+        icon: "bx-list-ul",
+        link: "/fonctions",
+        parentId: 94,
       },
       {
         id: 104,
-        label: "Ajouter",
-        "icon": "bx-plus-circle",
-        link: "/ententeCompensation/add",
-        parentId: 95,
+        label: "Catégories",
+        icon: "bx-list-ul",
+        link: "/categories",
+        parentId: 94,
       },
-      {
-        id: 105,
-        label: "Détail",
-        "icon": "bx-detail",
-        link: "/ententeCompensation/detail",
-        parentId: 95,
-      }
     ],
   },
 
+  {
+    id: 95,
+    label: "Gestion des utilisateurs",
+    icon: "bxs-user-detail",
+    subItems: [
+      {
+        id: 102,
+        label: "Utilisateurs",
+        icon: "bx-list-ul",
+        link: "/utilisateurs",
+        parentId: 95,
+      },
+    ],
+  },
 
+  {
+    id: 96,
+    label: "Gestion des dossiers",
+    icon: "bxs-user-detail",
+    subItems: [
+      {
+        id: 103,
+        label: "Dosssiers",
+        icon: "bx-list-ul",
+        link: "/dossiers",
+        parentId: 96,
+      },
+      {
+        id: 103,
+        label: "Catégories dossiers",
+        icon: "bx-list-ul",
+        link: "/catégorie-dossier",
+        parentId: 96,
+      },
+    ],
+  },
+
+  // {
+  //   id: 95,
+  //   label: "Entente Compensation",
+  //   icon: "bxs-detail",
+  //   subItems: [
+  //     {
+  //       id: 103,
+  //       label: "Liste",
+  //       "icon": "bx-list-ul",
+  //       link: "/ententeCompensation/list",
+  //       parentId: 95,
+  //     },
+  // {
+  //   id: 104,
+  //   label: "Ajouter",
+  //   "icon": "bx-plus-circle",
+  //   link: "/ententeCompensation/add",
+  //   parentId: 95,
+  // },
+  // {
+  //   id: 105,
+  //   label: "Détail",
+  //   "icon": "bx-detail",
+  //   link: "/ententeCompensation/detail",
+  //   parentId: 95,
+  // }
+  //   ],
+  // },
 ];
-
-
-
-

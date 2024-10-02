@@ -14,6 +14,24 @@ export class ProjectService extends RootService {
     return this.http.post<any>(url, imageFormData);
   }
 
+
+
+
+
+  uploadFichiers(fichier: any, projectId: number) {
+    const body = {
+      fichierUrl: fichier,
+     // projectId: projectId
+    };
+    const url = `${this.url}/fichiers/ajout/${projectId}`;
+    return this.http.post<any>(url, body);
+  }
+
+
+
+
+
+
   saveNormeProjet(normeProjet: any, projectId: number) {
     const url = `${this.url}/normes/saveNorme/${projectId}`;
     return this.http.post<any>(url, normeProjet);

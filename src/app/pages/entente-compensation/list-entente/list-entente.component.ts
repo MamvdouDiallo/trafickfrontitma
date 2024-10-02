@@ -15,6 +15,9 @@ import {
 import { UIModule } from "src/app/shared/ui/ui.module";
 import { PapService } from "../../pap/pap.service";
 import { EntenteCompensationService } from "../entente.compensation.service";
+import { LocalService } from "src/app/core/services/local.service";
+import { SnackBarService } from "src/app/shared/core/snackBar.service";
+import { AddEntenteComponent } from "../add-entente/add-entente.component";
 
 @Component({
   selector: "app-list-entente",
@@ -103,7 +106,9 @@ export class ListEntenteComponent implements OnInit {
     private _router: Router,
     private ententeCompensationService: EntenteCompensationService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private parentService: ServiceParent
+    private parentService: ServiceParent,
+    private localService: LocalService,
+    private snackbar: SnackBarService,
   ) {}
 
   createHeader() {
@@ -125,22 +130,22 @@ export class ListEntenteComponent implements OnInit {
 
   createActions(): ButtonAction[] {
     return [
-      {
-        icon: "bxs-edit",
-        couleur: "green",
-        size: "icon-size-4",
-        title: "Modifier",
-        isDisabled: this.hasUpdate,
-        action: (element?) => this.updateItems(element),
-      },
-      {
-        icon: "bxs-trash-alt",
-        couleur: "red",
-        size: "icon-size-4",
-        title: "Supprimer",
-        isDisabled: this.hasDelete,
-        action: (element?) => this.supprimerItems(element.id, element),
-      },
+      // {
+      //   icon: "bxs-edit",
+      //   couleur: "green",
+      //   size: "icon-size-4",
+      //   title: "Modifier",
+      //   isDisabled: this.hasUpdate,
+      //   action: (element?) => this.updateItems(element),
+      // },
+      // {
+      //   icon: "bxs-trash-alt",
+      //   couleur: "red",
+      //   size: "icon-size-4",
+      //   title: "Supprimer",
+      //   isDisabled: this.hasDelete,
+      //   action: (element?) => this.supprimerItems(element.id, element),
+      // },
       {
         icon: "bxs-info-circle",
         couleur: "#00bfff	",
@@ -151,10 +156,39 @@ export class ListEntenteComponent implements OnInit {
       },
     ];
   }
+
+
+  addItems(): void {
+    this.snackbar.openModal(
+      AddEntenteComponent,
+      "60rem",
+      "new",
+      "",
+      this.datas,
+      "",
+      () => {
+        this.getEntente();
+      }
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
   updateItems(element: any) {}
   supprimerItems(id: any, element: any) {}
 
   detailItems(id: any, element: any) {
+    console.log(element);
+    this.localService.saveDataJson("entente", element);
+
     this._router.navigate(["ententeCompensation/detail"]);
   }
   getEntente() {

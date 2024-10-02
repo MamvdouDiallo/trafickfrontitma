@@ -1,0 +1,12 @@
+<div style="z-index: 0" class="pt-3 d-flex justify-content-between">
+  <div>
+
+  </div>
+  <button class="btn btn-primary mb-3" (click)="addItems()">Créer une fonction</button>
+</div>
+
+<div style="z-index: 0" class="pt-3">
+  <tableau [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [total]="length"
+    [coleurEntete]="headers" [entete]="headers" [data]="datas" [actions]="btnActions"
+    (changePage)="pageChanged($event)"></tableau>
+</div>

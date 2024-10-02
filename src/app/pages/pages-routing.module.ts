@@ -9,6 +9,13 @@ import { PersonnePhysiqueComponent } from "./personne-physique/personne-physique
 import { AjoutPersonnePhysiqueComponent } from "./personne-physique/ajout/ajout.component";
 import { TesterComponent } from "./tester/tester.component";
 import { JuristAppComponent } from "./jurist-app/jurist-app.component";
+import { RoleComponent } from "./parametrages/role/role.component";
+import { FonctionUtilisateurComponent } from "./parametrages/fonction-utilisateur/fonction-utilisateur.component";
+import { CategoryComponent } from "@ctrl/ngx-emoji-mart";
+import { CategorieUtilisateurComponent } from "./parametrages/categorie-utilisateur/categorie-utilisateur.component";
+import { UtilisateurComponent } from "./parametrages/utilisateur/utilisateur.component";
+import { GestionDossierComponent } from "./parametrages/dossier/gestion-dossier/gestion-dossier.component";
+import { CategorieDossierComponent } from "./parametrages/dossier/categorie-dossier/categorie-dossier.component";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'dashboard' },
@@ -119,29 +126,41 @@ const routes: Routes = [
       import("./pip/pip-routing.module").then((m) => m.PipRoutingModule),
   },
 
-
   {
     path: "consultant",
     loadChildren: () =>
-      import("./consultant/consulant-routing.module").then((m) => m.ConsultantRoutingModule),
+      import("./consultant/consulant-routing.module").then(
+        (m) => m.ConsultantRoutingModule
+      ),
   },
 
   {
     path: "plainte",
     loadChildren: () =>
-      import("./plainte/plainte-routing.module").then((m) => m.PlainteRoutingModule),
+      import("./plainte/plainte-routing.module").then(
+        (m) => m.PlainteRoutingModule
+      ),
   },
   {
     path: "ententeCompensation",
     loadChildren: () =>
-      import("./entente-compensation/entente-compensation-routing.module").then((m) => m.EntenteCompensationRoutingModule),
+      import("./entente-compensation/entente-compensation-routing.module").then(
+        (m) => m.EntenteCompensationRoutingModule
+      ),
   },
 
   { path: "tester", component: TesterComponent },
 
   { path: "juristApp", component: JuristAppComponent },
 
+  { path: "fonctions", component: FonctionUtilisateurComponent },
+  { path: "roles", component: RoleComponent },
+  { path: "categories", component: CategorieUtilisateurComponent },
 
+  { path: "utilisateurs", component: UtilisateurComponent },
+
+  { path: "dossiers", component: GestionDossierComponent },
+  { path: "catégorie-dossier", component: CategorieDossierComponent },
 ];
 
 @NgModule({

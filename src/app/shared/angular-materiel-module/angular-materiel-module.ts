@@ -240,6 +240,7 @@ const materialModules = [
   MatNativeDateModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatDatepickerModule
 ];
 @NgModule({
   declarations: [],

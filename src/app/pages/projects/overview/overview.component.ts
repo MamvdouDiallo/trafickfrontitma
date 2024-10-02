@@ -81,13 +81,12 @@ export class OverviewComponent implements OnInit {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    // Exemple d'utilisation avec un bouton ou une action
-    function handleDownloadButtonClick(fileName: string, base64Data: string) {
-      // Exemple de chaîne Base64 (remplacez par votre logique pour obtenir la chaîne Base64)
-      // const base64Data = 'YOUR_BASE64_ENCODED_DATA_HERE';
-      // const fileName = 'example.pdf'; // Nom du fichier à télécharger
-
-      this.downloadBase64File(base64Data, fileName);
-    }
   }
+
+
+
+  getFileName(url: string): string {
+    return url.substring(url.lastIndexOf('/') + 1);
+  }
+
 }

@@ -60,8 +60,7 @@ export class MoprofileComponent {
       this.user.user.image.image
     );
     this.breadCrumbItems = [
-      { label: "Contacts" },
-      { label: "Profile", active: true },
+      
     ];
 
     // fetches the data

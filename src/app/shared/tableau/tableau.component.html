@@ -62,6 +62,9 @@
     <tr class="hover:bg-gray-100 dark:hover:bg-hover" mat-row *matRowDef="let role; columns: mapObject(entete);"></tr>
 
   </table>
+  <div *ngIf="dataSource.data?.length === 0" class="w-full text-center py-4">
+    <p style="color: red;">La liste est vide.</p>
+  </div>
 </div>
 <mat-paginator *ngIf="dataSource.data?.length!=0" class="paginator c-paginator" #paginator (page)="pageChanged($event)"
   [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">

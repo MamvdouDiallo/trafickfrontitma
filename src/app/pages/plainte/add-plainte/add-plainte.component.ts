@@ -10,6 +10,7 @@ import {
   UntypedFormGroup,
   UntypedFormBuilder,
   Validators,
+  FormArray,
 } from "@angular/forms";
 import {
   MatDialogRef,
@@ -32,6 +33,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-add-plainte",
@@ -42,6 +44,8 @@ import { MatIconModule } from "@angular/material/icon";
     MatInputModule,
     MatIconModule,
     AngularMaterialModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatDatepickerModule,
     MatNativeDateModule,
   ],
@@ -64,10 +68,10 @@ export class AddPlainteComponent implements OnInit {
   labelButton: string;
   suffixe: string = " une plainte";
   countries: any;
-  signature = '';
+  signature = "";
 
   nrSelect;
-  situationsMatrimoniales: any;
+  situationsMatrimoniales: string[] ;
   typeIdentifications: any = [];
   capaciteJuridiques: any;
   dateDelivrance;
@@ -99,7 +103,7 @@ export class AddPlainteComponent implements OnInit {
   categoriePartieInteresses: any;
   uploadedImage!: File;
   imageURL: string | undefined;
-
+  urlImage = environment.apiURL + "image/getFile/";
   readonly labelPosition = model<"before" | "after">("after");
   categories: any[] = [
     { id: "1", libelle: "Agricole" },
@@ -112,7 +116,13 @@ export class AddPlainteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListPays();
-    this.getListSituationsMatrimoniales();
+    this.situationsMatrimoniales = [
+      "Célibataire",
+      "Marié(e)",
+      "Divorcé(e)",
+      "Veuf/Veuve",
+    ];
+    //this.getListSituationsMatrimoniales();
   }
   constructor(
     public matDialogRef: MatDialogRef<AddComponent>,
@@ -126,11 +136,10 @@ export class AddPlainteComponent implements OnInit {
     private _matDialog: MatDialog,
     private localService: LocalService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private clientServive: ClientVueService,
-
+    private clientServive: ClientVueService
   ) {
     this.currentUser = this.localService.getDataJson("user");
-    this.signature = 'assets/images/noImage.png';
+    this.signature = "assets/images/noImage.png";
     // console.log("user connecter",this.currentUser)
     if (_data?.action == "new") {
       this.initForms();
@@ -191,7 +200,7 @@ export class AddPlainteComponent implements OnInit {
   initForms(donnees?) {
     //firstep
     this.initForm = this.fb.group({
-      libelleProjet: this.fb.control(donnees ? donnees?.libelle : null, [
+      libelleProjet: this.fb.control(donnees ? donnees?.libelleProjet : null, [
         Validators.required,
       ]),
       numeroDossier: this.fb.control(donnees ? donnees?.numeroDossier : null, [
@@ -199,7 +208,7 @@ export class AddPlainteComponent implements OnInit {
       ]),
       lieuEnregistrement: this.fb.control(
         donnees ? donnees?.lieuEnregistrement : null,
-        [Validators.required, Validators.email]
+        [Validators.required]
       ),
       dateEnregistrement: this.fb.control(
         donnees ? donnees?.dateEnregistrement : null,
@@ -268,9 +277,17 @@ export class AddPlainteComponent implements OnInit {
         donnees ? donnees?.recommandation : null,
         [Validators.required]
       ),
+      etat: this.fb.control(donnees ? donnees?.etat : null, [
+        Validators.required,
+      ]),
+      documentUrls: this.fb.array(
+        donnees && donnees.documentUrls
+          ? donnees.documentUrls.map((url) => this.fb.control(url))
+          : [],
+        [Validators.required]
+      ),
     });
   }
-
 
   get phoneValue() {
     return this.initForm.controls["numeroTelephonePersonneContact"];
@@ -427,13 +444,13 @@ export class AddPlainteComponent implements OnInit {
 
   savePlainte() {
     console.log(this.initForm.value);
-      return this.addItems();
+    return this.addItems();
   }
 
   addItems() {
-    console.log('====================================');
+    console.log("====================================");
     console.log(this.initForm.value);
-    console.log('====================================');
+    console.log("====================================");
     this.snackbar
       .showConfirmation(`Voulez-vous vraiment crée cette plainte `)
       .then((result) => {
@@ -458,9 +475,9 @@ export class AddPlainteComponent implements OnInit {
             },
             (error) => {
               this.loader = false;
-              console.log('====================================');
+              console.log("====================================");
               console.log(error);
-              console.log('====================================');
+              console.log("====================================");
               this.changeDetectorRefs.markForCheck();
               this.snackbar.showErrors(error);
             }
@@ -476,14 +493,7 @@ export class AddPlainteComponent implements OnInit {
     }
   }
 
-  getsituationMatrimoniale(value: any) {
-    if (this.situationsMatrimoniales) {
-      const liste = this.situationsMatrimoniales.filter(
-        (type) => type.id == value
-      );
-      return liste.length != 0 ? liste[0]?.libelle : value;
-    }
-  }
+
 
   getcapaciteJuridique(value: any) {
     if (this.capaciteJuridiques) {
@@ -658,8 +668,7 @@ export class AddPlainteComponent implements OnInit {
       );
     }
   }
-
-
+  uploadedFiles: File[] = [];
   selectOnFile1(event: any, type: string, format: string): void {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -675,54 +684,46 @@ export class AddPlainteComponent implements OnInit {
       }
     }
   }
-
-
-
-
-
-
-
   selectOnFile(evt, type, name) {
     let accept = [];
     let extension = "";
     if (type === "photo_profile") {
-      accept = [".png", ".PNG", ".jpg", ".JPG"];
+      accept = [".png", ".jpg"];
       extension = "une image";
     }
-    for (const file of evt.target.files) {
+
+    const files = evt.target.files;
+    const fileUrls = [];
+
+    for (const file of files) {
       const index = file.name.lastIndexOf(".");
-      const strsubstring = file.name.substring(index, file.name.length);
+      const strsubstring = file.name.substring(index).toLowerCase();
       const ext = strsubstring;
-      // Verification de l'extension du ficihier est valide
-      if (accept.indexOf(strsubstring) === -1) {
+
+      if (accept.indexOf(ext) === -1) {
         this.snackbar.openSnackBar(
-          "Ce fichier " + file.name + " n'est " + extension,
+          `Ce fichier ${file.name} n'est pas accepté comme ${extension}`,
           "OK",
           ["mycssSnackbarRed"]
         );
         return;
       } else {
-        // recuperation du fichier et conversion en base64
+        this.uploadedFiles.push(file);
         const reader = new FileReader();
         reader.onload = (e: any) => {
           if (type === "photo_profile") {
             const img = new Image();
             img.src = e.target.result;
-
-            img.onload = () => {
-              const docBase64Path = e.target.result;
-
-              if (
-                ext === ".png" ||
-                ext === ".PNG" ||
-                ext === ".jpg" ||
-                ext === ".JPG" ||
-                ext === ".jpeg" ||
-                ext === ".JPEG"
-              ) {
-                this.saveStoreFile(file);
+            const docBase64Path = e.target.result;
+            console.log("====================================");
+            console.log("base");
+            console.log("====================================");
+            this.saveStoreFile(file).then((signatureUrl) => {
+              if (signatureUrl) {
+                fileUrls.push(signatureUrl);
+                this.updateFileUrls(fileUrls);
               }
-            };
+            });
           }
         };
         reader.readAsDataURL(file);
@@ -730,60 +731,45 @@ export class AddPlainteComponent implements OnInit {
     }
   }
 
-
   saveStoreFile(file) {
-    let formData = new FormData();
-    formData.append("file", file);
-    this._changeDetectorRef.detectChanges();
-    const dataFile = { file: file };
-    this.clientServive.saveStoreFile("image/uploadFileDossier", formData).subscribe(
-      (resp) => {
-        if (resp) {
-        console.log(resp);
-     //   this.signature =   `${this.urlImage+resp["data"]}`;
-         console.log( this.signature);
-        this.saveFile(resp["data"]);
-          this._changeDetectorRef.detectChanges();
-        }
-      },
-      (error) => {
-        console.log(error);
+    return new Promise((resolve, reject) => {
+      let formData = new FormData();
+      formData.append("file", file);
 
-        this.snackbar.showErrors(error);
-      }
-    );
+      this.clientServive
+        .saveStoreFile("image/uploadFileDossier", formData)
+        .subscribe(
+          (resp) => {
+            if (resp) {
+              console.log("====================================");
+              console.log(resp);
+              console.log("====================================");
+              //   const signatureUrl = resp["data"];
+              const signatureUrl = `${this.urlImage + resp["data"]}`;
+              resolve(signatureUrl);
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.snackbar.showErrors(error);
+            reject(error);
+          }
+        );
+    });
   }
 
+  documentUrls: string[] = [];
+  updateFileUrls(urls: string[]) {
+    const formArray = this.initForm.get("documentUrls") as FormArray;
+    const currentUrls = formArray.value || [];
+    const allUrls = [...currentUrls, ...urls];
 
+    formArray.clear();
+    allUrls.forEach((url) => formArray.push(this.fb.control(url)));
 
-  saveFile(file) {
-    this.loaderImg = true;
-    this._changeDetectorRef.detectChanges();
-    this.clientServive.updateEntity("personneAffectes/addSignature" ,'', file).subscribe(
-      (resp) => {
-        console.log((resp["data"][0]));
-     //   this.noImage =  `${this.urlImage+(resp["data"][0].imagePath)}`;
-        this.loaderImg = false;
-        this._changeDetectorRef.detectChanges();
-        this.snackbar.openSnackBar("Fichier chargée avec succès", "OK", [
-          "mycssSnackbarGreen",
-        ]);
-      },
-      (error) => {
-        console.log(error);
-
-        this.loaderImg = false;
-        this.snackbar.showErrors(error);
-      }
-    );
+    // Mettez à jour `documentUrls` avec les nouvelles URLs
+    this.documentUrls = allUrls;
   }
 
-
-
-
-
-
-
-
-
+  etats: string[] = ["Résolu", "En Attente", "En Cours"];
 }

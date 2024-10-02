@@ -1,0 +1,17 @@
+  .image-list {
+  display: flex;
+  list-style: none; /* Enlève les puces des listes */
+  padding: 0; /* Enlève les marges internes de la liste */
+  margin: 0; /* Enlève les marges externes de la liste */
+  overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
+}
+
+.image-item {
+  margin-right: 10px; /* Espacement entre les images */
+}
+
+.image {
+  max-width: 200px;
+  max-height: 200px;
+  display: block; /* Supprime l'espace blanc sous l'image */
+}

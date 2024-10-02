@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ServiceParent } from 'src/app/core/services/serviceParent';
 
 @Component({
   selector: 'app-sidebar',
@@ -26,7 +27,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
 
   menuItems: MenuItem[] = [];
   @ViewChild('sideMenu') sideMenu: ElementRef;
-  constructor(private eventService: EventService, private router: Router, public translate: TranslateService, private http: HttpClient) {
+  datas: any;
+  constructor(private eventService: EventService, private router: Router, public translate: TranslateService, private http: HttpClient, private parentService: ServiceParent) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenuDropdown();
@@ -138,7 +140,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
    */
   initialize(): void {
     this.menuItems = MENU;
+    //this.getCategorie();
   }
+
 
   /**
    * Returns true or false if given menu item has child or not
@@ -147,4 +151,49 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
   hasItems(item: MenuItem) {
     return item.subItems !== undefined ? item.subItems.length > 0 : false;
   }
+
+
+
+  url: string = "categories";
+
+
+
+
+  getCategorie() {
+    return this.parentService
+      .list(this.url, 1000, 0)
+      .subscribe(
+        (data: any) => {
+          if (data["responseCode"] == 200) {
+            this.datas = data["data"];
+            // Mise à jour dynamique du menu
+            this.updateMenuWithCategories(this.datas);
+
+          } else {
+            console.log("Erreur lors de la récupération des catégories");
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+
+  updateMenuWithCategories(categories: any[]) {
+    const gestionUtilisateurs = MENU.find(item => item.id === 95);
+
+    if (gestionUtilisateurs) {
+      const subItems = categories.map(categorie => ({
+        id: categorie.id,
+        label: categorie.libelle,
+        icon: "bx-list-ul",
+        link: `/categories/${categorie.id}`,
+        parentId: gestionUtilisateurs.id
+      }));
+      gestionUtilisateurs.subItems = [...gestionUtilisateurs.subItems, ...subItems];
+    }
+  }
+
+
 }

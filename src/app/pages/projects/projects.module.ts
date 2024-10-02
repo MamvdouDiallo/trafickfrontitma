@@ -33,6 +33,8 @@ import { CreateComponent } from "./create/create.component";
 import { AngularMaterialModule } from "src/app/shared/angular-materiel-module/angular-materiel-module";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { UpdateComponent } from './update/update.component';
+import { NgxPaginationModule } from "ngx-pagination";
+import { NgxDocViewerModule } from "ngx-doc-viewer";
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -64,7 +66,9 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgMultiSelectDropDownModule.forRoot(),
     AngularMaterialModule,
     DropzoneModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    NgxDocViewerModule,
+    NgxPaginationModule,
 
   ],
   providers: [
